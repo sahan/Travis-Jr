@@ -1,4 +1,4 @@
-Travis-Jr
+Travis Jr
 =========
 
-A minimalistic Android client for Travis-CI.
+> **Travis Junior (PRE_ALPHA)**

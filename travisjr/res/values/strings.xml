@@ -1,0 +1,9 @@
+<resources>
+
+    <string name="app_name">Travis Jr.</string>
+    
+    <string name="lbl_sign_in">Sign in with GitHub.</string>
+    
+    <string name="ttl_authentication">Authenticate via GitHub.</string>
+
+</resources>

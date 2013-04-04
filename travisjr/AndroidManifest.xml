@@ -1,0 +1,31 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.lonepulse.travisjr"
+    android:versionCode="1"
+    android:versionName="0.1.1-SNAPSHOT" >
+
+    <uses-sdk
+        android:minSdkVersion="15"
+        android:targetSdkVersion="15"
+        tools:ignore="OldTargetApi" />
+    
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" /> <!-- to read GitHub credentials -->
+
+    <application
+        android:name="com.lonepulse.travisjr.app.TravisJr$Application"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".AuthenticationActivity"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

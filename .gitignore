@@ -1,0 +1,11 @@
+.settings
+travisjr/bin
+travisjr/gen
+travisjr/target
+travisjr/.settings
+travisjr-it/bin
+travisjr-it/gen
+travisjr-it/target
+travisjr-it/.settings
+travisjr-it/tmp
+target

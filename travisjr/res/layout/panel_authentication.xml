@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/panelAuthentication"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:background="@color/bg_generic" >
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/dv_ver_dark_to_trans" />
+
+    <ImageView
+        android:id="@+id/octocat"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/divider"
+        android:layout_centerVertical="true"
+        android:layout_margin="10dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/octocat"
+        tools:ignore="ContentDescription" />
+
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_toLeftOf="@id/octocat"
+        android:hint="@string/lbl_sign_in"
+        android:inputType="text"
+        android:lines="1"
+        android:singleLine="true"
+        android:textColor="@color/txt_dark"
+        android:textStyle="bold" />
+
+</RelativeLayout>

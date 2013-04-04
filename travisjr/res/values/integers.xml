@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <integer name="dur_anim_extra_short">250</integer>
+    <integer name="dur_anim_short">750</integer>
+    <integer name="dur_anim_medium">1250</integer>
+    <integer name="dur_anim_long">1750</integer>
+    <integer name="dur_anim_extra_long">2250</integer>
+    
+</resources>
