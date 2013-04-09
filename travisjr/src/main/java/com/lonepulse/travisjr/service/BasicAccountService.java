@@ -91,6 +91,22 @@ public class BasicAccountService implements AccountService {
 	}
 	
 	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean areCredentialsAvailable() {
+	
+		try {
+			
+			return (!TextUtils.isEmpty(getGitHubUsername()))? true :false;
+		}
+		catch(MissingCredentialsException mce) {
+			
+			return false;
+		}
+	}
+	
+	/**
 	 * <p>Retrieves the default {@link SharedPreferences} using the 
 	 * application context at {@link TravisJr.Application#CONTEXT}.
 	 * 

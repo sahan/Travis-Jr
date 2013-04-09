@@ -1,4 +1,4 @@
-package com.lonepulse.travisjr.app;
+package com.lonepulse.travisjr.service;
 
 /*
  * #%L
@@ -21,39 +21,31 @@ package com.lonepulse.travisjr.app;
  */
 
 
-import android.content.Context;
+import java.util.List;
 
+import com.lonepulse.icklebot.annotation.inject.Pojo;
+import com.lonepulse.travisjr.model.Repo;
 
 /**
- * <p>This contract specifies the global services offered by {@link TravisJr.Application}. 
+ * <p>This contract specifies the service offered on the repositories which 
+ * the user is a member of.
  * 
  * @version 1.1.0
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
-public interface TravisJr {
-	
-	
-	public static final class Application extends android.app.Application implements TravisJr {
-		
-		
-		/**
-		 * <p>{@link Application#getApplicationContext()} offered in a static context.
-		 * 
-		 * @since 1.1.0
-		 */
-		public static volatile Context CONTEXT;
-		
-		
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void onCreate() {
-		
-			super.onCreate();
-			
-			Application.CONTEXT = getApplicationContext();
-		}
-	}
+@Pojo(BasicRepoService.class)
+public interface RepoService {
+
+	/**
+	 * <p>Retrieves the set of {@link Repo}s which the user is a member of.
+	 * 
+	 * @return all associated {@link Repo}s
+	 * 
+	 * @throws RepoAccessException
+	 * 			if the {@link Repo}(s) cannot be read via the remote endpoint.
+	 * 
+	 * @since 1.1.0
+	 */
+	List<Repo> getReposByMember();
 }

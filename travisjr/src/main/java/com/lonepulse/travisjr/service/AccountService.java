@@ -27,7 +27,7 @@ import com.lonepulse.icklebot.annotation.inject.Pojo;
  * <p>This contract specifies the services offered for managing the 
  * user's account. 
  * 
- * @version 1.1.0
+ * @version 1.1.1
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
@@ -69,4 +69,15 @@ public interface AccountService {
 	 * @since 1.1.0
 	 */
 	String queryGitHubAccount() throws MissingCredentialsException;
+	
+	/**
+	 * <p>Indicates whether the user had already setup account credentials. 
+	 * This can be used before {@link #getGitHubUsername()} to circumvent a 
+	 * {@link MissingCredentialsException}.
+	 * 
+	 * @return {@code true} if credentials are already saved
+	 * 
+	 * @since 1.1.1
+	 */
+	boolean areCredentialsAvailable();
 }

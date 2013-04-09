@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_generic"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@id/alert_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/alert_no_data_connection"
+        android:visibility="gone" />
+
+    <include
+        android:id="@id/alert_repos"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/alert_no_repos_found"
+        android:visibility="gone" />
+
+    <include
+        android:id="@id/alert_sync"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/alert_syncing_repos"
+        android:visibility="gone" />
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bg_generic"
+        android:dividerHeight="1dp"
+        android:drawSelectorOnTop="false"
+        android:fastScrollEnabled="true" />
+
+</LinearLayout>

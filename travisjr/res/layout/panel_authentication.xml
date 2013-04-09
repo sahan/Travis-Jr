@@ -7,7 +7,7 @@
     android:background="@color/bg_generic" >
 
     <View
-        android:id="@+id/divider"
+        android:id="@id/divider"
         android:layout_width="match_parent"
         android:layout_height="10dp"
         android:layout_alignParentTop="true"

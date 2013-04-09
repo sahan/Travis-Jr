@@ -32,7 +32,6 @@ import android.widget.ProgressBar;
 
 import com.lonepulse.icklebot.IckleActivity;
 import com.lonepulse.icklebot.annotation.event.Click;
-import com.lonepulse.icklebot.annotation.inject.Fullscreen;
 import com.lonepulse.icklebot.annotation.inject.InjectAnimation;
 import com.lonepulse.icklebot.annotation.inject.InjectPojo;
 import com.lonepulse.icklebot.annotation.inject.InjectView;
@@ -51,8 +50,7 @@ import com.lonepulse.travisjr.util.Resources;
  * <br><>br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
-@Fullscreen
-@Layout(R.layout.act_authentication)
+@Layout(R.layout.activity_authentication)
 public class AuthenticationActivity extends IckleActivity {
 
 	
@@ -91,9 +89,6 @@ public class AuthenticationActivity extends IckleActivity {
 	private AccountService accountService;
 	
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected void onStart() {
 	
@@ -102,7 +97,14 @@ public class AuthenticationActivity extends IckleActivity {
 		panelAuthentication.startAnimation(slideInFromBottom);
 		octocat.startAnimation(pulsate);
 		
-		runAsyncTask(ASYNC_SET_GITHUB_ACCOUNT);
+		try {
+			
+			updateUsername(accountService.getGitHubUsername());
+		}
+		catch(MissingCredentialsException mce) {
+			
+			runAsyncTask(ASYNC_SET_GITHUB_ACCOUNT);
+		}
 	}
 	
 	@Click(R.id.octocat)
@@ -111,7 +113,6 @@ public class AuthenticationActivity extends IckleActivity {
 		if(TextUtils.isEmpty(username.getText().toString())) {
 			
 			username.startAnimation(shakeSidewaysOnce);
-			
 			return;
 		}
 		
@@ -126,7 +127,7 @@ public class AuthenticationActivity extends IckleActivity {
 		fadeOut.setFillAfter(true);
 		progress.startAnimation(fadeOut);
 		
-		//TODO move to Home activity
+		HomeActivity.start(this);
 	}
 	
 	@Async(ASYNC_SET_GITHUB_ACCOUNT)

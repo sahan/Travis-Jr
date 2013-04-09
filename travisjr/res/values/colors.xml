@@ -1,17 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="txt_logo">#FFFFFF</color>
-    
     <color name="txt_lightest">#FFFFFF</color>
     <color name="txt_lighter">#E6E6E6</color>
     <color name="txt_light">#BDBDBD</color>
     <color name="txt_dark">#848484</color>
     <color name="txt_darker">#2E2E2E</color>
     <color name="txt_darkest">#000000</color>
+    <color name="txt_blue">#01A9DB</color>
     
 	<color name="bg_logo">#FF1C08</color>
-	
 	<color name="bg_generic">#FFFFFF</color>
 	<color name="bg_darkest">#000000</color>
 	<color name="bg_darker">#2E2E2E</color>
+	<color name="bg_list_item_start">#90F5ECCE</color>
+	<color name="bg_list_item_end">#90F3E2A9</color>
+	<color name="bg_list_item_generic">#FFFFFF</color>
+	<color name="bg_list_item_alt">#F2F2F2</color>
+	<color name="bg_build_passed">#BCF5A9</color>
+	<color name="bg_build_failed">#F5A9A9</color>
+	<color name="bg_build_pending">#F2F5A9</color>
+	<color name="bg_info">#00BFFF</color>
+	<color name="bg_error">#FF0000</color>
+	
+	<color name="status_passed">#04B404</color>
+	<color name="status_failed">#FF2D2D</color>
+	<color name="status_pending">#F2D600</color>
 </resources>

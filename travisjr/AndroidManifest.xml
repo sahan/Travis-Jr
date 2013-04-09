@@ -8,8 +8,11 @@
         android:minSdkVersion="15"
         android:targetSdkVersion="15"
         tools:ignore="OldTargetApi" />
-    
+
     <uses-permission android:name="android.permission.GET_ACCOUNTS" /> <!-- to read GitHub credentials -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- to access the Travis-CI endpoint -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- to register for data state updates -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- to query data connection information -->
 
     <application
         android:name="com.lonepulse.travisjr.app.TravisJr$Application"
@@ -19,13 +22,16 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".AuthenticationActivity"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".HomeActivity"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen" />
     </application>
 
 </manifest>
