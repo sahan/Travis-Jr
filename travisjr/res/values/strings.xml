@@ -2,17 +2,20 @@
 
     <string name="app_name">Travis Jr.</string>
     
+    <string name="not_available">N/A</string>
+    
     <string name="lbl_sign_in">Sign in with GitHub.</string>
     <string name="lbl_seconds">&#160;sec</string>
     <string name="lbl_no_data_connection">No Data Connection</string>
     <string name="lbl_no_repos_found">No Repositories Found</string>
     <string name="lbl_tap_to_configure">(Tap To Configure)</string>
     <string name="lbl_tap_to_retry">(Tap To Retry)</string>
-    <string name="lbl_syncing_repos">Synchronizing Repositories</string>
+    <string name="lbl_syncing_repos">Initializing Repositories</string>
     
-    <string name="ttl_authentication">Authenticate via GitHub.</string>
-    <string name="ttl_home">Repositories</string>
+    <string name="ttl_act_authentication">Authenticate via GitHub.</string>
+    <string name="ttl_act_home">Latest Builds</string>
     
-    <string name="not_available">N/A</string>
-
+    <string name="ttl_menu_sync">Sync</string>
+    <string name="ttl_menu_settings">Settings</string>
+    
 </resources>

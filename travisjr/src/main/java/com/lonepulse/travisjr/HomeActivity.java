@@ -22,16 +22,13 @@ package com.lonepulse.travisjr;
 
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
-import com.lonepulse.icklebot.IckleActivity;
 import com.lonepulse.icklebot.annotation.event.Click;
 import com.lonepulse.icklebot.annotation.inject.InjectPojo;
 import com.lonepulse.icklebot.annotation.inject.InjectView;
@@ -41,7 +38,9 @@ import com.lonepulse.icklebot.annotation.inject.Title;
 import com.lonepulse.icklebot.annotation.thread.Async;
 import com.lonepulse.icklebot.annotation.thread.UI;
 import com.lonepulse.travisjr.adapter.RepoAdapter;
+import com.lonepulse.travisjr.app.TravisJrActivity;
 import com.lonepulse.travisjr.model.Repo;
+import com.lonepulse.travisjr.service.AccountService;
 import com.lonepulse.travisjr.service.RepoService;
 
 /**
@@ -55,9 +54,9 @@ import com.lonepulse.travisjr.service.RepoService;
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
-@Title(R.string.ttl_home)
+@Title(R.string.ttl_act_home)
 @Layout(R.layout.activity_home)
-public class HomeActivity extends IckleActivity {
+public class HomeActivity extends TravisJrActivity {
 
 	
 	private static final int ASYNC_FETCH_REPOS = 0;
@@ -78,13 +77,13 @@ public class HomeActivity extends IckleActivity {
 	@InjectPojo
 	private RepoService repoService;
 	
+	@InjectPojo
+	private AccountService accountService;
+	
 	@Stateful
 	private List<Repo> repos;
-	
-	@Stateful
-	private AtomicBoolean syncing = new AtomicBoolean(false); 
 
-	
+
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 	
@@ -96,7 +95,13 @@ public class HomeActivity extends IckleActivity {
 	protected void onResume() {
 		
 		super.onResume();
-		if(!syncing.get() && repos == null) refresh();
+		if(!isSyncing() && repos == null) refresh();
+	}
+	
+	@Override
+	protected synchronized void onSync() {
+	
+		runAsyncTask(ASYNC_FETCH_REPOS);
 	}
 	
 	/**
@@ -113,7 +118,7 @@ public class HomeActivity extends IckleActivity {
 		alertData.setVisibility(View.GONE);
 		
 		if(repos == null && connected)
-			runAsyncTask(ASYNC_FETCH_REPOS);
+			onSync();
 		
 		else if(repos == null && !connected)
 			listView.setEmptyView(alertData);
@@ -125,7 +130,7 @@ public class HomeActivity extends IckleActivity {
 	@Async(ASYNC_FETCH_REPOS)
 	private void fetchRepos() {
 		
-		syncing.set(true);
+		startSyncAnimation();
 		
 		repos = repoService.getReposByMember();
 		runUITask(UI_UPDATE_REPOS, repos);
@@ -146,7 +151,7 @@ public class HomeActivity extends IckleActivity {
 		}
 		
 		listView.setAdapter(RepoAdapter.newInstance(HomeActivity.this, repos));
-		syncing.set(false);
+		stopSyncAnimation();
 	}
 	
 	@Click(R.id.alert_data)
@@ -157,20 +162,15 @@ public class HomeActivity extends IckleActivity {
 	
 	@Click(R.id.alert_repos)
 	private void retryFetchRepos() {
-		
-		onBackPressed();
-	}
 	
-	@Override
-	public void onBackPressed() {
-	
-		super.onBackPressed();
-		overridePendingTransition(R.anim.slide_in_from_bottom, R.anim.slide_out_from_top);
+		accountService.setGitHubUsername("");
+		AuthenticationActivity.start(this);
+		finish();
 	}
 	
 	/**
-	 * <p>Starts {@link HomeActivity} in <b>fullscreen</b> mode with 
-	 * a transition which slides the activity from below.
+	 * <p>Starts {@link HomeActivity} with the action bar and the default 
+	 * set of action items.
 	 *
 	 * @param context
 	 * 			the {@link Context} of initiation
@@ -180,8 +180,5 @@ public class HomeActivity extends IckleActivity {
 	public static final void start(Context context) {
 		
 		context.startActivity(new Intent(context, HomeActivity.class));
-		
-		if(context instanceof Activity) 
-			((Activity)context).overridePendingTransition(R.anim.slide_in_from_bottom, R.anim.slide_out_from_top);
 	}
 }

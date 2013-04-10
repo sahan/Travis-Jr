@@ -13,8 +13,6 @@
 	<color name="bg_generic">#FFFFFF</color>
 	<color name="bg_darkest">#000000</color>
 	<color name="bg_darker">#2E2E2E</color>
-	<color name="bg_list_item_start">#90F5ECCE</color>
-	<color name="bg_list_item_end">#90F3E2A9</color>
 	<color name="bg_list_item_generic">#FFFFFF</color>
 	<color name="bg_list_item_alt">#F2F2F2</color>
 	<color name="bg_build_passed">#BCF5A9</color>

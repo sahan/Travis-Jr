@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_generic"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <include
         android:id="@id/alert_data"

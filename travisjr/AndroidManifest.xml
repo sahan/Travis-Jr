@@ -22,7 +22,8 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".AuthenticationActivity"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen" >
+            android:noHistory="true"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,7 +32,7 @@
         </activity>
         <activity
             android:name=".HomeActivity"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen" />
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar"/>
     </application>
 
 </manifest>

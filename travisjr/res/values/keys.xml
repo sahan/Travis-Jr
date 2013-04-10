@@ -2,4 +2,5 @@
 <resources>
     <string name="key_username">username</string>
     <string name="key_theme">theme</string>
+    <string name="key_syncing">syncing</string>
 </resources>

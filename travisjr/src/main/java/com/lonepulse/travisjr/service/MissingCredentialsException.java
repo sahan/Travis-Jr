@@ -22,6 +22,7 @@ package com.lonepulse.travisjr.service;
 
 
 import com.lonepulse.travisjr.TravisJrException;
+import com.lonepulse.travisjr.TravisJrRuntimeException;
 
 /**
  * <p>This exception is thrown when credentials requested in the 
@@ -31,14 +32,14 @@ import com.lonepulse.travisjr.TravisJrException;
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
-public class MissingCredentialsException extends TravisJrException {
+public class MissingCredentialsException extends TravisJrRuntimeException {
 
 
 	private static final long serialVersionUID = 3763250715035656907L;
 
 	
 	/**
-	 * <p>See {@link TravisJrException#TravisJrException()}.
+	 * <p>See {@link TravisJrException#TravisJrRuntimeException()}.
 	 * 
 	 * @since 1.1.0
 	 */
@@ -49,7 +50,7 @@ public class MissingCredentialsException extends TravisJrException {
 	}
 
 	/**
-	 * <p>See {@link TravisJrException#TravisJrException(String)}.
+	 * <p>See {@link TravisJrException#TravisJrRuntimeException(String)}.
 	 * 
 	 * @since 1.1.0
 	 */
@@ -59,7 +60,7 @@ public class MissingCredentialsException extends TravisJrException {
 	}
 
 	/**
-	 * <p>See {@link TravisJrException#TravisJrException(Throwable)}.
+	 * <p>See {@link TravisJrException#TravisJrRuntimeException(Throwable)}.
 	 * 
 	 * @since 1.1.0
 	 */
@@ -69,7 +70,7 @@ public class MissingCredentialsException extends TravisJrException {
 	}
 
 	/**
-	 * <p>See {@link TravisJrException#TravisJrException(String, Throwable)}.
+	 * <p>See {@link TravisJrException#TravisJrRuntimeException(String, Throwable)}.
 	 * 
 	 * @since 1.1.0
 	 */

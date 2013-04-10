@@ -21,6 +21,9 @@ package com.lonepulse.travisjr;
  */
 
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -88,7 +91,7 @@ public class AuthenticationActivity extends IckleActivity {
 	@InjectPojo
 	private AccountService accountService;
 	
-
+	
 	@Override
 	protected void onStart() {
 	
@@ -100,6 +103,7 @@ public class AuthenticationActivity extends IckleActivity {
 		try {
 			
 			updateUsername(accountService.getGitHubUsername());
+			HomeActivity.start(this);
 		}
 		catch(MissingCredentialsException mce) {
 			
@@ -148,5 +152,25 @@ public class AuthenticationActivity extends IckleActivity {
 	private void updateUsername(String status) {
 		
 		username.setText(status);
+	}
+	
+	/**
+	 * <p>Starts {@link AuthenticationActivity} with with a hidden action bar and 
+	 * a transition which slides the activity from below.
+	 *
+	 * @param context
+	 * 			the {@link Context} of initiation
+	 * 
+	 * @since 1.1.0
+	 */
+	public static final void start(Context context) {
+		
+		Intent intent = new Intent(context, AuthenticationActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		
+		context.startActivity(intent);
+		
+		if(context instanceof Activity)
+			((Activity)context).overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
 	}
 }
