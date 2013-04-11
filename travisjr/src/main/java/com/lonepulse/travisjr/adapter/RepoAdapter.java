@@ -37,8 +37,8 @@ import android.widget.TextView;
 
 import com.lonepulse.travisjr.R;
 import com.lonepulse.travisjr.model.Repo;
+import com.lonepulse.travisjr.util.DateUtils;
 import com.lonepulse.travisjr.util.TextUtils;
-import com.lonepulse.travisjr.util.TimestampUtils;
 
 /**
  * <p>An extension of {@link ArrayAdapter} which populates a {@link ListView} 
@@ -147,10 +147,16 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 	
 		Short buildStatus = repo.getLast_build_status();
 		
+		boolean finished = (buildStatus != null)? true 
+							:repo.getBuilds().get(0).getState().equals("finished")? true :false;
+		
 		ImageView status = ((ImageView)convertView.findViewById(R.id.status));
 		
-		if(buildStatus == null) 
-			status.setImageResource(position % 2 == 0? R.drawable.gear_pending :R.drawable.gear_pending_alt);
+		if(buildStatus == null && finished) 
+			status.setImageResource(position % 2 == 0? R.drawable.gear_errored_alt :R.drawable.gear_errored);
+		
+		else if(buildStatus == null && !finished) 
+			status.setImageResource(position % 2 == 0? R.drawable.gear_started :R.drawable.gear_started_alt);
 		
 		else if(buildStatus.shortValue() == 0)
 			status.setImageResource(position % 2 == 0? R.drawable.gear_passed :R.drawable.gear_passed_alt);
@@ -182,7 +188,7 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 		.setText(String.valueOf(repo.getLast_build_number()));
 		
 		((TextView)convertView.findViewById(R.id.start_time))
-		.setText(TimestampUtils.formatForDisplay(TextUtils.isAvailable(repo.getLast_build_started_at())));
+		.setText(DateUtils.formatForDisplay(TextUtils.isAvailable(repo.getLast_build_started_at())));
 		
 		((TextView)convertView.findViewById(R.id.duration))
 		.setText(String.valueOf(TextUtils.isAvailable(repo.getLast_build_duration())));

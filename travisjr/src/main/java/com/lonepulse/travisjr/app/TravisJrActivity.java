@@ -1,5 +1,26 @@
 package com.lonepulse.travisjr.app;
 
+/*
+ * #%L
+ * Travis Jr.
+ * %%
+ * Copyright (C) 2013 Lonepulse
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
+
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import android.app.ActionBar;
@@ -8,6 +29,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
@@ -39,10 +61,22 @@ public class TravisJrActivity extends IckleActivity {
 	private View actionViewSync;
 	
 	/**
+	 * <p>A custom view which is set on the sync action when 
+	 * synchronization is complete.
+	 */
+	private View actionViewComplete;
+	
+	/**
 	 * <p>This animation is invoked on {@link #actionViewSync} 
 	 * when synchronization starts.
 	 */
 	private Animation rotate;
+	
+	/**
+	 * <p>This animation is invoked on {@link #actionViewComplete} 
+	 * when synchronization is complete.
+	 */
+	private Animation fadeOut;
 	
 	/**
 	 * <p>A flag which determines if a synchronization is already 
@@ -59,12 +93,30 @@ public class TravisJrActivity extends IckleActivity {
 		super.onCreate(savedInstanceState);
 		
 		actionViewSync = getLayoutInflater().inflate(R.layout.action_view_sync, null);
-		rotate = AnimationUtils.loadAnimation(this, R.anim.rotate);
+		actionViewComplete = getLayoutInflater().inflate(R.layout.action_view_complete, null);
 		
+		rotate = AnimationUtils.loadAnimation(this, R.anim.rotate);
 		actionViewSync.startAnimation(rotate);
 		
-		View header = getLayoutInflater().inflate(R.layout.header_home, null);
-		((TextView)header.findViewById(R.id.title)).setText(R.string.ttl_act_home);
+		fadeOut = AnimationUtils.loadAnimation(this, android.R.anim.fade_out);
+		fadeOut.setAnimationListener(new AnimationListener() {
+			
+			@Override
+			public void onAnimationStart(Animation animation) {}
+			
+			@Override
+			public void onAnimationRepeat(Animation animation) {}
+			
+			@Override
+			public void onAnimationEnd(Animation animation) {
+			
+				menuItemSync.setActionView(null);
+				syncing.set(false);
+			}
+		});
+		
+		View header = getLayoutInflater().inflate(R.layout.action_view_title, null);
+		((TextView)header.findViewById(R.id.title)).setText(R.string.ttl_act_repo);
 		((TextView)header.findViewById(R.id.subtitle)).setText(new BasicAccountService().getGitHubUsername());
 		
 		ActionBar actionBar = getActionBar();
@@ -107,7 +159,7 @@ public class TravisJrActivity extends IckleActivity {
 				
 				if(network().isConnected()) {
 					
-					onSync(); 
+					onSync();
 				}
 				
 				break;
@@ -164,9 +216,8 @@ public class TravisJrActivity extends IckleActivity {
 				public void run() {
 					
 					actionViewSync.clearAnimation();
-					menuItemSync.setActionView(null);
-					
-					syncing.set(false);
+					menuItemSync.setActionView(actionViewComplete);
+					actionViewComplete.startAnimation(fadeOut);
 				}
 			});
 		}

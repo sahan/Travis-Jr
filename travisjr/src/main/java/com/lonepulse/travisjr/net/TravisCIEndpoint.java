@@ -25,13 +25,14 @@ import com.lonepulse.robozombie.core.annotation.Endpoint;
 import com.lonepulse.robozombie.core.annotation.Param;
 import com.lonepulse.robozombie.core.annotation.Parser;
 import com.lonepulse.robozombie.core.annotation.Request;
+import com.lonepulse.travisjr.model.Build;
 import com.lonepulse.travisjr.model.Repo;
 
 /**
  * <p>This endpoint contract defines the remote services which are used 
  * by Travis Jr.
  * 
- * @version 1.1.0
+ * @version 1.1.1
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
@@ -46,10 +47,23 @@ public interface TravisCIEndpoint {
 	 * @param member
 	 * 			the GitHub username of the target member
 	 * 			 
-	 * @return the set of repositories which the user is a member of
+	 * @return the set of {@link Repo}s which the user is a member of
 	 * 
 	 * @since 1.1.0
 	 */
 	@Request(path = "repos")
 	Repo[] getReposByMember(@Param("member") String member);
+	
+	/**
+	 * <p>Takes a repository ID and retrieves its recent set of builds.
+	 *
+	 * @param repositoryId
+	 * 			the repository ID at {@link Repo#getId()}
+	 * 
+	 * @return the set of recent {@link Build}s for the given repository
+	 * 
+	 * @since 1.1.1
+	 */
+	@Request(path = "builds")
+	Build[] getRecentBuilds(@Param("id") String repositoryId);
 }

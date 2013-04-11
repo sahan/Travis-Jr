@@ -31,7 +31,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".HomeActivity"
+            android:name=".ReposActivity"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar"/>
     </application>
 

@@ -22,13 +22,15 @@ package com.lonepulse.travisjr.model;
 
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-import com.lonepulse.travisjr.util.TimestampUtils;
+import com.lonepulse.travisjr.util.DateUtils;
 
 /**
- * <p>This entity represents a single respository which is under 
- * continous integration.
+ * <p>This entity represents a single repository which is under 
+ * continuous integration.
  * 
  * @version 1.1.0
  * <br><br>
@@ -96,6 +98,11 @@ public class Repo implements Serializable, Comparable<Repo> {
 	 * <p>The timestamp of the last build termination.
 	 */
 	private String last_build_finished_at;
+	
+	/**
+	 * <p>The set of all recent builds this repository. 
+	 */
+	private List<Build> builds = new ArrayList<Build>();
 	
 	
 	/**
@@ -306,6 +313,25 @@ public class Repo implements Serializable, Comparable<Repo> {
 	public void setLast_build_finished_at(String last_build_finished_at) {
 		this.last_build_finished_at = last_build_finished_at;
 	}
+	
+	/**
+	 * <p>Accessor for builds.
+	 *
+	 * @return the builds
+	 */
+	public List<Build> getBuilds() {
+		return builds;
+	}
+
+	/**
+	 * <p>Mutator for builds.
+	 *
+	 * @param builds 
+	 *			the builds to set
+	 */
+	public void setBuilds(List<Build> builds) {
+		this.builds = builds;
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -342,9 +368,7 @@ public class Repo implements Serializable, Comparable<Repo> {
 	 */
 	@Override
 	public String toString() {
-		
 		StringBuilder builder = new StringBuilder();
-		
 		builder.append("Repo [id=");
 		builder.append(id);
 		builder.append(", slug=");
@@ -367,8 +391,9 @@ public class Repo implements Serializable, Comparable<Repo> {
 		builder.append(last_build_started_at);
 		builder.append(", last_build_finished_at=");
 		builder.append(last_build_finished_at);
+		builder.append(", builds=");
+		builder.append(builds);
 		builder.append("]");
-		
 		return builder.toString();
 	}
 
@@ -382,8 +407,8 @@ public class Repo implements Serializable, Comparable<Repo> {
 
 		if(another == null) return -1;
 		
-		Date thisTimestamp = TimestampUtils.parseFromISO8601(last_build_started_at);
-		Date otherTimestamp = TimestampUtils.parseFromISO8601(another.last_build_started_at);
+		Date thisTimestamp = DateUtils.parseFromISO8601(last_build_started_at);
+		Date otherTimestamp = DateUtils.parseFromISO8601(another.last_build_started_at);
 		
 		return otherTimestamp.compareTo(thisTimestamp);
 	}

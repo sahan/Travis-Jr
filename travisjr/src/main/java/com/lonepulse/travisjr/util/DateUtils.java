@@ -37,13 +37,13 @@ import android.annotation.SuppressLint;
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
-public final class TimestampUtils {
+public final class DateUtils {
 
 	
 	/**
 	 * <p>Constructor visibility restricted. Instantiation is nonsensical.
 	 */
-	private TimestampUtils() {} 
+	private DateUtils() {} 
 	
 	
 	/**

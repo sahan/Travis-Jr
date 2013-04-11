@@ -10,10 +10,11 @@
     <string name="lbl_no_repos_found">No Repositories Found</string>
     <string name="lbl_tap_to_configure">(Tap To Configure)</string>
     <string name="lbl_tap_to_retry">(Tap To Retry)</string>
-    <string name="lbl_syncing_repos">Initializing Repositories</string>
+    <string name="lbl_syncing_repos">Fetching Repositories</string>
     
     <string name="ttl_act_authentication">Authenticate via GitHub.</string>
-    <string name="ttl_act_home">Latest Builds</string>
+    <string name="ttl_act_repo">Repositories</string>
+    <string name="ttl_act_builds">Recent Builds</string>
     
     <string name="ttl_menu_sync">Sync</string>
     <string name="ttl_menu_settings">Settings</string>

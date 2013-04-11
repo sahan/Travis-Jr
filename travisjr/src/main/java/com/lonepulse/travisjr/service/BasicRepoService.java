@@ -26,6 +26,7 @@ import java.util.List;
 
 import com.lonepulse.robozombie.core.annotation.Bite;
 import com.lonepulse.robozombie.core.inject.Zombie;
+import com.lonepulse.travisjr.model.Build;
 import com.lonepulse.travisjr.model.Repo;
 import com.lonepulse.travisjr.net.TravisCIEndpoint;
 
@@ -62,15 +63,31 @@ public class BasicRepoService implements RepoService {
 	@Override
 	public List<Repo> getReposByMember() {
 		
+		String username = "<n/a>";
+		
 		try {
 			
-			String username = accountService.getGitHubUsername();
+			username = accountService.getGitHubUsername();
 			
-			return Arrays.asList(travisCIEndpoint.getReposByMember(username));
+			Repo[] repos = travisCIEndpoint.getReposByMember(username);
+			Build[] builds;
+			
+			for (Repo repo : repos) {
+				
+				if(repo.getLast_build_status() == null) {
+					
+					builds = travisCIEndpoint.getRecentBuilds(String.valueOf(repo.getId()));
+						
+					if(builds != null && builds.length != 0)
+						repo.setBuilds(Arrays.asList(builds));
+				}
+			}
+			
+			return Arrays.asList(repos);
 		} 
 		catch (Exception e) {
 			
-			throw new RepoAccessException(e);
+			throw new RepoAccessException(username);
 		}
 	}
 }

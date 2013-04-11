@@ -25,7 +25,6 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
@@ -54,9 +53,9 @@ import com.lonepulse.travisjr.service.RepoService;
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
-@Title(R.string.ttl_act_home)
-@Layout(R.layout.activity_home)
-public class HomeActivity extends TravisJrActivity {
+@Title(R.string.ttl_act_repo)
+@Layout(R.layout.activity_repos)
+public class ReposActivity extends TravisJrActivity {
 
 	
 	private static final int ASYNC_FETCH_REPOS = 0;
@@ -82,20 +81,13 @@ public class HomeActivity extends TravisJrActivity {
 	
 	@Stateful
 	private List<Repo> repos;
-
-
-	@Override
-	protected void onPostCreate(Bundle savedInstanceState) {
 	
-		super.onPostCreate(savedInstanceState);
-		refresh();
-	}
 	
 	@Override
 	protected void onResume() {
 		
 		super.onResume();
-		if(!isSyncing() && repos == null) refresh();
+		refresh();
 	}
 	
 	@Override
@@ -112,19 +104,29 @@ public class HomeActivity extends TravisJrActivity {
 	 */
 	private void refresh() {
 		
-		boolean connected = network().isConnected();
+		if(isSyncing() && repos != null) {
+			
+			runUITask(UI_UPDATE_REPOS, repos);
+			return;
+		}
 		
 		listView.setEmptyView(alertSync);
 		alertData.setVisibility(View.GONE);
 		
-		if(repos == null && connected)
+		boolean connected = network().isConnected();
+		
+		if(repos == null && connected) {
+			
 			onSync();
-		
-		else if(repos == null && !connected)
+		}
+		else if(repos == null && !connected) {
+			
 			listView.setEmptyView(alertData);
-		
-		else
+		}
+		else {
+			
 			runUITask(UI_UPDATE_REPOS, repos);
+		}
 	}
 	
 	@Async(ASYNC_FETCH_REPOS)
@@ -150,7 +152,7 @@ public class HomeActivity extends TravisJrActivity {
 			alertRepos.setVisibility(View.GONE);
 		}
 		
-		listView.setAdapter(RepoAdapter.newInstance(HomeActivity.this, repos));
+		listView.setAdapter(RepoAdapter.newInstance(ReposActivity.this, repos));
 		stopSyncAnimation();
 	}
 	
@@ -169,7 +171,7 @@ public class HomeActivity extends TravisJrActivity {
 	}
 	
 	/**
-	 * <p>Starts {@link HomeActivity} with the action bar and the default 
+	 * <p>Starts {@link ReposActivity} with the action bar and the default 
 	 * set of action items.
 	 *
 	 * @param context
@@ -179,6 +181,6 @@ public class HomeActivity extends TravisJrActivity {
 	 */
 	public static final void start(Context context) {
 		
-		context.startActivity(new Intent(context, HomeActivity.class));
+		context.startActivity(new Intent(context, ReposActivity.class));
 	}
 }

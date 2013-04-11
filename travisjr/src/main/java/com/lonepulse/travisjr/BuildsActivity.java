@@ -1,4 +1,4 @@
-package com.lonepulse.travisjr.service;
+package com.lonepulse.travisjr;
 
 /*
  * #%L
@@ -21,31 +21,24 @@ package com.lonepulse.travisjr.service;
  */
 
 
-import java.util.List;
-
-import com.lonepulse.icklebot.annotation.inject.Pojo;
+import com.lonepulse.icklebot.annotation.inject.Layout;
+import com.lonepulse.icklebot.annotation.inject.Title;
+import com.lonepulse.travisjr.app.TravisJrActivity;
+import com.lonepulse.travisjr.model.Build;
 import com.lonepulse.travisjr.model.Repo;
 
 /**
- * <p>This contract specifies the service offered on the {@link Repo}s which 
- * the user is a member of.
+ * <p>Displays all recent {@link Build}s for the selected {@link Repo} 
+ * in {@link ReposActivity}.
  * 
  * @version 1.1.0
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
-@Pojo(BasicRepoService.class)
-public interface RepoService {
+@Title(R.string.ttl_act_builds)
+@Layout(R.layout.activity_builds)
+public class BuildsActivity extends TravisJrActivity {
 
-	/**
-	 * <p>Retrieves the set of {@link Repo}s which the user is a member of.
-	 * 
-	 * @return all associated {@link Repo}s
-	 * 
-	 * @throws RepoAccessException
-	 * 			if the {@link Repo}(s) cannot be read via the remote endpoint.
-	 * 
-	 * @since 1.1.0
-	 */
-	List<Repo> getReposByMember();
+	
+	
 }

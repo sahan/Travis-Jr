@@ -103,7 +103,7 @@ public class AuthenticationActivity extends IckleActivity {
 		try {
 			
 			updateUsername(accountService.getGitHubUsername());
-			HomeActivity.start(this);
+			ReposActivity.start(this);
 		}
 		catch(MissingCredentialsException mce) {
 			
@@ -131,7 +131,7 @@ public class AuthenticationActivity extends IckleActivity {
 		fadeOut.setFillAfter(true);
 		progress.startAnimation(fadeOut);
 		
-		HomeActivity.start(this);
+		ReposActivity.start(this);
 	}
 	
 	@Async(ASYNC_SET_GITHUB_ACCOUNT)
