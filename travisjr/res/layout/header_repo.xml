@@ -34,7 +34,7 @@
         android:singleLine="true"
         android:text="sahan/RoboZombie"
         android:textColor="@color/txt_blue"
-        android:textSize="@dimen/txt_extra_large"
+        android:textSize="@dimen/txt_xl"
         android:textStyle="bold" />
 
     <TextView
@@ -48,7 +48,7 @@
         android:lines="2"
         android:text="A lightweight HTTP facade which simplifies network communication on Android."
         android:textColor="@color/txt_darker"
-        android:textSize="@dimen/txt_medium"
+        android:textSize="@dimen/txt_m"
         android:textStyle="bold" />
 
 </RelativeLayout>

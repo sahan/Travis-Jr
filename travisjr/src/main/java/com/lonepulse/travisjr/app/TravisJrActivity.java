@@ -35,7 +35,6 @@ import android.widget.TextView;
 
 import com.lonepulse.icklebot.IckleActivity;
 import com.lonepulse.travisjr.R;
-import com.lonepulse.travisjr.service.BasicAccountService;
 import com.lonepulse.travisjr.util.Resources;
 
 /**
@@ -67,6 +66,12 @@ public class TravisJrActivity extends IckleActivity {
 	private View actionViewComplete;
 	
 	/**
+	 * <p>A custom view which is set on the sync action when 
+	 * a data connection is unavailable.
+	 */
+	private View actionViewData;
+	
+	/**
 	 * <p>This animation is invoked on {@link #actionViewSync} 
 	 * when synchronization starts.
 	 */
@@ -94,6 +99,7 @@ public class TravisJrActivity extends IckleActivity {
 		
 		actionViewSync = getLayoutInflater().inflate(R.layout.action_view_sync, null);
 		actionViewComplete = getLayoutInflater().inflate(R.layout.action_view_complete, null);
+		actionViewData = getLayoutInflater().inflate(R.layout.action_view_data, null);
 		
 		rotate = AnimationUtils.loadAnimation(this, R.anim.rotate);
 		actionViewSync.startAnimation(rotate);
@@ -116,8 +122,8 @@ public class TravisJrActivity extends IckleActivity {
 		});
 		
 		View header = getLayoutInflater().inflate(R.layout.action_view_title, null);
-		((TextView)header.findViewById(R.id.title)).setText(R.string.ttl_act_repo);
-		((TextView)header.findViewById(R.id.subtitle)).setText(new BasicAccountService().getGitHubUsername());
+		((TextView)header.findViewById(R.id.title)).setText(onInitTitle());
+		((TextView)header.findViewById(R.id.subtitle)).setText(onInitSubtitle());
 		
 		ActionBar actionBar = getActionBar();
 		
@@ -125,6 +131,32 @@ public class TravisJrActivity extends IckleActivity {
 		actionBar.setDisplayShowTitleEnabled(false);
 		actionBar.setDisplayShowCustomEnabled(true);
 		actionBar.setCustomView(header);
+	}
+	
+	/**
+	 * <p>Override this callback to initialize the activity with 
+	 * a custom title.
+	 *
+	 * @return the title to be set for this activity
+	 * 
+	 * @since 1.1.0
+	 */
+	protected String onInitTitle() {
+		
+		return getString(R.string.app_name);
+	}
+	
+	/**
+	 * <p>Override this callback to initialize the activity with 
+	 * a custom subtitle. 
+	 *
+	 * @return the subtitle to be set for this activity.
+	 * 
+	 * @since 1.1.0
+	 */
+	protected String onInitSubtitle() {
+		
+		return "";
 	}
 	
 	@Override
@@ -160,6 +192,18 @@ public class TravisJrActivity extends IckleActivity {
 				if(network().isConnected()) {
 					
 					onSync();
+				}
+				else {
+					
+					runOnUiThread(new Runnable() {
+						
+						@Override
+						public void run() {
+							
+							menuItemSync.setActionView(actionViewData);
+							actionViewData.startAnimation(fadeOut);
+						}
+					});
 				}
 				
 				break;

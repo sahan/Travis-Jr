@@ -14,17 +14,10 @@
         android:visibility="gone" />
 
     <include
-        android:id="@id/alert_repos"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        layout="@layout/alert_no_repos_found"
-        android:visibility="gone" />
-
-    <include
         android:id="@id/alert_sync"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        layout="@layout/alert_syncing_repos"
+        layout="@layout/alert_syncing_builds"
         android:visibility="gone" />
 
     <ListView

@@ -18,7 +18,7 @@
         android:gravity="center"
         android:text="@string/lbl_no_data_connection"
         android:textColor="@color/txt_dark"
-        android:textSize="@dimen/txt_large"
+        android:textSize="@dimen/txt_l"
         android:textStyle="bold" >
     </TextView>
 
@@ -32,7 +32,7 @@
         android:singleLine="true"
         android:text="@string/lbl_tap_to_configure"
         android:textColor="@color/txt_light"
-        android:textSize="@dimen/txt_medium"
+        android:textSize="@dimen/txt_m"
         android:textStyle="bold" />
 
 </RelativeLayout>

@@ -14,7 +14,7 @@
         android:drawableLeft="@drawable/ic_device_access_storage"
         android:drawablePadding="10dp"
         android:gravity="center"
-        android:text="@string/lbl_syncing_repos"
+        android:text="@string/lbl_syncing_builds"
         android:textColor="@color/txt_dark"
         android:textSize="@dimen/txt_l"
         android:textStyle="bold" >

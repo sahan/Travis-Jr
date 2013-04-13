@@ -31,14 +31,7 @@ import java.io.Serializable;
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
-/**
- * <p>
- * 
- * @version 1.1.0
- * <br><br>
- * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
- */
-public class Build implements Serializable {
+public class Build implements Serializable, Comparable<Build> {
 
 
 	private static final long serialVersionUID = -3466293008201679790L;
@@ -396,5 +389,15 @@ public class Build implements Serializable {
 		builder.append("]");
 		
 		return builder.toString();
+	}
+
+	/**
+	 * <p>Compares {@link Build}s by their build number.
+	 */
+	@Override
+	public int compareTo(Build another) {
+		
+		if(another == null) return -1;
+		return another.getNumber().compareTo(this.getNumber());
 	}
 }

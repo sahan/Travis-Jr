@@ -36,19 +36,18 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.lonepulse.travisjr.R;
-import com.lonepulse.travisjr.model.Repo;
-import com.lonepulse.travisjr.util.DateUtils;
+import com.lonepulse.travisjr.model.Build;
 import com.lonepulse.travisjr.util.TextUtils;
 
 /**
  * <p>An extension of {@link ArrayAdapter} which populates a {@link ListView} 
- * with {@link Repo} entities.
+ * with {@link Build} entities.
  * 
  * @version 1.1.0
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
-public class RepoAdapter extends ArrayAdapter<Repo> {
+public class BuildAdapter extends ArrayAdapter<Build> {
 
 	
 	/**
@@ -57,20 +56,20 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 	private Context context;
 	
 	/**
-	 * <p>The set of {@link Repo} entities to be consumed by this adapter. 
+	 * <p>The set of {@link Build} entities to be consumed by this adapter. 
 	 */
-	private List<Repo> data;
+	private List<Build> data;
 	
 	
 	/**
-	 * <p>Use {@link RepoAdapter#newInstance(Context, List)} instead.
+	 * <p>Use {@link BuildAdapter#newInstance(Context, List)} instead.
 	 */
-	private RepoAdapter(Context context, List<Repo> data) {
+	private BuildAdapter(Context context, List<Build> data) {
 		
 		super(context, 0, data);
 		
 		this.context = context;
-		this.data = data; 
+		this.data = data;
 	}
 
 	/**
@@ -82,16 +81,16 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 		if(convertView == null) {
 			
 			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = inflater.inflate(R.layout.list_item_repo, null);
+			convertView = inflater.inflate(R.layout.list_item_build, null);
 			
 			View root = convertView.findViewById(R.id.root);
 			
-			LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, 110);
+			LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, 95);
 			root.setLayoutParams(params);
 			root.setPadding(0, 2, 5, 2);
 		}
 		
-		Repo repo = data.get(position);
+		Build repo = data.get(position);
 		
 		processTheme(position, convertView);
 		processStatus(position, repo, convertView);
@@ -129,26 +128,25 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 	}
 	
 	/**
-	 * <p>Processed the indicator on the repo list item to 
+	 * <p>Processed the indicator on the build list item to 
 	 * specify the build status.
 	 * 
 	 * @param position
 	 * 			the index of the list item
 	 * 
-	 * @param repo
-	 * 			the {@link Repo} whose build status is to be indicated
+	 * @param build
+	 * 			the {@link Build} whose status is to be indicated
 	 * 
 	 * @param convertView
 	 * 			the root view to be processed
 	 * 
 	 * @return the processed root view
 	 */
-	private View processStatus(int position, Repo repo, View convertView) {
+	private View processStatus(int position, Build build, View convertView) {
 	
-		Short buildStatus = repo.getLast_build_status();
+		Short buildStatus = build.getResult();
 		
-		boolean finished = (buildStatus != null)? true 
-							:repo.getBuilds().get(0).getState().equals("finished")? true :false;
+		boolean finished = (buildStatus != null)? true :build.getState().equals("finished")? true :false;
 		
 		ImageView status = ((ImageView)convertView.findViewById(R.id.status));
 		
@@ -168,52 +166,51 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 	}
 	
 	/**
-	 * <p>Processed the indicator on the repo list item to 
-	 * specify the build status.
+	 * <p>Plugs data into the information placeholders on the build list item. 
 	 * 
-	 * @param repo
-	 * 			the {@link Repo} whose information is to be processed
+	 * @param build
+	 * 			the {@link Build} whose information is to be processed
 	 * 
 	 * @param convertView
 	 * 			the root view to be processed
 	 * 
 	 * @return the processed root view
 	 */
-	private View processInfo(Repo repo, View convertView) {
+	private View processInfo(Build build, View convertView) {
 
-		((TextView)convertView.findViewById(R.id.repo_name))
-		.setText(repo.getSlug());
-		
 		((TextView)convertView.findViewById(R.id.build_number))
-		.setText(String.valueOf(repo.getLast_build_number()));
-		
-		((TextView)convertView.findViewById(R.id.start_time))
-		.setText(DateUtils.formatForDisplay(TextUtils.isAvailable(repo.getLast_build_started_at())));
+		.setText(String.valueOf(build.getNumber()));
 		
 		((TextView)convertView.findViewById(R.id.duration))
-		.setText(String.valueOf(TextUtils.isAvailable(repo.getLast_build_duration())));
+		.setText(String.valueOf(TextUtils.isAvailable(build.getDuration())));
+		
+		((TextView)convertView.findViewById(R.id.branch))
+		.setText(String.valueOf(TextUtils.isAvailable(build.getBranch())));
+		
+		((TextView)convertView.findViewById(R.id.event))
+		.setText(String.valueOf(TextUtils.isAvailable(build.getEvent_type())));
 		
 		return convertView;
 	}
 	
 	/**
-	 * <p>Creates a new instance of {@link RepoAdapter} with the base {@link Context} 
-	 * and the set of {@link Data} which it is to consume. It sorts the {@link Repo}s 
+	 * <p>Creates a new instance of {@link BuildAdapter} with the base {@link Context} 
+	 * and the set of {@link Data} which it is to consume. It sorts the {@link Build}s 
 	 * by the last-build start date. 
 	 *
 	 * @param context
 	 * 			the {@link Context} in which the adapter was instantiated
 	 * 
 	 * @param data
-	 * 			the set of {@link Repo} entities to be consumed by this adapter
+	 * 			the set of {@link Build} entities to be consumed by this adapter
 	 * 
-	 * @return a new instance of {@link ArrayAdapter} of type {@link Repo}
+	 * @return a new instance of {@link ArrayAdapter} of type {@link Build}
 	 * 
 	 * @since 1.1.0
 	 */
-	public static ArrayAdapter<Repo> newInstance(Context context, List<Repo> data) {
+	public static ArrayAdapter<Build> newInstance(Context context, List<Build> data) {
 		
 		Collections.sort(data);
-		return new RepoAdapter(context, data);
+		return new BuildAdapter(context, data);
 	}
 }

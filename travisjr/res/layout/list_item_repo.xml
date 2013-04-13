@@ -37,7 +37,7 @@
             android:singleLine="true"
             android:text="@string/not_available"
             android:textColor="@color/txt_blue"
-            android:textSize="@dimen/txt_extra_large"
+            android:textSize="@dimen/txt_xl"
             android:textStyle="bold" />
 
         <TextView
@@ -47,7 +47,7 @@
             android:layout_marginTop="3dp"
             android:text="@string/not_available"
             android:textColor="@color/txt_darker"
-            android:textSize="@dimen/txt_medium" />
+            android:textSize="@dimen/txt_m" />
     </LinearLayout>
 
     <TextView
@@ -60,7 +60,7 @@
         android:singleLine="true"
         android:text="@string/not_available"
         android:textColor="@color/txt_blue"
-        android:textSize="@dimen/txt_extra_large"
+        android:textSize="@dimen/txt_xl"
         android:textStyle="bold" />
 
     <TextView
@@ -74,7 +74,7 @@
         android:singleLine="true"
         android:text="@string/not_available"
         android:textColor="@color/txt_darker"
-        android:textSize="@dimen/txt_medium" />
+        android:textSize="@dimen/txt_m" />
 
     <TextView
         android:id="@id/sec"
@@ -85,9 +85,10 @@
         android:singleLine="true"
         android:text="@string/lbl_seconds"
         android:textColor="@color/txt_darker"
-        android:textSize="@dimen/txt_medium" />
+        android:textSize="@dimen/txt_m" />
 
     <ImageView
+        android:id="@id/time"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_alignBottom="@id/duration"
