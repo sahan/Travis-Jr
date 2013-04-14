@@ -27,6 +27,7 @@
         android:background="@color/bg_generic"
         android:dividerHeight="1dp"
         android:drawSelectorOnTop="false"
-        android:fastScrollEnabled="true" />
+        android:fastScrollEnabled="true" 
+        android:headerDividersEnabled="false" />
 
 </LinearLayout>

@@ -25,17 +25,16 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.lonepulse.icklebot.annotation.event.Click;
+import com.lonepulse.icklebot.annotation.event.ItemClick;
 import com.lonepulse.icklebot.annotation.inject.InjectPojo;
 import com.lonepulse.icklebot.annotation.inject.InjectView;
 import com.lonepulse.icklebot.annotation.inject.Layout;
 import com.lonepulse.icklebot.annotation.inject.Stateful;
+import com.lonepulse.icklebot.annotation.inject.Title;
 import com.lonepulse.icklebot.annotation.thread.Async;
 import com.lonepulse.icklebot.annotation.thread.UI;
 import com.lonepulse.travisjr.adapter.RepoAdapter;
@@ -55,8 +54,9 @@ import com.lonepulse.travisjr.service.RepoService;
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
+@Title(R.string.ttl_act_repos)
 @Layout(R.layout.activity_repos)
-public class ReposActivity extends TravisJrActivity implements OnItemClickListener {
+public class ReposActivity extends TravisJrActivity {
 
 	
 	private static final int ASYNC_FETCH_REPOS = 0;
@@ -83,25 +83,6 @@ public class ReposActivity extends TravisJrActivity implements OnItemClickListen
 	@Stateful
 	private List<Repo> repos;
 	
-	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		
-		super.onCreate(savedInstanceState);
-		listView.setOnItemClickListener(this);
-	}
-	
-	@Override
-	protected String onInitTitle() {
-	
-		return getString(R.string.ttl_act_repos);
-	}
-	
-	@Override
-	protected String onInitSubtitle() {
-		
-		return accountService.getGitHubUsername();
-	}
 	
 	@Override
 	protected void onResume() {
@@ -204,12 +185,8 @@ public class ReposActivity extends TravisJrActivity implements OnItemClickListen
 		context.startActivity(new Intent(context, ReposActivity.class));
 	}
 
-	/**
-	 * <p>This {@link OnItemClickListener} is set on the {@link Repo} list 
-	 * to navigate to the {@link BuildsActivity}.
-	 */
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+	@ItemClick(android.R.id.list)
+	private void navigateToBuilds(int position) {
 		
 		BuildsActivity.start(this, repos.get(position));
 	}

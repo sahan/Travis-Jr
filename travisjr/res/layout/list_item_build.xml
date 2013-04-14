@@ -8,9 +8,9 @@
     android:baselineAligned="false"
     android:gravity="center"
     android:orientation="horizontal"
-    android:weightSum="1" 
+    android:paddingBottom="2dp"
     android:paddingTop="2dp"
-    android:paddingBottom="2dp">
+    android:weightSum="1" >
 
     <RelativeLayout
         android:id="@+id/panel_indicator"
@@ -19,12 +19,12 @@
 
         <ImageView
             android:id="@id/status"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
+            android:layout_width="78dp"
+            android:layout_height="78dp"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="-29dp"
+            android:layout_marginLeft="-20dp"
             android:scaleType="centerCrop"
             android:src="@drawable/gear_passed"
             tools:ignore="ContentDescription" />
@@ -35,7 +35,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="38dp"
+            android:layout_marginLeft="35dp"
             android:layout_marginTop="5dp"
             android:gravity="center_vertical"
             android:singleLine="true"
@@ -59,7 +59,7 @@
             android:id="@id/duration"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="15dp"
+            android:layout_marginRight="5dp"
             android:layout_weight="1"
             android:drawableLeft="@drawable/ic_device_access_time"
             android:gravity="center_vertical|left"

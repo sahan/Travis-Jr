@@ -3,18 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@id/root"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
+    android:layout_height="80dp"
     android:layout_gravity="top"
-    android:background="@color/bg_list_item_generic">
+    android:background="@color/bg_list_item_generic"
+    android:paddingBottom="2dp"
+    android:paddingTop="2dp" >
 
     <ImageView
         android:id="@id/status"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
+        android:layout_width="86dp"
+        android:layout_height="86dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="-29dp"
-        android:layout_marginTop="-30dp"
+        android:layout_marginLeft="-25dp"
+        android:layout_marginTop="-23dp"
         android:scaleType="centerCrop"
         android:src="@drawable/gear_passed"
         tools:ignore="ContentDescription" />
@@ -84,8 +86,7 @@
         android:layout_alignRight="@id/build_number"
         android:singleLine="true"
         android:text="@string/lbl_seconds"
-        android:textColor="@color/txt_darker"
-        android:textSize="@dimen/txt_m" />
+        android:textColor="@color/txt_darker" />
 
     <ImageView
         android:id="@id/time"

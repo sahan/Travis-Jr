@@ -2,40 +2,43 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="85dp" >
+    android:layout_height="85dp"
+    android:background="@color/bg_list_header" >
 
     <ImageView
         android:id="@id/octocat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
         android:layout_marginRight="-64dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/octocat_lt"
+        android:src="@drawable/octocat_blue"
         tools:ignore="ContentDescription" />
 
     <View
         android:id="@id/divider"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="7dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/bg_dark" />
+        android:background="@drawable/dv_ver_dark_to_white" />
 
     <TextView
         android:id="@id/repo_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:paddingTop="10dp"
+        android:paddingBottom="5dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:paddingBottom="5dp"
+        android:paddingTop="10dp"
         android:singleLine="true"
-        android:text="sahan/RoboZombie"
-        android:textColor="@color/txt_blue"
+        android:text="@string/not_available"
+        android:textColor="@color/txt_lightest"
         android:textSize="@dimen/txt_xl"
-        android:textStyle="bold" />
+        android:textStyle="bold" 
+        android:shadowColor="@color/bg_darkest" 
+        android:shadowRadius="2.0"/>
 
     <TextView
         android:id="@+id/description"
@@ -43,10 +46,10 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/repo_name"
         android:layout_below="@id/repo_name"
-        android:paddingRight="10dp"
-        android:paddingLeft="10dp"
         android:lines="2"
-        android:text="A lightweight HTTP facade which simplifies network communication on Android."
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="@string/not_available"
         android:textColor="@color/txt_darker"
         android:textSize="@dimen/txt_m"
         android:textStyle="bold" />

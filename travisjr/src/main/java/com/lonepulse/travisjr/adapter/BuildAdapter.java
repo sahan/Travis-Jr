@@ -85,7 +85,7 @@ public class BuildAdapter extends ArrayAdapter<Build> {
 			
 			View root = convertView.findViewById(R.id.root);
 			
-			LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, 95);
+			LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, 85);
 			root.setLayoutParams(params);
 			root.setPadding(0, 2, 5, 2);
 		}
@@ -151,7 +151,7 @@ public class BuildAdapter extends ArrayAdapter<Build> {
 		ImageView status = ((ImageView)convertView.findViewById(R.id.status));
 		
 		if(buildStatus == null && finished) 
-			status.setImageResource(position % 2 == 0? R.drawable.gear_errored_alt :R.drawable.gear_errored);
+			status.setImageResource(position % 2 == 0? R.drawable.gear_errored :R.drawable.gear_errored_alt);
 		
 		else if(buildStatus == null && !finished) 
 			status.setImageResource(position % 2 == 0? R.drawable.gear_started :R.drawable.gear_started_alt);

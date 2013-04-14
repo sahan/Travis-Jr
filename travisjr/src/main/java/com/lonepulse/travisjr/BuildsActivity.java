@@ -25,14 +25,18 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
+import android.widget.AbsListView.LayoutParams;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.lonepulse.icklebot.annotation.event.Click;
 import com.lonepulse.icklebot.annotation.inject.InjectPojo;
 import com.lonepulse.icklebot.annotation.inject.InjectView;
 import com.lonepulse.icklebot.annotation.inject.Layout;
 import com.lonepulse.icklebot.annotation.inject.Stateful;
+import com.lonepulse.icklebot.annotation.inject.Title;
 import com.lonepulse.icklebot.annotation.thread.Async;
 import com.lonepulse.icklebot.annotation.thread.UI;
 import com.lonepulse.travisjr.adapter.BuildAdapter;
@@ -50,6 +54,7 @@ import com.lonepulse.travisjr.util.Resources;
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
+@Title(R.string.ttl_act_builds)
 @Layout(R.layout.activity_builds)
 public class BuildsActivity extends TravisJrActivity {
 
@@ -79,16 +84,24 @@ public class BuildsActivity extends TravisJrActivity {
 	
 	
 	@Override
-	protected String onInitTitle() {
-	
-		return getString(R.string.ttl_act_builds);
-	}
-	
-	@Override
-	protected String onInitSubtitle() {
+	protected void onCreate(Bundle savedInstanceState) {
+		
+		super.onCreate(savedInstanceState);
 		
 		repo = (Repo)getIntent().getSerializableExtra(Resources.key(R.string.key_repo));
-		return repo.getSlug();
+		
+		View headerRepo = getLayoutInflater().inflate(R.layout.header_repo, null);
+		
+		LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, 135);
+		headerRepo.setLayoutParams(params);
+		
+		((TextView)headerRepo.findViewById(R.id.repo_name))
+		.setText(repo.getSlug());
+		
+		((TextView)headerRepo.findViewById(R.id.description))
+		.setText(repo.getDescription());
+		
+		listView.addHeaderView(headerRepo);
 	}
 	
 	@Override

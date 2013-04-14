@@ -16,6 +16,7 @@
 	<color name="bg_dark">#A4A4A4</color>
 	<color name="bg_list_item_generic">#FFFFFF</color>
 	<color name="bg_list_item_alt">#F2F2F2</color>
+	<color name="bg_list_header">#01A9DB</color>
 	<color name="bg_info">#00BFFF</color>
 	<color name="bg_error">#FF0000</color>
 </resources>

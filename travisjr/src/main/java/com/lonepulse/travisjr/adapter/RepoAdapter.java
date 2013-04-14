@@ -153,7 +153,7 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 		ImageView status = ((ImageView)convertView.findViewById(R.id.status));
 		
 		if(buildStatus == null && finished) 
-			status.setImageResource(position % 2 == 0? R.drawable.gear_errored_alt :R.drawable.gear_errored);
+			status.setImageResource(position % 2 == 0? R.drawable.gear_errored :R.drawable.gear_errored_alt);
 		
 		else if(buildStatus == null && !finished) 
 			status.setImageResource(position % 2 == 0? R.drawable.gear_started :R.drawable.gear_started_alt);

@@ -24,6 +24,7 @@ package com.lonepulse.travisjr.app;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,6 +36,7 @@ import android.widget.TextView;
 
 import com.lonepulse.icklebot.IckleActivity;
 import com.lonepulse.travisjr.R;
+import com.lonepulse.travisjr.service.BasicAccountService;
 import com.lonepulse.travisjr.util.Resources;
 
 /**
@@ -121,42 +123,59 @@ public class TravisJrActivity extends IckleActivity {
 			}
 		});
 		
-		View header = getLayoutInflater().inflate(R.layout.action_view_title, null);
-		((TextView)header.findViewById(R.id.title)).setText(onInitTitle());
-		((TextView)header.findViewById(R.id.subtitle)).setText(onInitSubtitle());
+		onInitActionBar(getActionBar());
+	}
+	
+	/**
+	 * <p>Override this callback to initialize the {@link ActionBar} associated 
+	 * with this {@link Activity}.
+	 *
+	 * @param actionBar
+	 * 			the {@link ActionBar} intance to be initialized
+	 * 
+	 * @since 1.1.0
+	 */
+	protected void onInitActionBar(ActionBar actionBar) {
 		
-		ActionBar actionBar = getActionBar();
+		if(actionBar != null) {
 		
-		actionBar.setIcon(R.drawable.ic_action_bar);
-		actionBar.setDisplayShowTitleEnabled(false);
-		actionBar.setDisplayShowCustomEnabled(true);
-		actionBar.setCustomView(header);
+			View header = getLayoutInflater().inflate(R.layout.action_view_title, null);
+			((TextView)header.findViewById(R.id.title)).setText(onInitTitle());
+			((TextView)header.findViewById(R.id.subtitle)).setText(onInitSubtitle());
+	
+			actionBar.setIcon(R.drawable.ic_action_bar);
+			actionBar.setDisplayShowTitleEnabled(false);
+			actionBar.setDisplayShowCustomEnabled(true);
+			actionBar.setCustomView(header);
+		}
 	}
 	
 	/**
 	 * <p>Override this callback to initialize the activity with 
 	 * a custom title.
 	 *
-	 * @return the title to be set for this activity
+	 * @return the title to be set for this activity; defaults to 
+	 * 		   {@link Activity#getTitle()}
 	 * 
 	 * @since 1.1.0
 	 */
 	protected String onInitTitle() {
 		
-		return getString(R.string.app_name);
+		return getTitle().toString();
 	}
 	
 	/**
 	 * <p>Override this callback to initialize the activity with 
 	 * a custom subtitle. 
 	 *
-	 * @return the subtitle to be set for this activity.
+	 * @return the subtitle to be set for this activity; defaults 
+	 * 		   to the user's GitHub username
 	 * 
 	 * @since 1.1.0
 	 */
 	protected String onInitSubtitle() {
 		
-		return "";
+		return new BasicAccountService().getGitHubUsername();
 	}
 	
 	@Override

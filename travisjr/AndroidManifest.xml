@@ -32,10 +32,10 @@
         </activity>
         <activity
             android:name=".ReposActivity"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar"/>
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" />
         <activity
             android:name=".BuildsActivity"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar"/>
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" />
     </application>
 
 </manifest>
