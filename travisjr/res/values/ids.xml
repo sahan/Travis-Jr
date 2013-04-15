@@ -27,5 +27,6 @@
 	<item type="id" name="alert_sync">alert_repos</item>
 	    
 	<item type="id" name="menu_sync">sync</item>    
+	<item type="id" name="menu_credentials">credentials</item>    
 	<item type="id" name="menu_settings">settings</item>    
 </resources>

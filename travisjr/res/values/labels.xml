@@ -1,9 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Travis Jr.</string>
-    
-    <string name="not_available">N/A</string>
-    
+    <string name="lbl_yes_cc">Yes</string>
+    <string name="lbl_no_cc">No</string>
+    <string name="lbl_yes_uc">YES</string>
+    <string name="lbl_no_uc">NO</string>
     <string name="lbl_sign_in">Sign in with GitHub.</string>
     <string name="lbl_seconds">&#160;sec</string>
     <string name="lbl_no_data_connection">No Data Connection</string>
@@ -12,12 +13,5 @@
     <string name="lbl_tap_to_retry">(Tap To Retry)</string>
     <string name="lbl_syncing_repos">Fetching Repositories</string>
     <string name="lbl_syncing_builds">Fetching Builds</string>
-    
-    <string name="ttl_act_authentication">Authenticate via GitHub.</string>
-    <string name="ttl_act_repos">Repositories</string>
-    <string name="ttl_act_builds">Recent Builds</string>
-    
-    <string name="ttl_menu_sync">Sync</string>
-    <string name="ttl_menu_settings">Settings</string>
-    
+
 </resources>

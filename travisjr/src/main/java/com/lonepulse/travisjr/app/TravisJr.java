@@ -21,7 +21,19 @@ package com.lonepulse.travisjr.app;
  */
 
 
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.ReentrantLock;
+
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
+
+import com.lonepulse.travisjr.AuthenticationActivity;
+import com.lonepulse.travisjr.R;
+import com.lonepulse.travisjr.service.AccountService;
+import com.lonepulse.travisjr.service.BasicAccountService;
 
 
 /**
@@ -44,16 +56,132 @@ public interface TravisJr {
 		 */
 		public static volatile Context CONTEXT;
 		
+		/**
+		 * <p>An instance of {@link AccountService} which offers 
+		 * services on the user account.
+		 */
+		private AccountService accountService;
 		
 		/**
-		 * {@inheritDoc}
+		 * <p>An {@link Application} level {@link ReentrantLock} to manage 
+		 * global race conditions.
 		 */
+		private final ReentrantLock lock = new ReentrantLock();
+		
+		/**
+		 * <p>A flag which determines if a synchronization is already 
+		 * taking place.
+		 */
+		private AtomicBoolean syncing = new AtomicBoolean(false);
+		
+		
 		@Override
 		public void onCreate() {
 		
 			super.onCreate();
 			
 			Application.CONTEXT = getApplicationContext();
+			accountService = new BasicAccountService();
+		}
+		
+		@Override
+		public synchronized boolean isSyncing() {
+			
+			return syncing.get();
+		}
+		
+		@Override
+		public synchronized void setSyncing(boolean isSyncing) {
+
+			syncing.set(isSyncing);
+		}
+		
+		@Override
+		public void purgeAccount(final Context context) {
+			
+			if(lock.tryLock()) {
+			
+				StringBuilder builder = new StringBuilder()
+				.append(getAccountService().getGitHubUsername())
+				.append(", ")
+				.append(getString(R.string.conf_clear_account));
+				
+				new AlertDialog.Builder(context)
+				.setTitle(getString(R.string.ttl_dialog_account))
+				.setMessage(builder.toString())
+				.setPositiveButton(getString(R.string.lbl_yes_uc), new OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						
+						accountService.setGitHubUsername("");
+						AuthenticationActivity.start(context);
+						
+						if(context instanceof Activity) {
+							
+							((Activity)context).finish();
+						}
+						
+						lock.unlock();
+					}
+				})
+				.setNegativeButton(getString(R.string.lbl_no_uc), new OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						
+						lock.unlock();
+					}
+				})
+				.show();
+			}
+		}
+
+		@Override
+		public AccountService getAccountService() {
+			
+			return accountService;
 		}
 	}
+	
+	
+	/**
+	 * <p>Sets the sync state.
+	 * 
+	 * @param syncing
+	 * 			the state to be set for syncing
+	 * 
+	 * @since 1.1.0
+	 */
+	void setSyncing(boolean syncing);
+	
+	/**
+	 * <p>Specifies whether a sync operation is currently underway. 
+	 *
+	 * @return {@code true} if there is an ongoing sync
+	 * 
+	 * @since 1.1.0
+	 */
+	boolean isSyncing();
+	
+	/**
+	 * <p>Clears all saved credentials and account details; navigates 
+	 * to the {@link AuthenticationActivity}.
+	 * 
+	 * @param context
+	 * 			the {@link Context} from which the user's 
+	 * 			account is purged
+	 *
+	 * @since 1.1.0
+	 */
+	void purgeAccount(Context context);
+	
+	/**
+	 * <p>Retrieves an implementation of {@link AccountService}. 
+	 * 
+	 * @return an instance of {@link AccountService}
+	 *
+	 * @since 1.1.0
+	 */
+	AccountService getAccountService();
 }

@@ -40,7 +40,6 @@ import com.lonepulse.icklebot.annotation.thread.UI;
 import com.lonepulse.travisjr.adapter.RepoAdapter;
 import com.lonepulse.travisjr.app.TravisJrActivity;
 import com.lonepulse.travisjr.model.Repo;
-import com.lonepulse.travisjr.service.AccountService;
 import com.lonepulse.travisjr.service.RepoService;
 
 /**
@@ -76,9 +75,6 @@ public class ReposActivity extends TravisJrActivity {
 	
 	@InjectPojo
 	private RepoService repoService;
-	
-	@InjectPojo
-	private AccountService accountService;
 	
 	@Stateful
 	private List<Repo> repos;
@@ -165,10 +161,14 @@ public class ReposActivity extends TravisJrActivity {
 	
 	@Click(R.id.alert_repos)
 	private void retryFetchRepos() {
+		
+		getTravisJrApplication().purgeAccount(this);
+	}
 	
-		accountService.setGitHubUsername("");
-		AuthenticationActivity.start(this);
-		finish();
+	@ItemClick(android.R.id.list)
+	private void navigateToBuilds(int position) {
+		
+		BuildsActivity.start(this, repos.get(position));
 	}
 	
 	/**
@@ -183,11 +183,5 @@ public class ReposActivity extends TravisJrActivity {
 	public static final void start(Context context) {
 		
 		context.startActivity(new Intent(context, ReposActivity.class));
-	}
-
-	@ItemClick(android.R.id.list)
-	private void navigateToBuilds(int position) {
-		
-		BuildsActivity.start(this, repos.get(position));
 	}
 }

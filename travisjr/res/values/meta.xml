@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Travis Jr.</string>
+    <string name="version">Build 0.1.2</string>
+    <string name="license_apache_v2">Apache License, Version 2.0</string>
+    <string name="author">github.com/sahan</string>
+    <string name="author_url">https://github.com/sahan</string>
+    <string name="not_available">N/A</string>
+    <string name="conf_clear_account">are you sure you want to purge your account?</string>
+    <string name="sum_pref_sign_out">Clear all credentials, delete any saved data and sign out from your account.</string>
+    <string name="sum_pref_oss_licenses">Licenses for all open source libraries which are used.</string>
+
+</resources>

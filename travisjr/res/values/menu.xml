@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="menu_sync">Sync</string>
+    <string name="menu_credentials">Credentials</string>
+    <string name="menu_settings">Settings</string>
+
+</resources>

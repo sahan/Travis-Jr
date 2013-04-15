@@ -21,8 +21,6 @@ package com.lonepulse.travisjr.app;
  */
 
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
@@ -36,8 +34,7 @@ import android.widget.TextView;
 
 import com.lonepulse.icklebot.IckleActivity;
 import com.lonepulse.travisjr.R;
-import com.lonepulse.travisjr.service.BasicAccountService;
-import com.lonepulse.travisjr.util.Resources;
+import com.lonepulse.travisjr.pref.SettingsActivity;
 
 /**
  * <p>A custom {@link IckleActivity} which is tailored to setup the 
@@ -85,12 +82,6 @@ public class TravisJrActivity extends IckleActivity {
 	 */
 	private Animation fadeOut;
 	
-	/**
-	 * <p>A flag which determines if a synchronization is already 
-	 * taking place.
-	 */
-	private AtomicBoolean syncing = new AtomicBoolean(false);
-	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +110,7 @@ public class TravisJrActivity extends IckleActivity {
 			public void onAnimationEnd(Animation animation) {
 			
 				menuItemSync.setActionView(null);
-				syncing.set(false);
+				getTravisJrApplication().setSyncing(false);	
 			}
 		});
 		
@@ -175,21 +166,7 @@ public class TravisJrActivity extends IckleActivity {
 	 */
 	protected String onInitSubtitle() {
 		
-		return new BasicAccountService().getGitHubUsername();
-	}
-	
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-	
-		super.onSaveInstanceState(outState);
-		outState.putSerializable(Resources.key(R.string.key_syncing), syncing);
-	}
-	
-	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		
-		super.onRestoreInstanceState(savedInstanceState);
-		syncing = (AtomicBoolean) savedInstanceState.getSerializable(Resources.key(R.string.key_syncing));
+		return getTravisJrApplication().getAccountService().getGitHubUsername();
 	}
 	
 	@Override
@@ -227,6 +204,12 @@ public class TravisJrActivity extends IckleActivity {
 				
 				break;
 			}
+			
+			case R.id.menu_settings: {
+				
+				SettingsActivity.start(this);
+				break;
+			}
 		}
 		
 		return true;
@@ -249,7 +232,7 @@ public class TravisJrActivity extends IckleActivity {
 		
 		if(!isSyncing() && menuItemSync != null) {
 			
-			syncing.set(true);
+			getTravisJrApplication().setSyncing(true);
 			
 			runOnUiThread(new Runnable() {
 				
@@ -293,8 +276,20 @@ public class TravisJrActivity extends IckleActivity {
 	 * 
 	 * @since 1.1.0
 	 */
-	protected synchronized boolean isSyncing() {
+	protected final boolean isSyncing() {
 		
-		return syncing.get();
+		return getTravisJrApplication().isSyncing();
+	}
+	
+	/**
+	 * <p>Returns the instance of {@link TravisJr} contract implementation.
+	 *
+	 * @return the single instance of {@link TravisJr}
+	 * 
+	 * @since 1.1.0
+	 */
+	protected final TravisJr getTravisJrApplication() {
+		
+		return ((TravisJr)getApplication());
 	}
 }

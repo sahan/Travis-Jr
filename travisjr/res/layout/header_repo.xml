@@ -32,13 +32,13 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="10dp"
+        android:shadowColor="@color/bg_darkest"
+        android:shadowRadius="2.0"
         android:singleLine="true"
         android:text="@string/not_available"
         android:textColor="@color/txt_lightest"
         android:textSize="@dimen/txt_xl"
-        android:textStyle="bold" 
-        android:shadowColor="@color/bg_darkest" 
-        android:shadowRadius="2.0"/>
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/description"
