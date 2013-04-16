@@ -40,19 +40,25 @@ public class RepoAccessException extends TravisJrRuntimeException {
 	
 	/**
 	 * <p>See {@link TravisJrRuntimeException#TravisJrRuntimeException()}.
+	 * 
+	 * @since 1.1.0
 	 */
 	public RepoAccessException() {}
 
 	/**
 	 * <p>Prints a detailed message with the GitHub username of the user 
 	 * whose {@link Repo} were inaccessible.
+	 * 
+	 * @since 1.1.0
 	 */
 	public RepoAccessException(String gitHubUsername) {
-		super("Failed to access repo(s). for user " + gitHubUsername + ". ");
+		super("Failed to access repo(s) for user " + gitHubUsername + ". ");
 	}
 
 	/**
 	 * <p>See {@link TravisJrRuntimeException#TravisJrRuntimeException(Throwable)}.
+	 * 
+	 * @since 1.1.0
 	 */
 	public RepoAccessException(Throwable throwable) {
 		super(throwable);
@@ -61,8 +67,10 @@ public class RepoAccessException extends TravisJrRuntimeException {
 	/**
 	 * <p>Prints a detailed message with the GitHub username of the user 
 	 * whose {@link Repo} were inaccessible and provides the root-cause.
+	 * 
+	 * @since 1.1.0
 	 */
 	public RepoAccessException(String gitHubUsername, Throwable throwable) {
-		super("Failed to access repo(s). for user " + gitHubUsername + ". ", throwable);
+		super("Failed to access repo(s) for user " + gitHubUsername + ". ", throwable);
 	}
 }

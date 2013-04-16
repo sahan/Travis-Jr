@@ -1,32 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<item type="id" name="root">root</item>    
-	<item type="id" name="divider">divider</item>    
-	<item type="id" name="icon">icon</item>    
-	<item type="id" name="octocat">octocat</item>
-	<item type="id" name="message">message</item>    
-	<item type="id" name="action">action</item>
-	<item type="id" name="header">header</item>
-	<item type="id" name="title">title</item>
-	<item type="id" name="subtitle">subtitle</item>
-	<item type="id" name="status">status</item>
-	<item type="id" name="time">time</item>
-	<item type="id" name="git">git</item>
-	<item type="id" name="repo_name">repo_name</item>
-	<item type="id" name="build_number">build_number</item>
-	<item type="id" name="duration">duration</item>
-	<item type="id" name="description">description</item>
-	<item type="id" name="start_time">start_time</item>
-	<item type="id" name="end_time">end_time</item>
-	<item type="id" name="to">to</item>
-	<item type="id" name="event">event</item>
-	<item type="id" name="branch">branch</item>
-	    
-	<item type="id" name="alert_data">alert_data</item>    
-	<item type="id" name="alert_repos">alert_repos</item>    
-	<item type="id" name="alert_sync">alert_repos</item>
-	    
-	<item type="id" name="menu_sync">sync</item>    
-	<item type="id" name="menu_credentials">credentials</item>    
-	<item type="id" name="menu_settings">settings</item>    
+
+    <item name="root" type="id">root</item>
+    <item name="divider" type="id">divider</item>
+    <item name="icon" type="id">icon</item>
+    <item name="octocat" type="id">octocat</item>
+    <item name="message" type="id">message</item>
+    <item name="action" type="id">action</item>
+    <item name="header" type="id">header</item>
+    <item name="title" type="id">title</item>
+    <item name="subtitle" type="id">subtitle</item>
+    <item name="status" type="id">status</item>
+    <item name="time" type="id">time</item>
+    <item name="git" type="id">git</item>
+    <item name="repo_name" type="id">repo_name</item>
+    <item name="build_number" type="id">build_number</item>
+    <item name="duration" type="id">duration</item>
+    <item name="description" type="id">description</item>
+    <item name="start_date" type="id">start_date</item>
+    <item name="start_time" type="id">start_time</item>
+    <item name="end_date" type="id">end_date</item>
+    <item name="end_time" type="id">end_time</item>
+    <item name="to" type="id">to</item>
+    <item name="event" type="id">event</item>
+    <item name="branch" type="id">branch</item>
+    <item name="alert_data" type="id">alert_data</item>
+    <item name="alert_repos_empty" type="id">alert_repos_empty</item>
+    <item name="alert_repos_error" type="id">alert_repos_error</item>
+    <item name="alert_sync" type="id">alert_repos</item>
+    <item name="menu_sync" type="id">sync</item>
+    <item name="menu_credentials" type="id">credentials</item>
+    <item name="menu_settings" type="id">settings</item>
+    <item name="temporal" type="id">temporal</item>
+    <item name="sec" type="id">sec</item>
+
 </resources>

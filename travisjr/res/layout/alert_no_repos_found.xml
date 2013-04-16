@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:background="@color/bg_generic"
+    android:background="@color/bg_lightest"
     android:gravity="center"
     android:orientation="horizontal"
     android:padding="10dp" >
@@ -16,7 +16,7 @@
         android:drawableLeft="@drawable/ic_alerts_and_states_warning"
         android:drawablePadding="10dp"
         android:gravity="center"
-        android:text="@string/lbl_no_repos_found"
+        android:text="@string/err_no_repos_found"
         android:textColor="@color/txt_dark"
         android:textSize="@dimen/txt_l"
         android:textStyle="bold" >

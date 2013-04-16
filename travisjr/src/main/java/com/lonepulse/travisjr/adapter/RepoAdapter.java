@@ -67,7 +67,7 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 	 */
 	private RepoAdapter(Context context, List<Repo> data) {
 		
-		super(context, 0, data);
+		super(context, R.layout.list_item_repo, data);
 		
 		this.context = context;
 		this.data = data; 
@@ -88,7 +88,7 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 			
 			LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, 110);
 			root.setLayoutParams(params);
-			root.setPadding(0, 2, 5, 2);
+			root.setPadding(0, 0, 5, 0);
 		}
 		
 		Repo repo = data.get(position);
@@ -188,10 +188,23 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 		.setText(String.valueOf(repo.getLast_build_number()));
 		
 		((TextView)convertView.findViewById(R.id.start_time))
-		.setText(DateUtils.formatForDisplay(TextUtils.isAvailable(repo.getLast_build_started_at())));
+		.setText(TextUtils.isAvailable(DateUtils.formatTimeForDisplay(repo.getLast_build_started_at())));
+		
+		((TextView)convertView.findViewById(R.id.start_date))
+		.setText(TextUtils.isAvailable(DateUtils.formatDateForDisplay(repo.getLast_build_started_at())));
 		
 		((TextView)convertView.findViewById(R.id.duration))
 		.setText(String.valueOf(TextUtils.isAvailable(repo.getLast_build_duration())));
+		
+		TextView endTime = (TextView)convertView.findViewById(R.id.end_time);
+		
+		if(endTime != null)
+			endTime.setText(TextUtils.isAvailable(DateUtils.formatTimeForDisplay(repo.getLast_build_finished_at())));
+		
+		TextView endDate = (TextView)convertView.findViewById(R.id.end_date);
+		
+		if(endDate != null)
+			endDate.setText(TextUtils.isAvailable(DateUtils.formatDateForDisplay(repo.getLast_build_finished_at())));
 		
 		return convertView;
 	}

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_generic"
+    android:background="@color/bg_lightest"
     android:orientation="vertical">
 
     <include
@@ -24,7 +24,7 @@
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/bg_generic"
+        android:background="@color/bg_lightest"
         android:dividerHeight="1dp"
         android:drawSelectorOnTop="false"
         android:fastScrollEnabled="true" 

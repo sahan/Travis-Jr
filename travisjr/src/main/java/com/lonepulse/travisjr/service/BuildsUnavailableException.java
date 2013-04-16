@@ -42,14 +42,24 @@ public class BuildsUnavailableException extends TravisJrRuntimeException {
 	/**
 	 * <p>Prints a detailed message which specifies the ID of the {@link Repo} 
 	 * whose builds were unavailable.
+	 * 
+	 * @param repoId
+	 * 			the ID of the {@link Repo} whose builds cannot be retrieved
+	 * 
+	 * @param rootCause
+	 * 			the root cause of this exception
+	 * 
+	 * @since 1.1.0
 	 */
-	public BuildsUnavailableException(long repoId) {
+	public BuildsUnavailableException(long repoId, Throwable rootCause) {
 		
 		this("No buids were available for repo with ID " + repoId + ". ");
 	}
 
 	/**
 	 * <p>See {@link TravisJrRuntimeException#TravisJrRuntimeException(String)}.
+	 * 
+	 * @since 1.1.0
 	 */
 	public BuildsUnavailableException(String detailMessage) {
 		super(detailMessage);
@@ -57,6 +67,8 @@ public class BuildsUnavailableException extends TravisJrRuntimeException {
 
 	/**
 	 * <p>See {@link TravisJrRuntimeException#TravisJrRuntimeException(Throwable)}.
+	 * 
+	 * @since 1.1.0
 	 */
 	public BuildsUnavailableException(Throwable throwable) {
 		super(throwable);
@@ -64,6 +76,8 @@ public class BuildsUnavailableException extends TravisJrRuntimeException {
 
 	/**
 	 * <p>See {@link TravisJrRuntimeException#TravisJrRuntimeException(String, Throwable)}.
+	 * 
+	 * @since 1.1.0
 	 */
 	public BuildsUnavailableException(String detailMessage, Throwable throwable) {
 		super(detailMessage, throwable);

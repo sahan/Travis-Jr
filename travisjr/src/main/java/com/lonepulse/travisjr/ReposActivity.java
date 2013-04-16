@@ -25,7 +25,9 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.lonepulse.icklebot.annotation.event.Click;
@@ -40,6 +42,7 @@ import com.lonepulse.icklebot.annotation.thread.UI;
 import com.lonepulse.travisjr.adapter.RepoAdapter;
 import com.lonepulse.travisjr.app.TravisJrActivity;
 import com.lonepulse.travisjr.model.Repo;
+import com.lonepulse.travisjr.service.RepoAccessException;
 import com.lonepulse.travisjr.service.RepoService;
 
 /**
@@ -60,6 +63,7 @@ public class ReposActivity extends TravisJrActivity {
 	
 	private static final int ASYNC_FETCH_REPOS = 0;
 	private static final int UI_UPDATE_REPOS = 0;
+	private static final int UI_ALERT_ERROR = 1;
 
 	@InjectView(android.R.id.list)
 	private ListView listView;
@@ -70,8 +74,11 @@ public class ReposActivity extends TravisJrActivity {
 	@InjectView(R.id.alert_data)
 	private View alertData;
 	
-	@InjectView(R.id.alert_repos)
-	private View alertRepos;
+	@InjectView(R.id.alert_repos_empty)
+	private View alertReposEmpty;
+	
+	@InjectView(R.id.alert_repos_error)
+	private View alertReposError;
 	
 	@InjectPojo
 	private RepoService repoService;
@@ -87,6 +94,9 @@ public class ReposActivity extends TravisJrActivity {
 		refresh();
 	}
 	
+	/**
+	 * <p>Synchronizes all repositories by fetching their latest updates.
+	 */
 	@Override
 	protected synchronized void onSync() {
 	
@@ -94,11 +104,10 @@ public class ReposActivity extends TravisJrActivity {
 	}
 	
 	/**
-	 * <p>Updates the activity depending on the availability of data 
-	 * and the existence of a connected data network.
-	 *
-	 * @since 1.1.0
+	 * <p>Updates the activity depending on the availability of data and the 
+	 * existence of a connected data network.
 	 */
+	@Click(R.id.alert_repos_error)
 	private void refresh() {
 		
 		if(isSyncing() && repos != null) {
@@ -109,6 +118,7 @@ public class ReposActivity extends TravisJrActivity {
 		
 		listView.setEmptyView(alertSync);
 		alertData.setVisibility(View.GONE);
+		alertReposError.setVisibility(View.GONE);
 		
 		boolean connected = network().isConnected();
 		
@@ -126,47 +136,106 @@ public class ReposActivity extends TravisJrActivity {
 		}
 	}
 	
+	/**
+	 * <p>Retrieves a list of repositories which the user is a member of and 
+	 * updates the display.
+	 */
 	@Async(ASYNC_FETCH_REPOS)
 	private void fetchRepos() {
 		
 		startSyncAnimation();
 		
-		repos = repoService.getReposByMember();
-		runUITask(UI_UPDATE_REPOS, repos);
+		try {
+			
+			repos = repoService.getReposByMember();
+			runUITask(UI_UPDATE_REPOS, repos);
+		}
+		catch(RepoAccessException rae) {
+		
+			runUITask(UI_ALERT_ERROR);
+			Log.e(getClass().getSimpleName(), rae.getMessage(), rae);
+		}
 	}
 	
+	/**
+	 * <p>Alerts the user of an <b>unrecoverable</b> error which has occurred 
+	 * while retrieving the list of repositories.
+	 */
+	@UI(UI_ALERT_ERROR)
+	private void alertError() {
+		
+		listView.setEmptyView(alertReposError);
+		alertReposError.setVisibility(View.VISIBLE);
+		
+		listView.setAdapter(new ArrayAdapter<Void>(this, 0));
+		stopSyncAnimation();
+	}
+	
+	/**
+	 * <p>Updates the given list of {@link Repo}s on the displayed list.
+	 *
+	 * @param repos
+	 * 			the {@link Repo}s which are to be updated
+	 */
 	@UI(UI_UPDATE_REPOS)
 	private void updateRepos(List<Repo> repos) {
-
+		
 		if(repos.isEmpty()) {
 			
-			listView.setEmptyView(alertRepos);
-			alertRepos.setVisibility(View.VISIBLE);
+			listView.setEmptyView(alertReposEmpty);
+			alertReposEmpty.setVisibility(View.VISIBLE);
 		}
 		else {
 			
 			listView.setEmptyView(alertSync);
-			alertRepos.setVisibility(View.GONE);
+			alertReposEmpty.setVisibility(View.GONE);
 		}
 		
 		listView.setAdapter(RepoAdapter.newInstance(ReposActivity.this, repos));
 		stopSyncAnimation();
 	}
 	
+	/**
+	 * <p>Navigates to the <b>device settings</b> screen to allow the user to 
+	 * switch-on a data connection.  
+	 */
 	@Click(R.id.alert_data)
 	private void enableData() {
 		
 		startActivity(new Intent(android.provider.Settings.ACTION_SETTINGS));
 	}
 	
-	@Click(R.id.alert_repos)
+	/**
+	 * <p>Purges the user account and reverts to the authentication screen so that 
+	 * the user may retry repository retrieval with an alternate GitHub username. 
+	 */
+	@Click(R.id.alert_repos_empty)
 	private void retryFetchRepos() {
 		
 		getTravisJrApplication().purgeAccount(this);
 	}
 	
+	/**
+	 * <p>Handles the item click event for the repository list.
+	 *
+	 * @param parent
+	 * 			the view within the list item which was clicked
+	 * 
+	 * @param position
+	 * 			the position of the list item which was clicked
+	 */
 	@ItemClick(android.R.id.list)
-	private void navigateToBuilds(int position) {
+	private void navigateToBuilds(final View parent, int position) {
+		
+		parent.setAlpha(0.60f);
+		parent.postDelayed(new Runnable() {
+			
+			@Override
+			public void run() {
+
+				parent.setAlpha(1.00f);
+			}
+		}, 100);
 		
 		BuildsActivity.start(this, repos.get(position));
 	}

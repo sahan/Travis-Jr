@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@id/temporal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@id/divider"
+    android:padding="10dp" >
+
+    <RelativeLayout
+        android:id="@+id/panel_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true" >
+
+        <TextView
+            android:id="@+id/start_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="28 MAR, 2013"
+            android:textColor="@color/txt_dark"
+            android:textSize="@dimen/txt_s" />
+
+        <TextView
+            android:id="@+id/start_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/start_date"
+            android:text="08:42:35 PM"
+            android:textColor="@color/txt_blue"
+            android:textSize="@dimen/txt_l"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/panel_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="horizontal"
+        android:weightSum="2" >
+
+        <View
+            android:id="@+id/divider_left"
+            android:layout_width="30dp"
+            android:layout_height="1dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/dv_timeline_left" />
+
+        <TextView
+            android:id="@id/duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:singleLine="true"
+            android:text="@string/not_available"
+            android:textColor="@color/txt_blue"
+            android:textSize="@dimen/txt_l" />
+
+        <TextView
+            android:id="@id/sec"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/lbl_seconds"
+            android:textColor="@color/txt_dark"
+            android:textSize="@dimen/txt_s" />
+
+        <View
+            android:id="@+id/divider_right"
+            android:layout_width="30dp"
+            android:layout_height="1dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/dv_timeline_right" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/panel_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/divider"
+        android:layout_centerVertical="true" >
+
+        <TextView
+            android:id="@+id/end_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:text="28 MAR, 2013"
+            android:textColor="@color/txt_dark"
+            android:textSize="@dimen/txt_s" />
+
+        <TextView
+            android:id="@+id/end_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/end_date"
+            android:text="08:43:10 PM"
+            android:textColor="@color/txt_blue"
+            android:textSize="@dimen/txt_l"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+</RelativeLayout>

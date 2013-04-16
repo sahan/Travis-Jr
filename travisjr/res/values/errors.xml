@@ -1,6 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
+
     <string name="err_null_context">Context cannot be null. Please provide a base-context or the application context.</string>
     <string name="err_querying_github_account">Failed to query GitHub account credentials.</string>
+    <string name="err_no_data_connection">No Data Connection</string>
+    <string name="err_no_repos_found">No Repositories Found</string>
+    <string name="err_fetching_repos">Failed to fetch repositories.</string>
 
 </resources>

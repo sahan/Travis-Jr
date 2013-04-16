@@ -24,7 +24,6 @@ package com.lonepulse.travisjr.app;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -116,11 +115,6 @@ public interface TravisJr {
 						
 						accountService.setGitHubUsername("");
 						AuthenticationActivity.start(context);
-						
-						if(context instanceof Activity) {
-							
-							((Activity)context).finish();
-						}
 						
 						lock.unlock();
 					}

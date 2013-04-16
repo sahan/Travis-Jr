@@ -22,6 +22,7 @@ package com.lonepulse.travisjr.model;
 
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -407,9 +408,16 @@ public class Repo implements Serializable, Comparable<Repo> {
 
 		if(another == null) return -1;
 		
-		Date thisTimestamp = DateUtils.parseFromISO8601(last_build_started_at);
-		Date otherTimestamp = DateUtils.parseFromISO8601(another.last_build_started_at);
-		
-		return otherTimestamp.compareTo(thisTimestamp);
+		try {
+			
+			Date thisTimestamp = DateUtils.parseFromISO8601(last_build_started_at);
+			Date otherTimestamp = DateUtils.parseFromISO8601(another.last_build_started_at);
+			
+			return otherTimestamp.compareTo(thisTimestamp);
+		} 
+		catch (ParseException e) {
+			
+			return -1;
+		}
 	}
 }

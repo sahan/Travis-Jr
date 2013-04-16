@@ -5,4 +5,5 @@
 	<dimen name="txt_l">16sp</dimen>    
 	<dimen name="txt_xl">18sp</dimen>
 	<dimen name="txt_xxl">24sp</dimen>
+	<dimen name="txt_xxxl">28sp</dimen>
 </resources>

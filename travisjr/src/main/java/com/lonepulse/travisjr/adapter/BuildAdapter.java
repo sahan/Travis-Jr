@@ -87,7 +87,7 @@ public class BuildAdapter extends ArrayAdapter<Build> {
 			
 			LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, 85);
 			root.setLayoutParams(params);
-			root.setPadding(0, 2, 5, 2);
+			root.setPadding(0, 0, 5, 0);
 		}
 		
 		Build repo = data.get(position);

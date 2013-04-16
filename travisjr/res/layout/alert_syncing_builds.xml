@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_generic"
+    android:background="@color/bg_lightest"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="20dp" >
@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:background="@color/bg_generic"
+        android:background="@color/bg_lightest"
         android:indeterminateOnly="true" />
 
 </LinearLayout>

@@ -13,10 +13,10 @@
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_centerInParent="true"
-        android:drawableLeft="@drawable/ic_device_access_network_cell"
+        android:drawableLeft="@drawable/ic_alerts_and_states_error"
         android:drawablePadding="10dp"
         android:gravity="center"
-        android:text="@string/err_no_data_connection"
+        android:text="@string/err_fetching_repos"
         android:textColor="@color/txt_dark"
         android:textSize="@dimen/txt_l"
         android:textStyle="bold" >
@@ -30,7 +30,7 @@
         android:layout_centerHorizontal="true"
         android:gravity="center"
         android:singleLine="true"
-        android:text="@string/lbl_tap_to_configure"
+        android:text="@string/lbl_tap_to_retry"
         android:textColor="@color/txt_light"
         android:textSize="@dimen/txt_m"
         android:textStyle="bold" />

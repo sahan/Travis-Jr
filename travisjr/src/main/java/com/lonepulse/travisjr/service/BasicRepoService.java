@@ -87,7 +87,7 @@ public class BasicRepoService implements RepoService {
 		} 
 		catch (Exception e) {
 			
-			throw new RepoAccessException(username);
+			throw new RepoAccessException(username, e);
 		}
 	}
 }

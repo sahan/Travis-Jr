@@ -58,7 +58,7 @@ public class BasicBuildService implements BuildService {
 		}
 		catch(Exception e) {
 			
-			throw new BuildsUnavailableException(repoId);
+			throw new BuildsUnavailableException(repoId, e);
 		}
 	}
 }

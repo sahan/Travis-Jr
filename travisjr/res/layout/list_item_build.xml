@@ -68,8 +68,7 @@
             android:textColor="@color/txt_blue"
             android:textSize="@dimen/txt_xxl"
             android:textStyle="bold"
-            tools:ignore="NestedWeights" >
-        </TextView>
+            tools:ignore="NestedWeights" />
 
         <RelativeLayout
             android:id="@+id/panel_event"

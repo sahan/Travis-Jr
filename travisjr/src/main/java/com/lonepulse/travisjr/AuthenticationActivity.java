@@ -61,7 +61,7 @@ public class AuthenticationActivity extends IckleActivity {
 	private static final int UI_UPDATE_USERNAME = 0;
 
 	
-	@InjectView(R.id.panelAuthentication)
+	@InjectView(R.id.panel_authentication)
 	private ViewGroup panelAuthentication;
 	
 	@InjectView(R.id.octocat)
@@ -166,7 +166,7 @@ public class AuthenticationActivity extends IckleActivity {
 	public static final void start(Context context) {
 		
 		Intent intent = new Intent(context, AuthenticationActivity.class);
-		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
 		
 		context.startActivity(intent);
 		
