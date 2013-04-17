@@ -47,7 +47,7 @@
         android:layout_alignLeft="@id/repo_name"
         android:layout_below="@id/repo_name"
         android:ellipsize="end"
-        android:lines="2"
+        android:maxLines="2"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:text="@string/not_available"

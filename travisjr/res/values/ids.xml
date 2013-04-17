@@ -32,6 +32,8 @@
     <item name="menu_credentials" type="id">credentials</item>
     <item name="menu_settings" type="id">settings</item>
     <item name="temporal" type="id">temporal</item>
+    <item name="panel_temporal" type="id">panel_temporal</item>
+    <item name="panel_event" type="id">panel_event</item>
     <item name="sec" type="id">sec</item>
 
 </resources>

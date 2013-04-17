@@ -21,6 +21,7 @@ package com.lonepulse.travisjr.service;
  */
 
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -88,6 +89,35 @@ public class BasicRepoService implements RepoService {
 		catch (Exception e) {
 			
 			throw new RepoAccessException(username, e);
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<Repo> filterOwnedRepos(List<Repo> repos) {
+		
+		String username = "<n/a>";
+		
+		try {
+		
+			username = accountService.getGitHubUsername();
+			List<Repo> ownedRepos = new ArrayList<Repo>();
+			
+			for (Repo repo : repos) {
+				
+				if(repo.getSlug().startsWith(username)) {
+					
+					ownedRepos.add(repo);
+				}
+			}
+			
+			return ownedRepos;
+		}
+		catch(Exception e) {
+			
+			throw new RepoFilterException(username);
 		}
 	}
 }

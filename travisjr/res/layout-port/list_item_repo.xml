@@ -16,7 +16,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_toLeftOf="@id/start_time"
-        android:orientation="vertical"
         android:paddingRight="5dp" >
 
         <ImageView
@@ -38,7 +37,7 @@
             android:layout_marginLeft="38dp"
             android:layout_marginTop="10dp"
             android:singleLine="true"
-            android:text="sahan/IckleBot"
+            android:text="@string/not_available"
             android:textColor="@color/txt_blue"
             android:textSize="@dimen/txt_xl"
             android:textStyle="bold" />
@@ -50,7 +49,7 @@
             android:layout_alignLeft="@id/repo_name"
             android:layout_below="@id/repo_name"
             android:singleLine="true"
-            android:text="9999"
+            android:text="@string/not_available"
             android:textColor="@color/txt_dark"
             android:textSize="@dimen/txt_xxl"
             android:textStyle="bold" />
@@ -65,7 +64,7 @@
         android:layout_marginBottom="5dp"
         android:layout_marginRight="10dp"
         android:paddingBottom="2dp"
-        android:text="08:42:35 PM"
+        android:text="@string/not_available"
         android:textColor="@color/txt_blue"
         android:textSize="@dimen/txt_m"
         android:textStyle="bold" />
@@ -77,7 +76,7 @@
         android:layout_above="@id/start_time"
         android:layout_alignRight="@id/start_time"
         android:layout_marginTop="5dp"
-        android:text="28 MAR, 2013"
+        android:text="@string/not_available"
         android:textColor="@color/txt_dark"
         android:textSize="@dimen/txt_s" />
 

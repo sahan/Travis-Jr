@@ -23,6 +23,7 @@ package com.lonepulse.travisjr;
 
 import java.util.List;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -88,15 +89,25 @@ public class ReposActivity extends TravisJrActivity {
 	
 	
 	@Override
+	protected void onInitActionBar(ActionBar actionBar) {
+		
+		super.onInitActionBar(actionBar);
+		addTabs(R.string.key_member, R.string.key_owner);
+	}
+	
+	@Override
+	protected void onTabSelected(int stringResourceId) {
+	
+		if(repos != null) filterRepos(repos);
+	}
+	
+	@Override
 	protected void onResume() {
 		
 		super.onResume();
 		refresh();
 	}
 	
-	/**
-	 * <p>Synchronizes all repositories by fetching their latest updates.
-	 */
 	@Override
 	protected synchronized void onSync() {
 	
@@ -112,7 +123,7 @@ public class ReposActivity extends TravisJrActivity {
 		
 		if(isSyncing() && repos != null) {
 			
-			runUITask(UI_UPDATE_REPOS, repos);
+			filterRepos(repos);
 			return;
 		}
 		
@@ -132,7 +143,7 @@ public class ReposActivity extends TravisJrActivity {
 		}
 		else {
 			
-			runUITask(UI_UPDATE_REPOS, repos);
+			filterRepos(repos);
 		}
 	}
 	
@@ -148,7 +159,7 @@ public class ReposActivity extends TravisJrActivity {
 		try {
 			
 			repos = repoService.getReposByMember();
-			runUITask(UI_UPDATE_REPOS, repos);
+			filterRepos(repos);
 		}
 		catch(RepoAccessException rae) {
 		
@@ -179,7 +190,7 @@ public class ReposActivity extends TravisJrActivity {
 	 */
 	@UI(UI_UPDATE_REPOS)
 	private void updateRepos(List<Repo> repos) {
-		
+
 		if(repos.isEmpty()) {
 			
 			listView.setEmptyView(alertReposEmpty);
@@ -193,6 +204,27 @@ public class ReposActivity extends TravisJrActivity {
 		
 		listView.setAdapter(RepoAdapter.newInstance(ReposActivity.this, repos));
 		stopSyncAnimation();
+	}
+	
+	/**
+	 * <p>Filters the displayed {@link Repo}s based on selected navigation 
+	 * tab and invokes {@link #updateRepos(List)} for display.
+	 * 
+	 * @param repos
+	 * 			the displayed {@link Repo}s to be filtered
+	 */
+	private synchronized void filterRepos(List<Repo> repos) {
+		
+		switch (getSelectedTab()) {
+		
+			case R.string.key_member:
+				runUITask(UI_UPDATE_REPOS, repos);
+				break;
+					
+			case R.string.key_owner:
+				runUITask(UI_UPDATE_REPOS, repoService.filterOwnedRepos(repos));
+				break;
+		}
 	}
 	
 	/**

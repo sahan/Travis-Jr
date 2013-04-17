@@ -29,6 +29,8 @@ import android.provider.ContactsContract.Contacts.Data;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AbsListView.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -61,6 +63,11 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 	 */
 	private List<Repo> data;
 	
+	/**
+	 * <p>This animation is set on the indicator when the build is ongoing.
+	 */
+	private Animation rotateSlowly;
+	
 	
 	/**
 	 * <p>Use {@link RepoAdapter#newInstance(Context, List)} instead.
@@ -70,7 +77,8 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 		super(context, R.layout.list_item_repo, data);
 		
 		this.context = context;
-		this.data = data; 
+		this.data = data;
+		this.rotateSlowly = AnimationUtils.loadAnimation(context, R.anim.rotate_2x_min);
 	}
 
 	/**
@@ -152,17 +160,23 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 		
 		ImageView status = ((ImageView)convertView.findViewById(R.id.status));
 		
-		if(buildStatus == null && finished) 
-			status.setImageResource(position % 2 == 0? R.drawable.gear_errored :R.drawable.gear_errored_alt);
-		
-		else if(buildStatus == null && !finished) 
-			status.setImageResource(position % 2 == 0? R.drawable.gear_started :R.drawable.gear_started_alt);
-		
-		else if(buildStatus.shortValue() == 0)
-			status.setImageResource(position % 2 == 0? R.drawable.gear_passed :R.drawable.gear_passed_alt);
+		if(buildStatus == null && finished) {
 			
-		else
+			status.setImageResource(position % 2 == 0? R.drawable.gear_errored :R.drawable.gear_errored_alt);
+		}
+		else if(buildStatus == null && !finished) {
+			
+			status.setImageResource(position % 2 == 0? R.drawable.gear_started :R.drawable.gear_started_alt);
+			status.startAnimation(rotateSlowly);
+		}
+		else if(buildStatus.shortValue() == 0) {
+			
+			status.setImageResource(position % 2 == 0? R.drawable.gear_passed :R.drawable.gear_passed_alt);
+		}
+		else {
+			
 			status.setImageResource(position % 2 == 0? R.drawable.gear_failed :R.drawable.gear_failed_alt);
+		}
 		
 		return convertView;
 	}

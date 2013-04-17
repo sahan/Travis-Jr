@@ -22,7 +22,10 @@ package com.lonepulse.travisjr.app;
 
 
 import android.app.ActionBar;
+import android.app.ActionBar.Tab;
+import android.app.ActionBar.TabListener;
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,7 +43,7 @@ import com.lonepulse.travisjr.pref.SettingsActivity;
  * <p>A custom {@link IckleActivity} which is tailored to setup the 
  * action bar and provide support for synchronization.
  * 
- * @version 1.1.0
+ * @version 1.1.1
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
@@ -81,6 +84,30 @@ public class TravisJrActivity extends IckleActivity {
 	 * when synchronization is complete.
 	 */
 	private Animation fadeOut;
+	
+	/**
+	 * <p>The instance of {@link ActionBar.Tab} which handles navigation tabs.
+	 */
+	private TabListener tabListener = new TabListener() {
+		
+		@Override
+		public void onTabSelected(Tab tab, FragmentTransaction ft) {
+			
+			TravisJrActivity.this.onTabSelected((Integer)tab.getTag());
+		}
+		
+		@Override
+		public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+			
+			TravisJrActivity.this.onTabUnselected((Integer)tab.getTag());
+		}
+		
+		@Override
+		public void onTabReselected(Tab tab, FragmentTransaction ft) {
+			
+			TravisJrActivity.this.onTabReselected((Integer)tab.getTag());
+		}
+	};
 	
 	
 	@Override
@@ -139,6 +166,82 @@ public class TravisJrActivity extends IckleActivity {
 			actionBar.setDisplayShowCustomEnabled(true);
 			actionBar.setCustomView(header);
 		}
+	}
+	
+	/**
+	 * <p>Creates a set of {@link ActionBar.Tab}s per ID with the title 
+	 * and tag set to the String resource referred to be the ID.</p>
+	 * 
+	 * <p>This implementation employs {@link ActionBar#NAVIGATION_MODE_TABS}.</p> 
+	 *
+	 * @param stringResourceIds
+	 * 			the array of String resource IDs which reflect the 
+	 * 			{@link ActionBar.Tab}s to be created
+	 * 
+	 * @since 1.1.1
+	 */
+	protected void addTabs(int... stringResourceIds) {
+		
+		ActionBar actionBar = getActionBar();
+		
+		if(actionBar != null) {
+			
+			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		
+			for (int id : stringResourceIds)
+				actionBar.addTab(actionBar.newTab().setText(id).setTag(id).setTabListener(tabListener));
+		}
+	}
+	
+	/**
+	 * <p>Override this callback to take action upon <b>selecting</b> 
+	 * an {@link ActionBar.Tab} tab created with the String resource ID. 
+	 *
+	 * @param stringResourceId
+	 * 			the String resource ID which was used to created the 
+	 * 			selected {@link ActionBar.Tab}
+	 * 
+	 * @since 1.1.1
+	 */
+	protected void onTabSelected(int stringResourceId) {}
+	
+	/**
+	 * <p>Override this callback to take action upon <b>unselecting</b> 
+	 * an {@link ActionBar.Tab} tab created with the String resource ID. 
+	 *
+	 * @param stringResourceId
+	 * 			the String resource ID which was used to created the 
+	 * 			unreselected {@link ActionBar.Tab}
+	 * 
+	 * @since 1.1.1
+	 */
+	protected void onTabUnselected(int stringResourceId) {}
+	
+	/**
+	 * <p>Override this callback to take action upon <b>reselecting</b> 
+	 * an {@link ActionBar.Tab} tab created with the String resource ID. 
+	 *
+	 * @param stringResourceId
+	 * 			the String resource ID which was used to created the 
+	 * 			reselected {@link ActionBar.Tab}
+	 * 
+	 * @since 1.1.1
+	 */
+	protected void onTabReselected(int stringResourceId) {}
+	
+	/**
+	 * <p>Retrieves the String resource ID of the currently selected 
+	 * navigation tab.
+	 *
+	 * @return the String resource ID of the selected {@link ActionBar.Tab}, 
+	 * 		   else {@code 0} if no navigation tabs are available
+	 * 
+	 * @since 1.1.1
+	 */
+	protected int getSelectedTab() {
+		
+		ActionBar actionBar = getActionBar();
+		return (actionBar != null)? (Integer)actionBar.getSelectedTab().getTag() :0; 
 	}
 	
 	/**

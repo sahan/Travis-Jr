@@ -29,6 +29,8 @@ import android.provider.ContactsContract.Contacts.Data;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AbsListView.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -59,6 +61,11 @@ public class BuildAdapter extends ArrayAdapter<Build> {
 	 * <p>The set of {@link Build} entities to be consumed by this adapter. 
 	 */
 	private List<Build> data;
+
+	/**
+	 * <p>This animation is set on the indicator when the build is ongoing.
+	 */
+	private Animation rotateSlowly;
 	
 	
 	/**
@@ -70,6 +77,7 @@ public class BuildAdapter extends ArrayAdapter<Build> {
 		
 		this.context = context;
 		this.data = data;
+		this.rotateSlowly = AnimationUtils.loadAnimation(context, R.anim.rotate_2x_min);
 	}
 
 	/**
@@ -85,7 +93,7 @@ public class BuildAdapter extends ArrayAdapter<Build> {
 			
 			View root = convertView.findViewById(R.id.root);
 			
-			LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, 85);
+			LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, 115);
 			root.setLayoutParams(params);
 			root.setPadding(0, 0, 5, 0);
 		}
@@ -150,17 +158,23 @@ public class BuildAdapter extends ArrayAdapter<Build> {
 		
 		ImageView status = ((ImageView)convertView.findViewById(R.id.status));
 		
-		if(buildStatus == null && finished) 
-			status.setImageResource(position % 2 == 0? R.drawable.gear_errored :R.drawable.gear_errored_alt);
-		
-		else if(buildStatus == null && !finished) 
-			status.setImageResource(position % 2 == 0? R.drawable.gear_started :R.drawable.gear_started_alt);
-		
-		else if(buildStatus.shortValue() == 0)
-			status.setImageResource(position % 2 == 0? R.drawable.gear_passed :R.drawable.gear_passed_alt);
+		if(buildStatus == null && finished) {
 			
-		else
+			status.setImageResource(position % 2 == 0? R.drawable.gear_errored :R.drawable.gear_errored_alt);
+		}
+		else if(buildStatus == null && !finished) {
+			
+			status.setImageResource(position % 2 == 0? R.drawable.gear_started :R.drawable.gear_started_alt);
+			status.startAnimation(rotateSlowly);
+		}
+		else if(buildStatus.shortValue() == 0) {
+			
+			status.setImageResource(position % 2 == 0? R.drawable.gear_passed :R.drawable.gear_passed_alt);
+		}
+		else {
+			
 			status.setImageResource(position % 2 == 0? R.drawable.gear_failed :R.drawable.gear_failed_alt);
+		}
 		
 		return convertView;
 	}
@@ -189,6 +203,9 @@ public class BuildAdapter extends ArrayAdapter<Build> {
 		
 		((TextView)convertView.findViewById(R.id.event))
 		.setText(String.valueOf(TextUtils.isAvailable(build.getEvent_type())));
+		
+		((TextView)convertView.findViewById(R.id.message))
+		.setText(String.valueOf(TextUtils.isAvailable(build.getMessage())));
 		
 		return convertView;
 	}

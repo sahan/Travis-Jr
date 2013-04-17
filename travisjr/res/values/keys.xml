@@ -7,4 +7,6 @@
     <string name="key_sign_out">account</string>
     <string name="key_oss_licenses">oss</string>
     <string name="key_version">version</string>
+    <string name="key_member">member</string>
+    <string name="key_owner">owner</string>
 </resources>

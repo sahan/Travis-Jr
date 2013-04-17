@@ -30,7 +30,7 @@ import com.lonepulse.travisjr.model.Repo;
  * <p>This contract specifies the service offered on the {@link Repo}s which 
  * the user is a member of.
  * 
- * @version 1.1.0
+ * @version 1.1.1
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
@@ -48,4 +48,20 @@ public interface RepoService {
 	 * @since 1.1.0
 	 */
 	List<Repo> getReposByMember();
+	
+	/**
+	 * <p>Filters the given list of {@link Repo}s into a sublist containing the 
+	 * repositories owned by the user.
+	 * 
+	 * @param repos
+	 * 			the list of {@link Repo}s to be filtered
+	 * 
+	 * @return a sublist of the {@link Repo}s owned by the user
+	 * 
+	 * @throws RepoFilterException
+	 * 			if the list of {@link Repo}s cannot be filtered by owner name
+	 * 
+	 * @since 1.1.1
+	 */
+	List<Repo> filterOwnedRepos(List<Repo> repos);
 }
