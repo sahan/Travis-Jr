@@ -24,11 +24,15 @@ package com.lonepulse.travisjr;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -72,6 +76,9 @@ public class AuthenticationActivity extends IckleActivity {
 	
 	@InjectView(R.id.username)
 	private EditText username;
+	
+	@InjectView(R.id.organization)
+	private CheckBox organization;
 	
 	@InjectAnimation(R.anim.slide_in_from_bottom)
 	private Animation slideInFromBottom;
@@ -127,6 +134,17 @@ public class AuthenticationActivity extends IckleActivity {
 		progress.startAnimation(fadeIn);
 		
 		accountService.setGitHubUsername(username.getText().toString());
+		
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		Editor editor = prefs.edit();
+		
+		if(organization.isChecked())
+			editor.putString(getString(R.string.key_user_mode), getString(R.string.key_organization));
+		
+		else
+			editor.putString(getString(R.string.key_user_mode), getString(R.string.key_member));
+		
+		editor.commit();
 		
 		fadeOut.setFillAfter(true);
 		progress.startAnimation(fadeOut);

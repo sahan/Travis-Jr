@@ -241,7 +241,7 @@ public class TravisJrActivity extends IckleActivity {
 	protected int getSelectedTab() {
 		
 		ActionBar actionBar = getActionBar();
-		return (actionBar != null)? (Integer)actionBar.getSelectedTab().getTag() :0; 
+		return (actionBar != null && actionBar.getTabCount() > 0)? (Integer)actionBar.getSelectedTab().getTag() :0;
 	}
 	
 	/**

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="key_username">username</string>
     <string name="key_theme">theme</string>
     <string name="key_syncing">syncing</string>
@@ -7,6 +8,11 @@
     <string name="key_sign_out">account</string>
     <string name="key_oss_licenses">oss</string>
     <string name="key_version">version</string>
+    <string name="key_contributed">contributed</string>
+    <string name="key_created">created</string>
+    <string name="key_user_mode">user_mode</string>
     <string name="key_member">member</string>
-    <string name="key_owner">owner</string>
+    <string name="key_organization">organization</string>
+    <string name="key_state_finished">finished</string>
+
 </resources>

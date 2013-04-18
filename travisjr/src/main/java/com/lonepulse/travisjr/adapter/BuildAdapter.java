@@ -29,8 +29,6 @@ import android.provider.ContactsContract.Contacts.Data;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AbsListView.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -39,6 +37,7 @@ import android.widget.TextView;
 
 import com.lonepulse.travisjr.R;
 import com.lonepulse.travisjr.model.Build;
+import com.lonepulse.travisjr.util.Resources;
 import com.lonepulse.travisjr.util.TextUtils;
 
 /**
@@ -61,11 +60,6 @@ public class BuildAdapter extends ArrayAdapter<Build> {
 	 * <p>The set of {@link Build} entities to be consumed by this adapter. 
 	 */
 	private List<Build> data;
-
-	/**
-	 * <p>This animation is set on the indicator when the build is ongoing.
-	 */
-	private Animation rotateSlowly;
 	
 	
 	/**
@@ -77,7 +71,6 @@ public class BuildAdapter extends ArrayAdapter<Build> {
 		
 		this.context = context;
 		this.data = data;
-		this.rotateSlowly = AnimationUtils.loadAnimation(context, R.anim.rotate_2x_min);
 	}
 
 	/**
@@ -91,11 +84,9 @@ public class BuildAdapter extends ArrayAdapter<Build> {
 			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = inflater.inflate(R.layout.list_item_build, null);
 			
-			View root = convertView.findViewById(R.id.root);
-			
 			LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, 115);
-			root.setLayoutParams(params);
-			root.setPadding(0, 0, 5, 0);
+			convertView.setLayoutParams(params);
+			convertView.setPadding(0, 0, 5, 0);
 		}
 		
 		Build repo = data.get(position);
@@ -108,8 +99,8 @@ public class BuildAdapter extends ArrayAdapter<Build> {
 	}
 	
 	/**
-	 * <p>Takes the root view of the list items and processes its 
-	 * layout if it is an alternate list item.
+	 * <p>Takes the root view of the list items and processes its layout if it is an 
+	 * alternate list item.
 	 * 
 	 * @param position
 	 * 			the index of the list item
@@ -136,8 +127,7 @@ public class BuildAdapter extends ArrayAdapter<Build> {
 	}
 	
 	/**
-	 * <p>Processed the indicator on the build list item to 
-	 * specify the build status.
+	 * <p>Processed the indicator on the build list item to specify the build status.
 	 * 
 	 * @param position
 	 * 			the index of the list item
@@ -154,9 +144,10 @@ public class BuildAdapter extends ArrayAdapter<Build> {
 	
 		Short buildStatus = build.getResult();
 		
-		boolean finished = (buildStatus != null)? true :build.getState().equals("finished")? true :false;
+		String stateFinished = Resources.key(R.string.key_state_finished);
+		boolean finished = (buildStatus != null)? true :build.getState().equals(stateFinished)? true :false;
 		
-		ImageView status = ((ImageView)convertView.findViewById(R.id.status));
+		final ImageView status = ((ImageView)convertView.findViewById(R.id.status));
 		
 		if(buildStatus == null && finished) {
 			
@@ -165,7 +156,6 @@ public class BuildAdapter extends ArrayAdapter<Build> {
 		else if(buildStatus == null && !finished) {
 			
 			status.setImageResource(position % 2 == 0? R.drawable.gear_started :R.drawable.gear_started_alt);
-			status.startAnimation(rotateSlowly);
 		}
 		else if(buildStatus.shortValue() == 0) {
 			
@@ -178,6 +168,8 @@ public class BuildAdapter extends ArrayAdapter<Build> {
 		
 		return convertView;
 	}
+	
+	
 	
 	/**
 	 * <p>Plugs data into the information placeholders on the build list item. 

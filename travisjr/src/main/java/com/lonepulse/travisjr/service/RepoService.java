@@ -30,7 +30,7 @@ import com.lonepulse.travisjr.model.Repo;
  * <p>This contract specifies the service offered on the {@link Repo}s which 
  * the user is a member of.
  * 
- * @version 1.1.1
+ * @version 1.1.2
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
@@ -38,7 +38,7 @@ import com.lonepulse.travisjr.model.Repo;
 public interface RepoService {
 
 	/**
-	 * <p>Retrieves the set of {@link Repo}s which the user is a member of.
+	 * <p>Retrieves the set of {@link Repo}s which the user is a <b>member</b> of.
 	 * 
 	 * @return all associated {@link Repo}s
 	 * 
@@ -48,6 +48,18 @@ public interface RepoService {
 	 * @since 1.1.0
 	 */
 	List<Repo> getReposByMember();
+	
+	/**
+	 * <p>Retrieves the set of {@link Repo}s which the user is an <b>owner</b> of.
+	 * 
+	 * @return all associated {@link Repo}s
+	 * 
+	 * @throws RepoAccessException
+	 * 			if the {@link Repo}(s) cannot be read via the remote endpoint.
+	 * 
+	 * @since 1.1.2
+	 */
+	List<Repo> getReposByOwner();
 	
 	/**
 	 * <p>Filters the given list of {@link Repo}s into a sublist containing the 
@@ -63,5 +75,21 @@ public interface RepoService {
 	 * 
 	 * @since 1.1.1
 	 */
-	List<Repo> filterOwnedRepos(List<Repo> repos);
+	List<Repo> filterCreatedRepos(List<Repo> repos);
+	
+	/**
+	 * <p>Filters the given list of {@link Repo}s into a sublist containing the 
+	 * repositories contributed to (but not owned) by the user.
+	 * 
+	 * @param repos
+	 * 			the list of {@link Repo}s to be filtered
+	 * 
+	 * @return a sublist of the {@link Repo}s contributed to by the user
+	 * 
+	 * @throws RepoFilterException
+	 * 			if the list of {@link Repo}s cannot be filtered by owner name
+	 * 
+	 * @since 1.1.1
+	 */
+	List<Repo> filterContributedRepos(List<Repo> repos);
 }

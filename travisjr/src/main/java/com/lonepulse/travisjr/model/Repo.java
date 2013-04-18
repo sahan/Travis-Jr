@@ -24,6 +24,7 @@ package com.lonepulse.travisjr.model;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -33,11 +34,11 @@ import com.lonepulse.travisjr.util.DateUtils;
  * <p>This entity represents a single repository which is under 
  * continuous integration.
  * 
- * @version 1.1.0
+ * @version 1.1.1
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
-public class Repo implements Serializable, Comparable<Repo> {
+public class Repo implements Serializable, Comparable<Repo>, Cloneable {
 
 
 	private static final long serialVersionUID = 6970742314687312453L;
@@ -419,5 +420,32 @@ public class Repo implements Serializable, Comparable<Repo> {
 			
 			return -1;
 		}
+	}
+
+	/**
+	 * <p>Creates a new {@link Repo} with the same instance state as 
+	 * <b>this</b> with an unmodifiable list of {@link Build}s.
+	 * 
+	 * @since 1.1.1
+	 */
+	@Override
+	public Object clone() {
+		
+		Repo repo = new Repo();
+		
+		repo.setId(id);
+		repo.setSlug(slug);
+		repo.setDescription(description);
+		repo.setLast_build_duration(last_build_duration);
+		repo.setLast_build_finished_at(last_build_finished_at);
+		repo.setLast_build_id(last_build_id);
+		repo.setLast_build_language(last_build_language);
+		repo.setLast_build_number(last_build_number);
+		repo.setLast_build_result(last_build_result);
+		repo.setLast_build_started_at(last_build_started_at);
+		repo.setLast_build_status(last_build_status);
+		repo.setBuilds(Collections.unmodifiableList(this.builds));
+		
+		return repo;
 	}
 }

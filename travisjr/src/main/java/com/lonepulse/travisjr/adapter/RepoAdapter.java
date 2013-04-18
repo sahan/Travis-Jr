@@ -29,8 +29,6 @@ import android.provider.ContactsContract.Contacts.Data;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AbsListView.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -40,6 +38,7 @@ import android.widget.TextView;
 import com.lonepulse.travisjr.R;
 import com.lonepulse.travisjr.model.Repo;
 import com.lonepulse.travisjr.util.DateUtils;
+import com.lonepulse.travisjr.util.Resources;
 import com.lonepulse.travisjr.util.TextUtils;
 
 /**
@@ -63,11 +62,6 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 	 */
 	private List<Repo> data;
 	
-	/**
-	 * <p>This animation is set on the indicator when the build is ongoing.
-	 */
-	private Animation rotateSlowly;
-	
 	
 	/**
 	 * <p>Use {@link RepoAdapter#newInstance(Context, List)} instead.
@@ -78,7 +72,6 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 		
 		this.context = context;
 		this.data = data;
-		this.rotateSlowly = AnimationUtils.loadAnimation(context, R.anim.rotate_2x_min);
 	}
 
 	/**
@@ -92,11 +85,9 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = inflater.inflate(R.layout.list_item_repo, null);
 			
-			View root = convertView.findViewById(R.id.root);
-			
 			LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, 110);
-			root.setLayoutParams(params);
-			root.setPadding(0, 0, 5, 0);
+			convertView.setLayoutParams(params);
+			convertView.setPadding(0, 0, 5, 0);
 		}
 		
 		Repo repo = data.get(position);
@@ -109,8 +100,8 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 	}
 	
 	/**
-	 * <p>Takes the root view of the list items and processes its 
-	 * layout if it is an alternate list item.
+	 * <p>Takes the root view of the list items and processes its layout if it is an 
+	 * alternate list item.
 	 * 
 	 * @param position
 	 * 			the index of the list item
@@ -137,8 +128,7 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 	}
 	
 	/**
-	 * <p>Processed the indicator on the repo list item to 
-	 * specify the build status.
+	 * <p>Processed the indicator on the repo list item to specify the build status.
 	 * 
 	 * @param position
 	 * 			the index of the list item
@@ -155,8 +145,9 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 	
 		Short buildStatus = repo.getLast_build_status();
 		
+		String stateFinished = Resources.key(R.string.key_state_finished);
 		boolean finished = (buildStatus != null)? true 
-							:repo.getBuilds().get(0).getState().equals("finished")? true :false;
+							:repo.getBuilds().get(0).getState().equals(stateFinished)? true :false;
 		
 		ImageView status = ((ImageView)convertView.findViewById(R.id.status));
 		
@@ -167,7 +158,6 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 		else if(buildStatus == null && !finished) {
 			
 			status.setImageResource(position % 2 == 0? R.drawable.gear_started :R.drawable.gear_started_alt);
-			status.startAnimation(rotateSlowly);
 		}
 		else if(buildStatus.shortValue() == 0) {
 			
@@ -182,8 +172,7 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 	}
 	
 	/**
-	 * <p>Processed the indicator on the repo list item to 
-	 * specify the build status.
+	 * <p>Processed the indicator on the repo list item to specify the build status.
 	 * 
 	 * @param repo
 	 * 			the {@link Repo} whose information is to be processed

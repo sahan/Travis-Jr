@@ -16,7 +16,7 @@
         android:layout_weight="0.7"
         android:gravity="left"
         android:paddingRight="5dp" >
-
+        
         <ImageView
             android:id="@id/status"
             android:layout_width="86dp"

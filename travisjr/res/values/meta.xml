@@ -3,6 +3,7 @@
 
     <string name="app_name">Travis Jr.</string>
     <string name="version">Build 0.1.2</string>
+    <string name="app_url">https://github.com/sahan/Travis-Jr</string>
     <string name="license_apache_v2">Apache License, Version 2.0</string>
     <string name="author">github.com/sahan</string>
     <string name="author_url">https://github.com/sahan</string>
@@ -10,5 +11,6 @@
     <string name="conf_clear_account">are you sure you want to purge your account?</string>
     <string name="sum_pref_sign_out">Clear all credentials, delete any saved data and sign out from your account.</string>
     <string name="sum_pref_oss_licenses">Licenses for all open source libraries which are used.</string>
+    <string name="sum_pref_user_mode">Treat this account as a member or an organization.</string>
 
 </resources>

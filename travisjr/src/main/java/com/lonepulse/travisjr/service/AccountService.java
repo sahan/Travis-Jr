@@ -80,4 +80,15 @@ public interface AccountService {
 	 * @since 1.1.1
 	 */
 	boolean areCredentialsAvailable();
+	
+	/**
+	 * <p>Indicates whether the user is to be treated as a member or an 
+	 * organization.
+	 * 
+	 * @return {@code true} if the user is to be treated as a member, 
+	 * 		   {@code false} if the user is to be treated as a organization
+	 * 
+	 * @since 1.1.2
+	 */
+	boolean isUserModeOrganization();
 }

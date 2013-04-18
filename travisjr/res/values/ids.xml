@@ -35,5 +35,6 @@
     <item name="panel_temporal" type="id">panel_temporal</item>
     <item name="panel_event" type="id">panel_event</item>
     <item name="sec" type="id">sec</item>
+    <item name="organization" type="id">organization</item>
 
 </resources>

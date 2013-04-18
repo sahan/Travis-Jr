@@ -12,5 +12,6 @@
     <string name="lbl_syncing_repos">Fetching Repositories</string>
     <string name="lbl_syncing_builds">Fetching Builds</string>
     <string name="lbl_temporal_stats">Temporal Stats</string>
+    <string name="lbl_sign_in_organization">I\'m an organization.</string>
 
 </resources>

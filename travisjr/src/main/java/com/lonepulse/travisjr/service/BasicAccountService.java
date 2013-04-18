@@ -107,6 +107,18 @@ public class BasicAccountService implements AccountService {
 	}
 	
 	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isUserModeOrganization() {
+		
+		String organization = Resources.key(R.string.key_organization);
+		String member = Resources.key(R.string.key_member);
+		
+		return prefs().getString(Resources.key(R.string.key_user_mode), member).equals(organization);
+	}
+	
+	/**
 	 * <p>Retrieves the default {@link SharedPreferences} using the 
 	 * application context at {@link TravisJr.Application#CONTEXT}.
 	 * 

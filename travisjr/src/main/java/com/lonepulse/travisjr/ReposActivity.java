@@ -87,12 +87,22 @@ public class ReposActivity extends TravisJrActivity {
 	@Stateful
 	private List<Repo> repos;
 	
+	@Stateful
+	private List<Repo> createdRepos;
+	
+	@Stateful
+	private List<Repo> contributedRepos;
+	
 	
 	@Override
 	protected void onInitActionBar(ActionBar actionBar) {
 		
 		super.onInitActionBar(actionBar);
-		addTabs(R.string.key_member, R.string.key_owner);
+		
+		if(!getTravisJrApplication().getAccountService().isUserModeOrganization()) {
+			
+			addTabs(R.string.key_created, R.string.key_contributed);
+		}
 	}
 	
 	@Override
@@ -105,7 +115,7 @@ public class ReposActivity extends TravisJrActivity {
 	protected void onResume() {
 		
 		super.onResume();
-		refresh();
+		refreshRepos();
 	}
 	
 	@Override
@@ -119,7 +129,7 @@ public class ReposActivity extends TravisJrActivity {
 	 * existence of a connected data network.
 	 */
 	@Click(R.id.alert_repos_error)
-	private void refresh() {
+	private void refreshRepos() {
 		
 		if(isSyncing() && repos != null) {
 			
@@ -158,7 +168,17 @@ public class ReposActivity extends TravisJrActivity {
 		
 		try {
 			
-			repos = repoService.getReposByMember();
+			if(getTravisJrApplication().getAccountService().isUserModeOrganization()) {
+				
+				repos = repoService.getReposByOwner();
+			}
+			else {
+				
+				repos = repoService.getReposByMember();
+				createdRepos = repoService.filterCreatedRepos(repos);
+				contributedRepos = repoService.filterContributedRepos(repos);
+			}
+			 
 			filterRepos(repos);
 		}
 		catch(RepoAccessException rae) {
@@ -217,12 +237,24 @@ public class ReposActivity extends TravisJrActivity {
 		
 		switch (getSelectedTab()) {
 		
-			case R.string.key_member:
+			case 0:
 				runUITask(UI_UPDATE_REPOS, repos);
 				break;
+				
+			case R.string.key_contributed:
+				
+//				if(contributedRepos == null)
+//					contributedRepos = repoService.filterContributedRepos(repos);
+				
+				runUITask(UI_UPDATE_REPOS, contributedRepos);
+				break;
 					
-			case R.string.key_owner:
-				runUITask(UI_UPDATE_REPOS, repoService.filterOwnedRepos(repos));
+			case R.string.key_created:
+				
+//				if(contributedRepos == null)
+//					createdRepos = repoService.filterOwnedRepos(repos);
+				
+				runUITask(UI_UPDATE_REPOS, createdRepos);
 				break;
 		}
 	}
@@ -269,7 +301,20 @@ public class ReposActivity extends TravisJrActivity {
 			}
 		}, 100);
 		
-		BuildsActivity.start(this, repos.get(position));
+		switch (getSelectedTab()) {
+		
+			case 0:
+				BuildsActivity.start(this, repos.get(position));
+				break;
+				
+			case R.string.key_created:
+				BuildsActivity.start(this, createdRepos.get(position));
+				break;
+				
+			case R.string.key_contributed:
+				BuildsActivity.start(this, contributedRepos.get(position));
+				break;
+		}
 	}
 	
 	/**

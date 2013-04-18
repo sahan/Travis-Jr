@@ -32,7 +32,7 @@ import com.lonepulse.travisjr.model.Repo;
  * <p>This endpoint contract defines the remote services which are used 
  * by Travis Jr.
  * 
- * @version 1.1.1
+ * @version 1.1.2
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
@@ -53,6 +53,20 @@ public interface TravisCIEndpoint {
 	 */
 	@Request(path = "repos")
 	Repo[] getReposByMember(@Param("member") String member);
+	
+	/**
+	 * <p>Takes a GitHub username and retrieves the repositories which 
+	 * that user is an owner of.
+	 *
+	 * @param ownerName
+	 * 			the GitHub username of the target owner
+	 * 			 
+	 * @return the set of {@link Repo}s which the user is a owner of
+	 * 
+	 * @since 1.1.2
+	 */
+	@Request(path = "repos")
+	Repo[] getReposByOwner(@Param("owner_name") String ownerName);
 	
 	/**
 	 * <p>Takes a repository ID and retrieves its recent set of builds.
