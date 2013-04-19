@@ -93,6 +93,12 @@ public class ReposActivity extends TravisJrActivity {
 	@Stateful
 	private List<Repo> contributedRepos;
 	
+	@Stateful
+	private int itemPosition;
+	
+	@Stateful
+	private int itemTop;
+	
 	
 	@Override
 	protected void onInitActionBar(ActionBar actionBar) {
@@ -102,6 +108,10 @@ public class ReposActivity extends TravisJrActivity {
 		if(!getTravisJrApplication().getAccountService().isUserModeOrganization()) {
 			
 			addTabs(R.string.key_created, R.string.key_contributed);
+			
+			enableTabSwiping(android.R.id.list, R.id.root, 
+							 R.id.alert_data, R.id.alert_repos_empty, 
+							 R.id.alert_repos_error, R.id.alert_sync);
 		}
 	}
 	
@@ -116,6 +126,14 @@ public class ReposActivity extends TravisJrActivity {
 		
 		super.onResume();
 		refreshRepos();
+		listView.setSelectionFromTop(itemPosition, 0);
+	}
+	
+	@Override
+	protected void onPause() {
+		
+		super.onPause();
+		itemPosition = listView.getFirstVisiblePosition();
 	}
 	
 	@Override
@@ -242,18 +260,10 @@ public class ReposActivity extends TravisJrActivity {
 				break;
 				
 			case R.string.key_contributed:
-				
-//				if(contributedRepos == null)
-//					contributedRepos = repoService.filterContributedRepos(repos);
-				
 				runUITask(UI_UPDATE_REPOS, contributedRepos);
 				break;
 					
 			case R.string.key_created:
-				
-//				if(contributedRepos == null)
-//					createdRepos = repoService.filterOwnedRepos(repos);
-				
 				runUITask(UI_UPDATE_REPOS, createdRepos);
 				break;
 		}

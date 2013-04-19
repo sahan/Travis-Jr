@@ -53,6 +53,46 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 
 	
 	/**
+	 * <p>Pre-references child views within the root list item layout. 
+	 * 
+	 * @version 1.1.0
+	 */
+	private static final class ViewHolder {
+		
+		public ViewGroup root;
+		public ImageView status;
+		public TextView repoName;
+		public TextView buildNumber;
+		public TextView startTime;
+		public TextView startDate;
+		public TextView duration;
+		public TextView endTime;
+		public TextView endDate;
+		
+		/**
+		 * <p>Creates a new {@link ViewHolder} for the given view.
+		 * 
+		 * @param convertView
+		 * 			the root view of the list item whose child views are 
+		 * 			to be referenced
+		 *
+		 * @since 1.1.0
+		 */
+		public ViewHolder(View convertView) {
+		
+			root = (ViewGroup) convertView.findViewById(R.id.root);
+			status = (ImageView) convertView.findViewById(R.id.status);
+			repoName = (TextView) convertView.findViewById(R.id.repo_name);
+			buildNumber = (TextView) convertView.findViewById(R.id.build_number);
+			startTime = (TextView) convertView.findViewById(R.id.start_time);
+			startDate = (TextView) convertView.findViewById(R.id.start_date);
+			duration = (TextView) convertView.findViewById(R.id.duration);
+			endTime = (TextView) convertView.findViewById(R.id.end_time);
+			endDate = (TextView) convertView.findViewById(R.id.end_date);
+		}
+	}
+	
+	/**
 	 * <p>The {@link Context} in which the adapter was instantiated. 
 	 */
 	private Context context;
@@ -88,13 +128,14 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 			LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, 110);
 			convertView.setLayoutParams(params);
 			convertView.setPadding(0, 0, 5, 0);
+			convertView.setTag(new ViewHolder(convertView));
 		}
 		
 		Repo repo = data.get(position);
 		
-		processTheme(position, convertView);
-		processStatus(position, repo, convertView);
-		processInfo(repo, convertView);
+		processTheme(position, (ViewHolder)convertView.getTag());
+		processStatus(position, repo, (ViewHolder)convertView.getTag());
+		processInfo(repo, (ViewHolder)convertView.getTag());
 		
 		return convertView;
 	}
@@ -106,25 +147,20 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 	 * @param position
 	 * 			the index of the list item
 	 * 
-	 * @param convertView
-	 * 			the root view to be processed
+	 * @param viewHolder
+	 * 			the {@link ViewHolder} of root view to be processed
 	 * 
 	 * @return the processed root view
 	 */
-	private View processTheme(int position, View convertView) {
+	private View processTheme(int position, ViewHolder viewHolder) {
 
-		if(position % 2 == 0) {
-			
-			convertView.findViewById(R.id.root)
-			.setBackgroundColor(context.getResources().getColor(R.color.bg_list_item_generic));
-		}
-		else {
-			
-			convertView.findViewById(R.id.root)
-			.setBackgroundColor(context.getResources().getColor(R.color.bg_list_item_alt));
-		}
+		if(position % 2 == 0)
+			viewHolder.root.setBackgroundColor(context.getResources().getColor(R.color.bg_list_item_generic));
 		
-		return convertView;
+		else
+			viewHolder.root.setBackgroundColor(context.getResources().getColor(R.color.bg_list_item_alt));
+		
+		return viewHolder.root;
 	}
 	
 	/**
@@ -136,12 +172,12 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 	 * @param repo
 	 * 			the {@link Repo} whose build status is to be indicated
 	 * 
-	 * @param convertView
-	 * 			the root view to be processed
+	 * @param viewHolder
+	 * 			the {@link ViewHolder} of the root view to be processed
 	 * 
 	 * @return the processed root view
 	 */
-	private View processStatus(int position, Repo repo, View convertView) {
+	private View processStatus(int position, Repo repo, ViewHolder viewHolder) {
 	
 		Short buildStatus = repo.getLast_build_status();
 		
@@ -149,7 +185,7 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 		boolean finished = (buildStatus != null)? true 
 							:repo.getBuilds().get(0).getState().equals(stateFinished)? true :false;
 		
-		ImageView status = ((ImageView)convertView.findViewById(R.id.status));
+		ImageView status = viewHolder.status;
 		
 		if(buildStatus == null && finished) {
 			
@@ -168,7 +204,7 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 			status.setImageResource(position % 2 == 0? R.drawable.gear_failed :R.drawable.gear_failed_alt);
 		}
 		
-		return convertView;
+		return viewHolder.root;
 	}
 	
 	/**
@@ -177,39 +213,37 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 	 * @param repo
 	 * 			the {@link Repo} whose information is to be processed
 	 * 
-	 * @param convertView
-	 * 			the root view to be processed
+	 * @param viewHolder
+	 * 			the {@link ViewHolder} of the root view to be processed
 	 * 
 	 * @return the processed root view
 	 */
-	private View processInfo(Repo repo, View convertView) {
+	private View processInfo(Repo repo, ViewHolder viewHolder) {
 
-		((TextView)convertView.findViewById(R.id.repo_name))
-		.setText(repo.getSlug());
+		viewHolder.repoName.setText(repo.getSlug());
 		
-		((TextView)convertView.findViewById(R.id.build_number))
-		.setText(String.valueOf(repo.getLast_build_number()));
+		viewHolder.buildNumber.setText(String.valueOf(repo.getLast_build_number()));
 		
-		((TextView)convertView.findViewById(R.id.start_time))
+		viewHolder.startTime
 		.setText(TextUtils.isAvailable(DateUtils.formatTimeForDisplay(repo.getLast_build_started_at())));
 		
-		((TextView)convertView.findViewById(R.id.start_date))
+		viewHolder.startDate
 		.setText(TextUtils.isAvailable(DateUtils.formatDateForDisplay(repo.getLast_build_started_at())));
 		
-		((TextView)convertView.findViewById(R.id.duration))
+		viewHolder.duration
 		.setText(String.valueOf(TextUtils.isAvailable(repo.getLast_build_duration())));
 		
-		TextView endTime = (TextView)convertView.findViewById(R.id.end_time);
+		TextView endTime = viewHolder.endTime;
 		
 		if(endTime != null)
 			endTime.setText(TextUtils.isAvailable(DateUtils.formatTimeForDisplay(repo.getLast_build_finished_at())));
 		
-		TextView endDate = (TextView)convertView.findViewById(R.id.end_date);
+		TextView endDate = viewHolder.endDate;
 		
 		if(endDate != null)
 			endDate.setText(TextUtils.isAvailable(DateUtils.formatDateForDisplay(repo.getLast_build_finished_at())));
 		
-		return convertView;
+		return viewHolder.root;
 	}
 	
 	/**

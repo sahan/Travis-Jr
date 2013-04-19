@@ -52,6 +52,42 @@ public class BuildAdapter extends ArrayAdapter<Build> {
 
 	
 	/**
+	 * <p>Pre-references child views within the root list item layout. 
+	 * 
+	 * @version 1.1.0
+	 */
+	private static final class ViewHolder {
+		
+		public ViewGroup root;
+		public ImageView status;
+		public TextView buildNumber;
+		public TextView duration;
+		public TextView branch;
+		public TextView event;
+		public TextView message;
+		
+		/**
+		 * <p>Creates a new {@link ViewHolder} for the given view.
+		 * 
+		 * @param convertView
+		 * 			the root view of the list item whose child views are 
+		 * 			to be referenced
+		 *
+		 * @since 1.1.0
+		 */
+		public ViewHolder(View convertView) {
+		
+			root = (ViewGroup) convertView.findViewById(R.id.root);
+			status = (ImageView) convertView.findViewById(R.id.status);
+			buildNumber = (TextView) convertView.findViewById(R.id.build_number);
+			duration = (TextView) convertView.findViewById(R.id.duration);
+			branch = (TextView) convertView.findViewById(R.id.branch);
+			event = (TextView) convertView.findViewById(R.id.event);
+			message = (TextView) convertView.findViewById(R.id.message);
+		}
+	}
+	
+	/**
 	 * <p>The {@link Context} in which the adapter was instantiated. 
 	 */
 	private Context context;
@@ -87,13 +123,14 @@ public class BuildAdapter extends ArrayAdapter<Build> {
 			LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, 115);
 			convertView.setLayoutParams(params);
 			convertView.setPadding(0, 0, 5, 0);
+			convertView.setTag(new ViewHolder(convertView));
 		}
 		
 		Build repo = data.get(position);
 		
-		processTheme(position, convertView);
-		processStatus(position, repo, convertView);
-		processInfo(repo, convertView);
+		processTheme(position, (ViewHolder)convertView.getTag());
+		processStatus(position, repo, (ViewHolder)convertView.getTag());
+		processInfo(repo, (ViewHolder)convertView.getTag());
 		
 		return convertView;
 	}
@@ -105,25 +142,20 @@ public class BuildAdapter extends ArrayAdapter<Build> {
 	 * @param position
 	 * 			the index of the list item
 	 * 
-	 * @param convertView
-	 * 			the root view to be processed
+	 * @param viewHolder
+	 * 			the {@link ViewHolder} of the root view to be processed
 	 * 
 	 * @return the processed root view
 	 */
-	private View processTheme(int position, View convertView) {
+	private View processTheme(int position, ViewHolder viewHolder) {
 
-		if(position % 2 == 0) {
-			
-			convertView.findViewById(R.id.root)
-			.setBackgroundColor(context.getResources().getColor(R.color.bg_list_item_generic));
-		}
-		else {
-			
-			convertView.findViewById(R.id.root)
-			.setBackgroundColor(context.getResources().getColor(R.color.bg_list_item_alt));
-		}
+		if(position % 2 == 0)
+			viewHolder.root.setBackgroundColor(context.getResources().getColor(R.color.bg_list_item_generic));
 		
-		return convertView;
+		else
+			viewHolder.root.setBackgroundColor(context.getResources().getColor(R.color.bg_list_item_alt));
+		
+		return viewHolder.root;
 	}
 	
 	/**
@@ -135,19 +167,19 @@ public class BuildAdapter extends ArrayAdapter<Build> {
 	 * @param build
 	 * 			the {@link Build} whose status is to be indicated
 	 * 
-	 * @param convertView
-	 * 			the root view to be processed
+	 * @param viewHolder
+	 * 			the {@link ViewHolder} of the root view to be processed
 	 * 
 	 * @return the processed root view
 	 */
-	private View processStatus(int position, Build build, View convertView) {
+	private View processStatus(int position, Build build, ViewHolder viewHolder) {
 	
 		Short buildStatus = build.getResult();
 		
 		String stateFinished = Resources.key(R.string.key_state_finished);
 		boolean finished = (buildStatus != null)? true :build.getState().equals(stateFinished)? true :false;
 		
-		final ImageView status = ((ImageView)convertView.findViewById(R.id.status));
+		final ImageView status = viewHolder.status;
 		
 		if(buildStatus == null && finished) {
 			
@@ -166,10 +198,8 @@ public class BuildAdapter extends ArrayAdapter<Build> {
 			status.setImageResource(position % 2 == 0? R.drawable.gear_failed :R.drawable.gear_failed_alt);
 		}
 		
-		return convertView;
+		return viewHolder.root;
 	}
-	
-	
 	
 	/**
 	 * <p>Plugs data into the information placeholders on the build list item. 
@@ -177,29 +207,20 @@ public class BuildAdapter extends ArrayAdapter<Build> {
 	 * @param build
 	 * 			the {@link Build} whose information is to be processed
 	 * 
-	 * @param convertView
-	 * 			the root view to be processed
+	 * @param viewHolder
+	 * 			the {@link ViewHolder} of the root view to be processed
 	 * 
 	 * @return the processed root view
 	 */
-	private View processInfo(Build build, View convertView) {
+	private View processInfo(Build build, ViewHolder viewHolder) {
 
-		((TextView)convertView.findViewById(R.id.build_number))
-		.setText(String.valueOf(build.getNumber()));
+		viewHolder.buildNumber.setText(String.valueOf(build.getNumber()));
+		viewHolder.duration.setText(String.valueOf(TextUtils.isAvailable(build.getDuration())));
+		viewHolder.branch.setText(String.valueOf(TextUtils.isAvailable(build.getBranch())));
+		viewHolder.event.setText(String.valueOf(TextUtils.isAvailable(build.getEvent_type())));
+		viewHolder.message.setText(String.valueOf(TextUtils.isAvailable(build.getMessage())));
 		
-		((TextView)convertView.findViewById(R.id.duration))
-		.setText(String.valueOf(TextUtils.isAvailable(build.getDuration())));
-		
-		((TextView)convertView.findViewById(R.id.branch))
-		.setText(String.valueOf(TextUtils.isAvailable(build.getBranch())));
-		
-		((TextView)convertView.findViewById(R.id.event))
-		.setText(String.valueOf(TextUtils.isAvailable(build.getEvent_type())));
-		
-		((TextView)convertView.findViewById(R.id.message))
-		.setText(String.valueOf(TextUtils.isAvailable(build.getMessage())));
-		
-		return convertView;
+		return viewHolder.root;
 	}
 	
 	/**

@@ -14,5 +14,6 @@
     <string name="key_member">member</string>
     <string name="key_organization">organization</string>
     <string name="key_state_finished">finished</string>
+    <string name="key_tab">tab</string>
 
 </resources>

@@ -423,8 +423,8 @@ public class Repo implements Serializable, Comparable<Repo>, Cloneable {
 	}
 
 	/**
-	 * <p>Creates a new {@link Repo} with the same instance state as 
-	 * <b>this</b> with an unmodifiable list of {@link Build}s.
+	 * <p>Creates a deep clone of a {@link Repo} with the same instance 
+	 * state as <b>this</b> with an unmodifiable list of {@link Build}s.
 	 * 
 	 * @since 1.1.1
 	 */

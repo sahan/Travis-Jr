@@ -38,12 +38,13 @@ import android.widget.TextView;
 import com.lonepulse.icklebot.IckleActivity;
 import com.lonepulse.travisjr.R;
 import com.lonepulse.travisjr.pref.SettingsActivity;
+import com.lonepulse.travisjr.view.TabSwipeListener;
 
 /**
  * <p>A custom {@link IckleActivity} which is tailored to setup the 
  * action bar and provide support for synchronization.
  * 
- * @version 1.1.1
+ * @version 1.1.2
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
@@ -190,6 +191,34 @@ public class TravisJrActivity extends IckleActivity {
 		
 			for (int id : stringResourceIds)
 				actionBar.addTab(actionBar.newTab().setText(id).setTag(id).setTabListener(tabListener));
+		}
+	}
+	
+	/**
+	 * <p>Enables lateral swiping between navigation tabs by detecting swipe 
+	 * gestures on the given target {@link View}.
+	 *
+	 * @param targetViewId
+	 * 			the compulsory target {@link View} which is to be swiped 
+	 * 
+	 * @param moreTargetViewIds
+	 * 			additional IDs of the {@link View}s which can be swiped 
+	 * 
+	 * @since 1.1.2
+	 */
+	protected void enableTabSwiping(int targetViewId, int... moreTargetViewIds) {
+		
+		TabSwipeListener tabSwipeListener = new TabSwipeListener(this);
+		
+		View main = findViewById(targetViewId);
+		if(main != null) main.setOnTouchListener(tabSwipeListener);
+	
+		for (int id : moreTargetViewIds) {
+
+			View view = findViewById(id);
+			
+			if(view != null) 
+				view.setOnTouchListener(tabSwipeListener);
 		}
 	}
 	
@@ -382,6 +411,28 @@ public class TravisJrActivity extends IckleActivity {
 	protected final boolean isSyncing() {
 		
 		return getTravisJrApplication().isSyncing();
+	}
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		
+		super.onSaveInstanceState(outState);
+		
+		ActionBar actionBar = getActionBar();
+		
+		if(actionBar != null && actionBar.getTabCount() > 1)
+			outState.putInt(getString(R.string.key_tab), actionBar.getSelectedTab().getPosition());
+	}
+	
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		
+		super.onRestoreInstanceState(savedInstanceState);
+		
+		ActionBar actionBar = getActionBar();
+		
+		if(actionBar != null && actionBar.getTabCount() > 1)
+			actionBar.setSelectedNavigationItem(savedInstanceState.getInt(getString(R.string.key_tab)));
 	}
 	
 	/**
