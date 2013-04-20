@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@id/root"
     android:layout_width="match_parent"
-    android:layout_height="75dp"
-    android:background="@color/bg_list_item_generic"
+    android:layout_height="80dp"
+    android:background="@color/bg_logo"
     android:baselineAligned="false"
     android:orientation="horizontal"
     android:weightSum="1" >
@@ -12,7 +12,7 @@
     <RelativeLayout
         android:id="@+id/panel_indicator"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="80dp"
         android:layout_weight="1"
         android:gravity="left"
         android:paddingRight="5dp" >
@@ -23,8 +23,8 @@
             android:layout_height="86dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="-23dp"
-            android:layout_marginTop="-23dp"
+            android:layout_marginLeft="-25dp"
+            android:layout_marginTop="-20dp"
             android:scaleType="centerCrop"
             android:src="@drawable/gear_passed"
             tools:ignore="ContentDescription" />
@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="38dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="8dp"
             android:singleLine="true"
             android:text="@string/not_available"
             android:textColor="@color/txt_blue"
@@ -58,7 +58,7 @@
     <RelativeLayout
         android:id="@id/panel_event"
         android:layout_width="150dp"
-        android:layout_height="match_parent"
+        android:layout_height="80dp"
         android:layout_marginRight="10dp"
         android:gravity="right" >
 

@@ -42,7 +42,7 @@ public interface RepoService {
 	 * 
 	 * @return all associated {@link Repo}s
 	 * 
-	 * @throws RepoAccessException
+	 * @throws TabSwipeListenerException
 	 * 			if the {@link Repo}(s) cannot be read via the remote endpoint.
 	 * 
 	 * @since 1.1.0
@@ -54,7 +54,7 @@ public interface RepoService {
 	 * 
 	 * @return all associated {@link Repo}s
 	 * 
-	 * @throws RepoAccessException
+	 * @throws TabSwipeListenerException
 	 * 			if the {@link Repo}(s) cannot be read via the remote endpoint.
 	 * 
 	 * @since 1.1.2

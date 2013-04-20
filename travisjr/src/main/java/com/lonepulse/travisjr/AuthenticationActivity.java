@@ -80,7 +80,7 @@ public class AuthenticationActivity extends IckleActivity {
 	@InjectView(R.id.organization)
 	private CheckBox organization;
 	
-	@InjectAnimation(R.anim.slide_in_from_bottom)
+	@InjectAnimation(R.anim.slide_in_bottom)
 	private Animation slideInFromBottom;
 	
 	@InjectAnimation(R.anim.pulsate)

@@ -86,6 +86,7 @@ public class TravisJrActivity extends IckleActivity {
 	 */
 	private Animation fadeOut;
 	
+	
 	/**
 	 * <p>The instance of {@link ActionBar.Tab} which handles navigation tabs.
 	 */

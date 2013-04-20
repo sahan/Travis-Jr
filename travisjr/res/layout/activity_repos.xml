@@ -1,47 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@id/root"
+    android:id="@id/tab_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_lightest"
-    android:orientation="vertical" >
+    android:background="@color/bg_lightest" >
 
-    <include
-        android:id="@id/alert_data"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        layout="@layout/alert_no_data_connection"
-        android:visibility="gone" />
-
-    <include
-        android:id="@id/alert_repos_empty"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        layout="@layout/alert_no_repos_found"
-        android:visibility="gone" />
-
-    <include
-        android:id="@id/alert_repos_error"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        layout="@layout/alert_error_fetching_repos"
-        android:visibility="gone" />
-
-    <include
-        android:id="@id/alert_sync"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        layout="@layout/alert_syncing_repos"
-        android:visibility="gone" />
-
-    <ListView
-        android:id="@android:id/list"
+    <LinearLayout
+        android:id="@id/root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/bg_lightest"
-        android:dividerHeight="1dp"
-        android:drawSelectorOnTop="false"
-        android:fastScrollEnabled="true" />
+        android:orientation="vertical" >
 
-</LinearLayout>
+        <include
+            android:id="@id/alert_data"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            layout="@layout/alert_no_data_connection"
+            android:visibility="gone" />
+
+        <include
+            android:id="@id/alert_repos_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            layout="@layout/alert_no_repos_found"
+            android:visibility="gone" />
+
+        <include
+            android:id="@id/alert_repos_error"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            layout="@layout/alert_error_fetching_repos"
+            android:visibility="gone" />
+
+        <include
+            android:id="@id/alert_sync"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            layout="@layout/alert_syncing_repos"
+            android:visibility="gone" />
+
+        <ListView
+            android:id="@android:id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/bg_lightest"
+            android:dividerHeight="1dp"
+            android:drawSelectorOnTop="false"
+            android:fastScrollEnabled="true" />
+    </LinearLayout>
+
+</FrameLayout>

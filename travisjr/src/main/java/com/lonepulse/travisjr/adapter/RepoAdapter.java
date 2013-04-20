@@ -29,7 +29,6 @@ import android.provider.ContactsContract.Contacts.Data;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -122,12 +121,7 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 	
 		if(convertView == null) {
 			
-			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = inflater.inflate(R.layout.list_item_repo, null);
-			
-			LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, 110);
-			convertView.setLayoutParams(params);
-			convertView.setPadding(0, 0, 5, 0);
+			convertView = LayoutInflater.from(context).inflate(R.layout.list_item_repo, null);
 			convertView.setTag(new ViewHolder(convertView));
 		}
 		

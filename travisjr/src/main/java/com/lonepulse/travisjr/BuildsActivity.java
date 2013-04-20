@@ -27,7 +27,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AbsListView.LayoutParams;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -77,6 +76,10 @@ public class BuildsActivity extends TravisJrActivity {
 	@Stateful
 	private List<Build> builds;
 	
+	@Stateful
+	private int scrollPosition;
+	
+	
 	/**
 	 * <p>The {@link Repo} whose {@link Build}s are being displayed.
 	 */
@@ -92,9 +95,6 @@ public class BuildsActivity extends TravisJrActivity {
 		
 		View headerRepo = getLayoutInflater().inflate(R.layout.header_repo, null);
 		
-		LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, 135);
-		headerRepo.setLayoutParams(params);
-		
 		((TextView)headerRepo.findViewById(R.id.repo_name))
 		.setText(repo.getSlug());
 		
@@ -109,6 +109,14 @@ public class BuildsActivity extends TravisJrActivity {
 		
 		super.onResume();
 		refresh();
+		listView.setSelectionFromTop(scrollPosition, 0);
+	}
+	
+	@Override
+	protected void onPause() {
+		
+		super.onPause();
+		scrollPosition = listView.getFirstVisiblePosition();
 	}
 	
 	@Override

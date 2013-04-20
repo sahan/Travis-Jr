@@ -39,7 +39,7 @@ public interface AccountService {
 	 * 
 	 * @return the saved GitHub username
 	 * 
-	 * @throws MissingCredentialsException
+	 * @throws MissingViewException
 	 * 			if no GitHUb username was previously saved   
 	 * 
 	 * @since 1.1.0
@@ -62,7 +62,7 @@ public interface AccountService {
 	 * 
 	 * @return the username linked to the official GitHub application
 	 * 
-	 * @throws MissingCredentialsException
+	 * @throws MissingViewException
 	 * 			if the original GitHUb application is not in use or if 
 	 * 			its account credentials cannot be accessed
 	 * 
@@ -73,7 +73,7 @@ public interface AccountService {
 	/**
 	 * <p>Indicates whether the user had already setup account credentials. 
 	 * This can be used before {@link #getGitHubUsername()} to circumvent a 
-	 * {@link MissingCredentialsException}.
+	 * {@link MissingViewException}.
 	 * 
 	 * @return {@code true} if credentials are already saved
 	 * 

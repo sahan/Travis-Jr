@@ -94,10 +94,7 @@ public class ReposActivity extends TravisJrActivity {
 	private List<Repo> contributedRepos;
 	
 	@Stateful
-	private int itemPosition;
-	
-	@Stateful
-	private int itemTop;
+	private int scrollPosition;
 	
 	
 	@Override
@@ -109,8 +106,8 @@ public class ReposActivity extends TravisJrActivity {
 			
 			addTabs(R.string.key_created, R.string.key_contributed);
 			
-			enableTabSwiping(android.R.id.list, R.id.root, 
-							 R.id.alert_data, R.id.alert_repos_empty, 
+			enableTabSwiping(R.id.tab_content, android.R.id.list, R.id.root,
+							 R.id.alert_data, R.id.alert_repos_empty,
 							 R.id.alert_repos_error, R.id.alert_sync);
 		}
 	}
@@ -125,15 +122,15 @@ public class ReposActivity extends TravisJrActivity {
 	protected void onResume() {
 		
 		super.onResume();
-		refreshRepos();
-		listView.setSelectionFromTop(itemPosition, 0);
+		refresh();
+		listView.setSelectionFromTop(scrollPosition, 0);
 	}
 	
 	@Override
 	protected void onPause() {
 		
 		super.onPause();
-		itemPosition = listView.getFirstVisiblePosition();
+		scrollPosition = listView.getFirstVisiblePosition();
 	}
 	
 	@Override
@@ -147,7 +144,7 @@ public class ReposActivity extends TravisJrActivity {
 	 * existence of a connected data network.
 	 */
 	@Click(R.id.alert_repos_error)
-	private void refreshRepos() {
+	private void refresh() {
 		
 		if(isSyncing() && repos != null) {
 			

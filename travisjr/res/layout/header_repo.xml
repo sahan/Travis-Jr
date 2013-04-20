@@ -1,58 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="85dp"
+    android:layout_height="95dp"
     android:background="@color/bg_list_header" >
 
-    <ImageView
-        android:id="@id/octocat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginRight="-64dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/octocat_blue"
-        tools:ignore="ContentDescription" />
-
-    <View
-        android:id="@id/divider"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="7dp"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/dv_ver_dark_to_white" />
+        android:layout_height="95dp"
+        android:background="@color/bg_list_header" >
 
-    <TextView
-        android:id="@id/repo_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:paddingBottom="5dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="10dp"
-        android:shadowColor="@color/bg_darkest"
-        android:shadowRadius="2.0"
-        android:singleLine="true"
-        android:text="@string/not_available"
-        android:textColor="@color/txt_lightest"
-        android:textSize="@dimen/txt_xl"
-        android:textStyle="bold" />
+        <ImageView
+            android:id="@id/octocat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="-64dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/octocat_blue"
+            tools:ignore="ContentDescription" />
 
-    <TextView
-        android:id="@+id/description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/repo_name"
-        android:layout_below="@id/repo_name"
-        android:ellipsize="end"
-        android:maxLines="2"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:text="@string/not_available"
-        android:textColor="@color/txt_darker"
-        android:textSize="@dimen/txt_m"
-        android:textStyle="bold" />
+        <View
+            android:id="@id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="7dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/dv_ver_dark_to_white" />
 
-</RelativeLayout>
+        <TextView
+            android:id="@id/repo_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="10dp"
+            android:shadowColor="@color/bg_darkest"
+            android:shadowRadius="2.0"
+            android:singleLine="true"
+            android:text="@string/not_available"
+            android:textColor="@color/txt_lightest"
+            android:textSize="@dimen/txt_xl"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/repo_name"
+            android:layout_below="@id/repo_name"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/not_available"
+            android:textColor="@color/txt_darker"
+            android:textSize="@dimen/txt_m"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+</LinearLayout>

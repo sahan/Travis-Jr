@@ -3,24 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@id/root"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
-    android:layout_gravity="center"
-    android:background="@color/bg_list_item_generic"
+    android:layout_height="77dp"
+    android:background="@color/bg_logo"
     android:baselineAligned="false"
     android:orientation="horizontal"
     android:weightSum="1" >
 
     <RelativeLayout
         android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0.45" >
+        android:layout_height="77dp"
+        android:layout_weight="0.40" >
 
         <ImageView
             android:id="@id/status"
             android:layout_width="86dp"
             android:layout_height="86dp"
-            android:layout_marginLeft="-25dp"
-            android:layout_marginTop="-20dp"
+            android:layout_marginLeft="-23dp"
+            android:layout_marginTop="-23dp"
             android:scaleType="centerCrop"
             android:src="@drawable/gear_passed"
             tools:ignore="ContentDescription" />
@@ -30,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="38dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="8dp"
             android:orientation="vertical" >
 
             <TextView
@@ -58,11 +57,11 @@
     <include
         android:id="@id/panel_temporal"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="77dp"
         android:layout_gravity="right"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="10dp"
-        android:layout_weight="0.55"
+        android:layout_weight="0.60"
         layout="@layout/stats_temporal" />
 
 </LinearLayout>
