@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.lonepulse.travisjr.test"
     android:versionCode="1"
-    android:versionName="0.1.1-SNAPSHOT" >
+    android:versionName="1.1.0" >
 
     <uses-sdk
         android:minSdkVersion="15"
@@ -21,6 +21,6 @@
 
     <instrumentation
         android:name="android.test.InstrumentationTestRunner"
-        android:targetPackage="com.lonepulse.travisjr.test" />
+        android:targetPackage="com.lonepulse.travisjr" />
 
 </manifest>

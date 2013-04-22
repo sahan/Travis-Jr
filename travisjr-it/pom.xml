@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>com.lonepulse</groupId>
 		<artifactId>travisjr-parent</artifactId>
-		<version>0.1.1-SNAPSHOT</version>
+		<version>1.1.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -33,7 +33,7 @@
 			<groupId>com.lonepulse</groupId>
 			<artifactId>travisjr</artifactId>
 			<type>apk</type>
-			<version>0.1.1-SNAPSHOT</version>
+			<version>1.1.0-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -41,26 +41,17 @@
 			<groupId>com.lonepulse</groupId>
 			<artifactId>travisjr</artifactId>
 			<type>jar</type>
-			<version>0.1.1-SNAPSHOT</version>
+			<version>1.1.0-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<type>jar</type>
-			<version>4.8.2</version>
-			<scope>test</scope>
+			<groupId>com.jayway.android.robotium</groupId>
+			<artifactId>robotium-solo</artifactId>
+			<version>4.1</version>
 		</dependency>
-		
-		<dependency>
-            <groupId>com.pivotallabs</groupId>
-            <artifactId>robolectric</artifactId>
-            <version>1.1</version>
-            <scope>test</scope>
-        </dependency>
 	</dependencies>
-	
+
 	<build>
 		<pluginManagement>
 			<plugins>
