@@ -139,7 +139,6 @@ public class TravisJrActivity extends IckleActivity {
 			public void onAnimationEnd(Animation animation) {
 			
 				menuItemSync.setActionView(null);
-				getTravisJrApplication().setSyncing(false);	
 			}
 		});
 		
@@ -363,9 +362,9 @@ public class TravisJrActivity extends IckleActivity {
 	 */
 	protected synchronized void startSyncAnimation() {
 		
+		getTravisJrApplication().setSyncing(true);
+		
 		if(!isSyncing() && menuItemSync != null) {
-			
-			getTravisJrApplication().setSyncing(true);
 			
 			runOnUiThread(new Runnable() {
 				
@@ -387,6 +386,8 @@ public class TravisJrActivity extends IckleActivity {
 	 */
 	protected synchronized void stopSyncAnimation() {
 
+		getTravisJrApplication().setSyncing(false);	
+		
 		if(isSyncing() && menuItemSync != null) {
 			
 			runOnUiThread(new Runnable() {
