@@ -38,7 +38,7 @@ import android.widget.TextView;
 import com.lonepulse.icklebot.IckleActivity;
 import com.lonepulse.travisjr.R;
 import com.lonepulse.travisjr.pref.SettingsActivity;
-import com.lonepulse.travisjr.view.TabSwipeListener;
+import com.lonepulse.travisjr.view.TabSwipeDetector;
 
 /**
  * <p>A custom {@link IckleActivity} which is tailored to setup the 
@@ -209,7 +209,7 @@ public class TravisJrActivity extends IckleActivity {
 	 */
 	protected void enableTabSwiping(int targetViewId, int... moreTargetViewIds) {
 		
-		TabSwipeListener tabSwipeListener = new TabSwipeListener(this);
+		TabSwipeDetector tabSwipeListener = new TabSwipeDetector(this);
 		
 		View main = findViewById(targetViewId);
 		if(main != null) main.setOnTouchListener(tabSwipeListener);
@@ -356,8 +356,8 @@ public class TravisJrActivity extends IckleActivity {
 	protected synchronized void onSync() {}
 	
 	/**
-	 * <p>Invoke this service to start the default sync animation 
-	 * on the action bar.
+	 * <p>Invoke this service to set the sync lock and start the default 
+	 * sync animation on the action bar.
 	 * 
 	 * @since 1.1.0
 	 */
@@ -380,8 +380,8 @@ public class TravisJrActivity extends IckleActivity {
 	}
 	
 	/**
-	 * <p>Invoke this service to stop the default sync animation 
-	 * on the action bar.
+	 * <p>Invoke this service to clear the sync lock and stop the default 
+	 * sync animation on the action bar.
 	 * 
 	 * @since 1.1.0
 	 */

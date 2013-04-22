@@ -24,7 +24,6 @@ package com.lonepulse.travisjr.model;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -423,13 +422,12 @@ public class Repo implements Serializable, Comparable<Repo>, Cloneable {
 	}
 
 	/**
-	 * <p>Creates a deep clone of a {@link Repo} with the same instance 
-	 * state as <b>this</b> with an unmodifiable list of {@link Build}s.
+	 * <p>Performs a deep clone of a {@link Repo}..
 	 * 
 	 * @since 1.1.1
 	 */
 	@Override
-	public Object clone() {
+	public Repo clone() throws CloneNotSupportedException {
 		
 		Repo repo = new Repo();
 		
@@ -444,7 +442,13 @@ public class Repo implements Serializable, Comparable<Repo>, Cloneable {
 		repo.setLast_build_result(last_build_result);
 		repo.setLast_build_started_at(last_build_started_at);
 		repo.setLast_build_status(last_build_status);
-		repo.setBuilds(Collections.unmodifiableList(this.builds));
+		
+		List<Build> buildClones = new ArrayList<Build>();
+		
+		for (Build build : builds)
+			buildClones.add(build.clone());
+		
+		repo.setBuilds(buildClones);
 		
 		return repo;
 	}

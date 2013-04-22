@@ -21,6 +21,7 @@ package com.lonepulse.travisjr.view;
  */
 
 
+import android.animation.ObjectAnimator;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
@@ -34,19 +35,20 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 
 import com.lonepulse.travisjr.R;
 
 /**
  * <p>An {@link OnTouchListener} which detects a lateral {@link ActionBar.Tab} 
  * swipe and switches to the appropriate tab once the {@link View} which responds 
- * to the swipe if <i>flinged</i>.
+ * to the swipe is <i>flinged</i>.
  * 
  * @version 1.1.0
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
-public class TabSwipeListener extends SimpleOnGestureListener implements OnTouchListener {
+public class TabSwipeDetector extends SimpleOnGestureListener implements OnTouchListener {
 
 	/**
 	 * <p>The minimum fling distance which qualifies for a swipe.
@@ -84,6 +86,16 @@ public class TabSwipeListener extends SimpleOnGestureListener implements OnTouch
 	private Animation slideInLeft;
 	
 	/**
+	 * <p>The transition to notify a futile right swipe.
+	 */
+	private ObjectAnimator flipEdgeLeft;
+	
+	/**
+	 * <p>The transition to notify a futile left swipe.
+	 */
+	private ObjectAnimator flipEdgeRight;
+	
+	/**
 	 * <p>The root content view to which the transition animations should be applied.
 	 */
 	private View content;
@@ -100,7 +112,7 @@ public class TabSwipeListener extends SimpleOnGestureListener implements OnTouch
 	
 	
 	/**
-	 * <p>Creates a new {@link TabSwipeListener} by taking the {@link ActionBar} whose 
+	 * <p>Creates a new {@link TabSwipeDetector} by taking the {@link ActionBar} whose 
 	 * navigation tabs are to swiped.
 	 * 
 	 * @param activity
@@ -108,7 +120,7 @@ public class TabSwipeListener extends SimpleOnGestureListener implements OnTouch
 	 *
 	 * @since 1.1.0
 	 */
-	public TabSwipeListener(Activity activity) {
+	public TabSwipeDetector(Activity activity) {
 		
 		View tabContent = activity.findViewById(R.id.tab_content);
 			
@@ -137,6 +149,14 @@ public class TabSwipeListener extends SimpleOnGestureListener implements OnTouch
 		this.slideOutLeft = AnimationUtils.loadAnimation(activity, R.anim.slide_out_left);
 		this.slideInRight = AnimationUtils.loadAnimation(activity, R.anim.slide_in_right);
 		this.slideInLeft = AnimationUtils.loadAnimation(activity, R.anim.slide_in_left);
+		
+		flipEdgeLeft = ObjectAnimator.ofFloat(content, "rotationY", 5, 0);
+		flipEdgeLeft.setInterpolator(new LinearInterpolator());
+		flipEdgeLeft.setDuration(activity.getResources().getInteger(R.integer.dur_anim_xs));
+		
+		flipEdgeRight = ObjectAnimator.ofFloat(content, "rotationY", -5, 0);
+		flipEdgeRight.setInterpolator(new LinearInterpolator());
+		flipEdgeRight.setDuration(activity.getResources().getInteger(R.integer.dur_anim_xs));
 	}
 	
 	/**
@@ -167,52 +187,68 @@ public class TabSwipeListener extends SimpleOnGestureListener implements OnTouch
 				
 				boolean swipedLeft = (e1.getX() - e2.getX()) > 0;
 				
-				if(swipedLeft && (++selectedIndex <= tabCount - 1)) {
+				if(swipedLeft) {
 					
-					final int index = selectedIndex; 
+					if(++selectedIndex <= tabCount - 1) {
 					
-					slideOutLeft.setAnimationListener(new AnimationListener() {
+						final int index = selectedIndex; 
 						
-						@Override
-						public void onAnimationStart(Animation animation) {}
-						
-						@Override
-						public void onAnimationRepeat(Animation animation) {}
-						
-						@Override
-						public void onAnimationEnd(Animation animation) {
+						slideOutLeft.setAnimationListener(new AnimationListener() {
 							
-							actionBar.setSelectedNavigationItem(index);
-							content.startAnimation(slideInRight);
-						}
-					});
+							@Override
+							public void onAnimationStart(Animation animation) {}
+							
+							@Override
+							public void onAnimationRepeat(Animation animation) {}
+							
+							@Override
+							public void onAnimationEnd(Animation animation) {
+								
+								actionBar.setSelectedNavigationItem(index);
+								content.startAnimation(slideInRight);
+							}
+						});
+						
+						content.startAnimation(slideOutLeft);
+					}
+					else {
+						
+						flipEdgeRight.start();
+					}
 					
-					content.startAnimation(slideOutLeft);
 					return true;
 				}
 				
-				if(!swipedLeft && (--selectedIndex >= 0)) {
+				if(!swipedLeft) {
 					
-					final int index = selectedIndex;
+					if(--selectedIndex >= 0) {
 					
-					slideOutRight.setAnimationListener(new AnimationListener() {
+						final int index = selectedIndex;
 						
-						@Override
-						public void onAnimationStart(Animation animation) {}
+						slideOutRight.setAnimationListener(new AnimationListener() {
+							
+							@Override
+							public void onAnimationStart(Animation animation) {}
+							
+							@Override
+							public void onAnimationRepeat(Animation animation) {}
+							
+							@Override
+							public void onAnimationEnd(Animation animation) {
+							
+								actionBar.setSelectedNavigationItem(index);
+								content.startAnimation(slideInLeft);
+							}
+						});
 						
-						@Override
-						public void onAnimationRepeat(Animation animation) {}
+						content.startAnimation(slideOutRight);
+					}
+					else {
 						
-						@Override
-						public void onAnimationEnd(Animation animation) {
-						
-							actionBar.setSelectedNavigationItem(index);
-							content.startAnimation(slideInLeft);
-						}
-					});
+						flipEdgeLeft.start();
+					}
 					
-					content.startAnimation(slideOutRight);
-            		return true;
+					return true;
 				}
 			}
         }

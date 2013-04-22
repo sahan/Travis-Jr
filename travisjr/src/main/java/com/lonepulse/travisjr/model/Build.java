@@ -31,7 +31,7 @@ import java.io.Serializable;
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
-public class Build implements Serializable, Comparable<Build> {
+public class Build implements Serializable, Comparable<Build>, Cloneable {
 
 
 	private static final long serialVersionUID = -3466293008201679790L;
@@ -399,5 +399,29 @@ public class Build implements Serializable, Comparable<Build> {
 		
 		if(another == null) return -1;
 		return another.getNumber().compareTo(this.getNumber());
+	}
+
+	/**
+	 * <p>Performs a deep clone for this {@link Build} entity.
+	 */
+	@Override
+	public Build clone() throws CloneNotSupportedException {
+		
+		Build build = new Build();
+		
+		build.setBranch(branch);
+		build.setCommit(commit);
+		build.setDuration(duration);
+		build.setEvent_type(event_type);
+		build.setFinished_at(finished_at);
+		build.setId(id);
+		build.setMessage(message);
+		build.setNumber(number);
+		build.setRepository_id(repository_id);
+		build.setResult(result);
+		build.setStarted_at(started_at);
+		build.setState(state);
+		
+		return build;
 	}
 }

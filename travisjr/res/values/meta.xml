@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Travis Jr.</string>
-    <string name="version">Build 0.1.2</string>
+    <string name="version">Release 1.1.0</string>
     <string name="app_url">https://github.com/sahan/Travis-Jr</string>
     <string name="license_apache_v2">Apache License, Version 2.0</string>
     <string name="author">github.com/sahan</string>

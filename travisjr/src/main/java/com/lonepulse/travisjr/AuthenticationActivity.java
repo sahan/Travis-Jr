@@ -26,6 +26,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -54,7 +55,7 @@ import com.lonepulse.travisjr.util.Resources;
  * Home activity.
  * 
  * @version 1.1.0
- * <br><>br>
+ * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
 @Layout(R.layout.activity_authentication)
@@ -98,6 +99,12 @@ public class AuthenticationActivity extends IckleActivity {
 	@InjectPojo
 	private AccountService accountService;
 	
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		
+		super.onCreate(savedInstanceState);
+	}
 	
 	@Override
 	protected void onStart() {

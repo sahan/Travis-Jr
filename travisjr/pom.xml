@@ -10,12 +10,12 @@
 	<parent>
 		<groupId>com.lonepulse</groupId>
 		<artifactId>travisjr-parent</artifactId>
-		<version>0.1.1-SNAPSHOT</version>
+		<version>1.1.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<properties>
-		<project.name>Travis Jr.</project.name>
+		<project.name>Travis Jr. App</project.name>
 	</properties>
 
 	<name>${project.name}</name>
