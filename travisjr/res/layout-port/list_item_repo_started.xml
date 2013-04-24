@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@id/root"
+    android:layout_width="match_parent"
+    android:layout_height="77dp"
+    android:background="@color/bg_logo"
+    android:baselineAligned="false"
+    android:orientation="horizontal" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="77dp"
+        android:weightSum="1"
+        tools:ignore="UselessParent" >
+
+        <RelativeLayout
+            android:id="@+id/panel_repo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@id/start_time"
+            android:paddingRight="5dp" >
+
+            <ImageView
+                android:id="@id/status_started"
+                android:layout_width="86dp"
+                android:layout_height="86dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="-23dp"
+                android:layout_marginTop="-23dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/gear_started"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@id/repo_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="38dp"
+                android:layout_marginTop="8dp"
+                android:singleLine="true"
+                android:text="@string/not_available"
+                android:textColor="@color/txt_blue"
+                android:textSize="@dimen/txt_xl"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@id/build_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/repo_name"
+                android:layout_below="@id/repo_name"
+                android:singleLine="true"
+                android:text="@string/not_available"
+                android:textColor="@color/txt_dark"
+                android:textSize="@dimen/txt_xxl"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/start_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="10dp"
+            android:paddingBottom="2dp"
+            android:text="@string/not_available"
+            android:textColor="@color/txt_blue"
+            android:textSize="@dimen/txt_m"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/start_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/start_time"
+            android:layout_alignRight="@id/start_time"
+            android:layout_marginTop="5dp"
+            android:text="@string/not_available"
+            android:textColor="@color/txt_dark"
+            android:textSize="@dimen/txt_s" />
+
+        <RelativeLayout
+            android:id="@+id/panel_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp" >
+
+            <TextView
+                android:id="@id/duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="bottom"
+                android:singleLine="true"
+                android:text="@string/not_available"
+                android:textColor="@color/txt_blue"
+                android:textSize="@dimen/txt_l" />
+
+            <TextView
+                android:id="@id/sec"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/duration"
+                android:layout_toRightOf="@id/duration"
+                android:gravity="bottom"
+                android:singleLine="true"
+                android:text="@string/lbl_seconds"
+                android:textColor="@color/txt_dark"
+                android:textSize="@dimen/txt_s" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</LinearLayout>

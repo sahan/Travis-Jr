@@ -26,6 +26,8 @@ import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
 import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -166,6 +168,7 @@ public class TravisJrActivity extends IckleActivity {
 			actionBar.setDisplayShowTitleEnabled(false);
 			actionBar.setDisplayShowCustomEnabled(true);
 			actionBar.setCustomView(header);
+			actionBar.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_actionbar));
 		}
 	}
 	
@@ -184,6 +187,9 @@ public class TravisJrActivity extends IckleActivity {
 	protected void addTabs(int... stringResourceIds) {
 		
 		ActionBar actionBar = getActionBar();
+		
+		Drawable background = new ColorDrawable(getResources().getColor(R.color.bg_actionbar_tabs));
+		actionBar.setStackedBackgroundDrawable(background);
 		
 		if(actionBar != null) {
 			
@@ -362,19 +368,22 @@ public class TravisJrActivity extends IckleActivity {
 	 */
 	protected synchronized void startSyncAnimation() {
 		
-		getTravisJrApplication().setSyncing(true);
-		
-		if(!isSyncing() && menuItemSync != null) {
+		if(!isSyncing()) {
 			
-			runOnUiThread(new Runnable() {
-				
-				@Override
-				public void run() {
+			getTravisJrApplication().setSyncing(true);
+			
+			if(menuItemSync != null) {
+			
+				runOnUiThread(new Runnable() {
 					
-					menuItemSync.setActionView(actionViewSync);
-					actionViewSync.startAnimation(rotate);
-				}
-			});
+					@Override
+					public void run() {
+						
+						menuItemSync.setActionView(actionViewSync);
+						actionViewSync.startAnimation(rotate);
+					}
+				});
+			}
 		}
 	}
 	
@@ -386,20 +395,23 @@ public class TravisJrActivity extends IckleActivity {
 	 */
 	protected synchronized void stopSyncAnimation() {
 
-		getTravisJrApplication().setSyncing(false);	
-		
-		if(isSyncing() && menuItemSync != null) {
+		if(isSyncing()) {
 			
-			runOnUiThread(new Runnable() {
+			getTravisJrApplication().setSyncing(false);
+			
+			if(menuItemSync != null) {
 				
-				@Override
-				public void run() {
+				runOnUiThread(new Runnable() {
 					
-					actionViewSync.clearAnimation();
-					menuItemSync.setActionView(actionViewComplete);
-					actionViewComplete.startAnimation(fadeOut);
-				}
-			});
+					@Override
+					public void run() {
+						
+						actionViewSync.clearAnimation();
+						menuItemSync.setActionView(actionViewComplete);
+						actionViewComplete.startAnimation(fadeOut);
+					}
+				});
+			}
 		}
 	}
 	

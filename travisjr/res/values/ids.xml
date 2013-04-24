@@ -5,12 +5,14 @@
     <item name="divider" type="id">divider</item>
     <item name="icon" type="id">icon</item>
     <item name="octocat" type="id">octocat</item>
+    <item name="username" type="id">username</item>
     <item name="message" type="id">message</item>
     <item name="action" type="id">action</item>
     <item name="header" type="id">header</item>
     <item name="title" type="id">title</item>
     <item name="subtitle" type="id">subtitle</item>
     <item name="status" type="id">status</item>
+    <item name="status_started" type="id">status_started</item>
     <item name="time" type="id">time</item>
     <item name="git" type="id">git</item>
     <item name="repo_name" type="id">repo_name</item>

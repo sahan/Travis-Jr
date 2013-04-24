@@ -50,8 +50,8 @@ public class LicensesActivity extends ListActivity implements OnItemClickListene
 	
 	
 	private String[] libraries;
-	private String authorUrl;
-	private String licenseApacheV2;
+	private String[] libraryLicenses;
+	private String[] libraryUrls;
 	
 	
 	@Override
@@ -59,9 +59,9 @@ public class LicensesActivity extends ListActivity implements OnItemClickListene
 		
 		super.onCreate(savedInstanceState);
 		
-		libraries = getResources().getStringArray(R.array.oss_licenses);
-		authorUrl = getString(R.string.author_url);
-		licenseApacheV2 = getString(R.string.license_apache_v2);
+		libraries = getResources().getStringArray(R.array.libraries);
+		libraryLicenses = getResources().getStringArray(R.array.library_licenses);
+		libraryUrls = getResources().getStringArray(R.array.library_urls);
 		
 		String key_library = "library";
 		String key_license = "license";
@@ -71,11 +71,11 @@ public class LicensesActivity extends ListActivity implements OnItemClickListene
 		
 		List<Map<String, String>> data = new ArrayList<Map<String, String>>();
 		
-		for (String library : libraries) {
+		for (int i = 0; i < libraries.length; i++) {
 			
 			Map<String, String> model = new HashMap<String, String>();
-			model.put(key_library, library);
-			model.put(key_license, licenseApacheV2);
+			model.put(key_library, libraries[i]);
+			model.put(key_license, libraryLicenses[i]);
 			
 			data.add(model);
 		}
@@ -88,7 +88,7 @@ public class LicensesActivity extends ListActivity implements OnItemClickListene
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		
 		Intent intent = new Intent(Intent.ACTION_VIEW);
-		intent.setData(Uri.parse(authorUrl + "/" + libraries[position].split(" ")[0]));
+		intent.setData(Uri.parse(libraryUrls[position]));
 		
 		startActivity(intent);
 	}

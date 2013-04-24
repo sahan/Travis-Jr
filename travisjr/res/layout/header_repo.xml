@@ -24,7 +24,7 @@
         <View
             android:id="@id/divider"
             android:layout_width="match_parent"
-            android:layout_height="7dp"
+            android:layout_height="5dp"
             android:layout_alignParentBottom="true"
             android:background="@drawable/dv_ver_dark_to_white" />
 

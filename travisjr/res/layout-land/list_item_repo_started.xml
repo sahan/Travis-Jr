@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@id/root"
+    android:layout_width="match_parent"
+    android:layout_height="77dp"
+    android:background="@color/bg_logo"
+    android:baselineAligned="false"
+    android:orientation="horizontal"
+    android:weightSum="1" >
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="77dp"
+        android:layout_weight="0.40" >
+
+        <ImageView
+            android:id="@id/status_started"
+            android:layout_width="86dp"
+            android:layout_height="86dp"
+            android:layout_marginLeft="-23dp"
+            android:layout_marginTop="-23dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/gear_started"
+            tools:ignore="ContentDescription" />
+
+        <LinearLayout
+            android:id="@+id/panel_repo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="38dp"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@id/repo_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="@string/not_available"
+                android:textColor="@color/txt_blue"
+                android:textSize="@dimen/txt_xl"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@id/build_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="@string/not_available"
+                android:textColor="@color/txt_dark"
+                android:textSize="@dimen/txt_xxl"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <include
+        android:id="@id/panel_temporal"
+        android:layout_width="0dp"
+        android:layout_height="77dp"
+        android:layout_gravity="right"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="10dp"
+        android:layout_weight="0.60"
+        layout="@layout/stats_temporal" />
+
+</LinearLayout>

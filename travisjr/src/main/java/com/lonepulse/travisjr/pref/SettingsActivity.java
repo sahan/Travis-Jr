@@ -63,7 +63,7 @@ public class SettingsActivity extends PreferenceActivity {
 		((TextView)header.findViewById(R.id.subtitle)).setText(subtitle);
 
 		ActionBar actionBar = getActionBar();
-		
+		actionBar.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_actionbar));
 		actionBar.setIcon(R.drawable.ic_action_bar);
 		actionBar.setDisplayShowTitleEnabled(false);
 		actionBar.setDisplayShowCustomEnabled(true);
@@ -71,6 +71,8 @@ public class SettingsActivity extends PreferenceActivity {
 		
 		getFragmentManager().beginTransaction()
 		.replace(android.R.id.content, new SettingsFragment()).commit();
+		
+		getListView().setBackgroundColor(getResources().getColor(R.color.bg_lightest));
 	}
 	
 	/**

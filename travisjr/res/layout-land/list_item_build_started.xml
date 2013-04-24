@@ -18,7 +18,7 @@
         android:paddingRight="5dp" >
 
         <ImageView
-            android:id="@id/status"
+            android:id="@id/status_started"
             android:layout_width="86dp"
             android:layout_height="86dp"
             android:layout_alignParentLeft="true"
@@ -26,7 +26,7 @@
             android:layout_marginLeft="-25dp"
             android:layout_marginTop="-20dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/gear_passed"
+            android:src="@drawable/gear_started"
             tools:ignore="ContentDescription" />
 
         <TextView

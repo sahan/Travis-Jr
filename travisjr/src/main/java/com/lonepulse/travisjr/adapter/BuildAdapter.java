@@ -29,6 +29,8 @@ import android.provider.ContactsContract.Contacts.Data;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -51,6 +53,38 @@ public class BuildAdapter extends ArrayAdapter<Build> {
 
 	
 	/**
+	 * <p>This enum specifies the different type of list item layouts 
+	 * being used by the {@link BuildAdapter}.
+	 * 
+	 * @version 1.1.0
+	 */
+	private static enum ViewTypes {
+		
+		FINISHED(0, R.layout.list_item_build),
+		ONGOING(1, R.layout.list_item_build_started);
+		
+		/**
+		 * <p>The integer ID by which identifies this type.
+		 */
+		private int id;
+		
+		/**
+		 * <p>The layout ID by which this type's layout.
+		 */
+		private int layoutId;
+		
+		
+		/**
+		 * <p>Initializes {@link #getId()}.
+		 */
+		private ViewTypes(int id, int layoutId) {
+			
+			this.id = id;
+			this.layoutId = layoutId;
+		}
+	}
+	
+	/**
 	 * <p>Pre-references child views within the root list item layout. 
 	 * 
 	 * @version 1.1.0
@@ -59,6 +93,7 @@ public class BuildAdapter extends ArrayAdapter<Build> {
 		
 		public ViewGroup root;
 		public ImageView status;
+		public ImageView statusStarted;
 		public TextView buildNumber;
 		public TextView duration;
 		public TextView branch;
@@ -78,6 +113,7 @@ public class BuildAdapter extends ArrayAdapter<Build> {
 		
 			root = (ViewGroup) convertView.findViewById(R.id.root);
 			status = (ImageView) convertView.findViewById(R.id.status);
+			statusStarted = (ImageView) convertView.findViewById(R.id.status_started);
 			buildNumber = (TextView) convertView.findViewById(R.id.build_number);
 			duration = (TextView) convertView.findViewById(R.id.duration);
 			branch = (TextView) convertView.findViewById(R.id.branch);
@@ -96,6 +132,11 @@ public class BuildAdapter extends ArrayAdapter<Build> {
 	 */
 	private List<Build> data;
 	
+	/**
+	 * <p>This animation is set on the indicator for ongoing builds.
+	 */
+	private Animation rotate;
+	
 	
 	/**
 	 * <p>Use {@link BuildAdapter#newInstance(Context, List)} instead.
@@ -106,6 +147,28 @@ public class BuildAdapter extends ArrayAdapter<Build> {
 		
 		this.context = context;
 		this.data = data;
+		this.rotate = AnimationUtils.loadAnimation(context, R.anim.rotate_2x_min);
+	}
+	
+	/**
+	 * <p>See {@link ArrayAdapter#getItemViewType(int)}. 
+	 */
+	@Override
+	public int getItemViewType(int position) {
+	
+		Build build = data.get(position);
+		boolean finished = isFinished(build);
+		
+		return ((build.getResult() == null) && !finished)? ViewTypes.ONGOING.id :ViewTypes.FINISHED.id;
+	}
+	
+	/**
+	 * <p>See {@link ArrayAdapter#getViewTypeCount()}.
+	 */
+	@Override
+	public int getViewTypeCount() {
+		
+		return ViewTypes.values().length;
 	}
 
 	/**
@@ -116,15 +179,26 @@ public class BuildAdapter extends ArrayAdapter<Build> {
 	
 		if(convertView == null) {
 			
-			convertView = LayoutInflater.from(context).inflate(R.layout.list_item_build, null);
-			convertView.setTag(new ViewHolder(convertView));
+			int type = getItemViewType(position);
+			
+			int layoutId = (type == ViewTypes.ONGOING.id)? 
+				ViewTypes.ONGOING.layoutId :ViewTypes.FINISHED.layoutId; 
+			
+			convertView = LayoutInflater.from(context).inflate(layoutId, null);
+			
+			ViewHolder viewHolder = new ViewHolder(convertView);
+			convertView.setTag(viewHolder);
+			
+			if(type == ViewTypes.ONGOING.id)
+				viewHolder.statusStarted.setAnimation(rotate);
 		}
 		
-		Build repo = data.get(position);
+		Build build = data.get(position);
+		ViewHolder viewHolder = (ViewHolder) convertView.getTag();
 		
-		processTheme(position, (ViewHolder)convertView.getTag());
-		processStatus(position, repo, (ViewHolder)convertView.getTag());
-		processInfo(repo, (ViewHolder)convertView.getTag());
+		processTheme(position, viewHolder);
+		processStatus(position, build, viewHolder);
+		processInfo(build, viewHolder);
 		
 		return convertView;
 	}
@@ -168,28 +242,26 @@ public class BuildAdapter extends ArrayAdapter<Build> {
 	 */
 	private View processStatus(int position, Build build, ViewHolder viewHolder) {
 	
-		Short buildStatus = build.getResult();
-		
-		String stateFinished = Resources.key(R.string.key_state_finished);
-		boolean finished = (buildStatus != null)? true :build.getState().equals(stateFinished)? true :false;
-		
-		final ImageView status = viewHolder.status;
-		
-		if(buildStatus == null && finished) {
+		if(viewHolder.statusStarted != null) {
 			
-			status.setImageResource(position % 2 == 0? R.drawable.gear_errored :R.drawable.gear_errored_alt);
-		}
-		else if(buildStatus == null && !finished) {
-			
+			ImageView status = viewHolder.statusStarted;
 			status.setImageResource(position % 2 == 0? R.drawable.gear_started :R.drawable.gear_started_alt);
-		}
-		else if(buildStatus.shortValue() == 0) {
-			
-			status.setImageResource(position % 2 == 0? R.drawable.gear_passed :R.drawable.gear_passed_alt);
 		}
 		else {
 			
-			status.setImageResource(position % 2 == 0? R.drawable.gear_failed :R.drawable.gear_failed_alt);
+			Short buildStatus = build.getResult();
+			boolean finished = isFinished(build);
+			
+			ImageView status = viewHolder.status;
+			
+			if(buildStatus == null && finished)
+				status.setImageResource(position % 2 == 0? R.drawable.gear_errored :R.drawable.gear_errored_alt);
+			
+			else if(buildStatus.shortValue() == 0)
+				status.setImageResource(position % 2 == 0? R.drawable.gear_passed :R.drawable.gear_passed_alt);
+			
+			else
+				status.setImageResource(position % 2 == 0? R.drawable.gear_failed :R.drawable.gear_failed_alt);
 		}
 		
 		return viewHolder.root;
@@ -215,6 +287,20 @@ public class BuildAdapter extends ArrayAdapter<Build> {
 		viewHolder.message.setText(String.valueOf(TextUtils.isAvailable(build.getMessage())));
 		
 		return viewHolder.root;
+	}
+	
+	/**
+	 * <p>Determines if the given {@link Build} has run to completion. 
+	 *
+	 * @param build
+	 * 			the {@link Build} whose state is to discovered
+	 * 
+	 * @return {@code true} if the {@link Build} is complete 
+	 */
+	private boolean isFinished(Build build) {
+	
+		String stateFinished = Resources.key(R.string.key_state_finished);
+		return (build.getResult() != null)? true :build.getState().equals(stateFinished)? true :false;
 	}
 	
 	/**

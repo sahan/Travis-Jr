@@ -29,12 +29,15 @@ import android.provider.ContactsContract.Contacts.Data;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.lonepulse.travisjr.R;
+import com.lonepulse.travisjr.model.Build;
 import com.lonepulse.travisjr.model.Repo;
 import com.lonepulse.travisjr.util.DateUtils;
 import com.lonepulse.travisjr.util.Resources;
@@ -52,6 +55,38 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 
 	
 	/**
+	 * <p>This enum specifies the different type of list item layouts 
+	 * being used by the {@link RepoAdapter}.
+	 * 
+	 * @version 1.1.0
+	 */
+	private static enum ViewTypes {
+		
+		FINISHED(0, R.layout.list_item_repo),
+		ONGOING(1, R.layout.list_item_repo_started);
+		
+		/**
+		 * <p>The integer ID by which identifies this type.
+		 */
+		private int id;
+		
+		/**
+		 * <p>The layout ID by which this type's layout.
+		 */
+		private int layoutId;
+		
+		
+		/**
+		 * <p>Initializes {@link #getId()}.
+		 */
+		private ViewTypes(int id, int layoutId) {
+			
+			this.id = id;
+			this.layoutId = layoutId;
+		}
+	}
+	
+	/**
 	 * <p>Pre-references child views within the root list item layout. 
 	 * 
 	 * @version 1.1.0
@@ -60,6 +95,7 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 		
 		public ViewGroup root;
 		public ImageView status;
+		public ImageView statusStarted;
 		public TextView repoName;
 		public TextView buildNumber;
 		public TextView startTime;
@@ -81,6 +117,7 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 		
 			root = (ViewGroup) convertView.findViewById(R.id.root);
 			status = (ImageView) convertView.findViewById(R.id.status);
+			statusStarted = (ImageView) convertView.findViewById(R.id.status_started);
 			repoName = (TextView) convertView.findViewById(R.id.repo_name);
 			buildNumber = (TextView) convertView.findViewById(R.id.build_number);
 			startTime = (TextView) convertView.findViewById(R.id.start_time);
@@ -101,6 +138,11 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 	 */
 	private List<Repo> data;
 	
+	/**
+	 * <p>This animation is set on the indicator for ongoing builds.
+	 */
+	private Animation rotate;
+	
 	
 	/**
 	 * <p>Use {@link RepoAdapter#newInstance(Context, List)} instead.
@@ -111,6 +153,30 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 		
 		this.context = context;
 		this.data = data;
+		this.rotate = AnimationUtils.loadAnimation(context, R.anim.rotate_2x_min);
+	}
+	
+	/**
+	 * <p>See {@link ArrayAdapter#getItemViewType(int)}. 
+	 */
+	@Override
+	public int getItemViewType(int position) {
+	
+		Repo repo = data.get(position);
+		
+		Short buildStatus = repo.getLast_build_status();
+		boolean finished = isFinished(repo);
+		
+		return ((buildStatus == null) && !finished)? ViewTypes.ONGOING.id :ViewTypes.FINISHED.id;
+	}
+	
+	/**
+	 * <p>See {@link ArrayAdapter#getViewTypeCount()}.
+	 */
+	@Override
+	public int getViewTypeCount() {
+		
+		return ViewTypes.values().length;
 	}
 
 	/**
@@ -121,15 +187,26 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 	
 		if(convertView == null) {
 			
-			convertView = LayoutInflater.from(context).inflate(R.layout.list_item_repo, null);
-			convertView.setTag(new ViewHolder(convertView));
+			int type = getItemViewType(position);
+			
+			int layoutId = (type == ViewTypes.ONGOING.id)? 
+				ViewTypes.ONGOING.layoutId :ViewTypes.FINISHED.layoutId; 
+			
+			convertView = LayoutInflater.from(context).inflate(layoutId, null);
+			
+			ViewHolder viewHolder = new ViewHolder(convertView);
+			convertView.setTag(viewHolder);
+			
+			if(type == ViewTypes.ONGOING.id)
+				viewHolder.statusStarted.setAnimation(rotate);
 		}
 		
 		Repo repo = data.get(position);
+		ViewHolder viewHolder = (ViewHolder) convertView.getTag();
 		
-		processTheme(position, (ViewHolder)convertView.getTag());
-		processStatus(position, repo, (ViewHolder)convertView.getTag());
-		processInfo(repo, (ViewHolder)convertView.getTag());
+		processTheme(position, viewHolder);
+		processStatus(position, repo, viewHolder);
+		processInfo(repo, viewHolder);
 		
 		return convertView;
 	}
@@ -173,29 +250,26 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 	 */
 	private View processStatus(int position, Repo repo, ViewHolder viewHolder) {
 	
-		Short buildStatus = repo.getLast_build_status();
-		
-		String stateFinished = Resources.key(R.string.key_state_finished);
-		boolean finished = (buildStatus != null)? true 
-							:repo.getBuilds().get(0).getState().equals(stateFinished)? true :false;
-		
-		ImageView status = viewHolder.status;
-		
-		if(buildStatus == null && finished) {
+		if(viewHolder.statusStarted != null) {
 			
-			status.setImageResource(position % 2 == 0? R.drawable.gear_errored :R.drawable.gear_errored_alt);
-		}
-		else if(buildStatus == null && !finished) {
-			
+			ImageView status = viewHolder.statusStarted;
 			status.setImageResource(position % 2 == 0? R.drawable.gear_started :R.drawable.gear_started_alt);
-		}
-		else if(buildStatus.shortValue() == 0) {
-			
-			status.setImageResource(position % 2 == 0? R.drawable.gear_passed :R.drawable.gear_passed_alt);
 		}
 		else {
 			
-			status.setImageResource(position % 2 == 0? R.drawable.gear_failed :R.drawable.gear_failed_alt);
+			Short buildStatus = repo.getLast_build_status();
+			boolean finished = isFinished(repo);
+			
+			ImageView status = viewHolder.status;
+			
+			if(buildStatus == null && finished)
+				status.setImageResource(position % 2 == 0? R.drawable.gear_errored :R.drawable.gear_errored_alt);
+			
+			else if(buildStatus.shortValue() == 0)
+				status.setImageResource(position % 2 == 0? R.drawable.gear_passed :R.drawable.gear_passed_alt);
+			
+			else
+				status.setImageResource(position % 2 == 0? R.drawable.gear_failed :R.drawable.gear_failed_alt);
 		}
 		
 		return viewHolder.root;
@@ -238,6 +312,23 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 			endDate.setText(TextUtils.isAvailable(DateUtils.formatDateForDisplay(repo.getLast_build_finished_at())));
 		
 		return viewHolder.root;
+	}
+	
+	/**
+	 * <p>Determines if the last {@link Build} for the given {@link Repo} has run to completion. 
+	 *
+	 * @param repo
+	 * 			the {@link Repo} whose last {@link Build} state is to discovered
+	 * 
+	 * @return {@code true} if the last {@link Build} is complete 
+	 */
+	private boolean isFinished(Repo repo) {
+		
+		Short buildStatus = repo.getLast_build_status();
+		String stateFinished = Resources.key(R.string.key_state_finished);
+		
+		return (buildStatus != null)? 
+			true :repo.getBuilds().get(0).getState().equals(stateFinished)? true :false;
 	}
 	
 	/**
