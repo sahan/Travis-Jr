@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<bitmap xmlns:android="http://schemas.android.com/apk/res/android"
-    android:src="@drawable/actionbar"
-    android:tileMode="repeat" />
+<shape xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <solid android:color="@color/bg_actionbar" />
+
+</shape>
+<!-- <bitmap xmlns:android="http://schemas.android.com/apk/res/android" -->
+<!-- android:src="@drawable/actionbar" -->
+<!-- android:tileMode="repeat" /> -->
+
