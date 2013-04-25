@@ -9,9 +9,8 @@
     <color name="txt_darker">#2E2E2E</color>
     <color name="txt_darkest">#000000</color>
     <color name="txt_blue">#01A9DB</color>
-    <color name="bg_actionbar_start">#FAFAFA</color>
-    <color name="bg_actionbar_end">#E6E6E6</color>
-    <color name="bg_actionbar_tabs">#FFFFFF</color>
+    <color name="txt_tab">#FFFFFF</color>
+    <color name="bg_actionbar">#CC0000</color>
     <color name="bg_logo">#FF1C08</color>
     <color name="bg_darkest">#000000</color>
     <color name="bg_darker">#2E2E2E</color>

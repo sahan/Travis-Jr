@@ -1,13 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="AppTheme" parent="@android:style/Theme.Holo.Light">
+    <style name="TravisJrTheme" parent="android:Theme.Holo.Light.DarkActionBar">
         <item name="android:actionBarStyle">@style/TravisJrActionBar</item>
-        <item name="android:windowBackground">@color/bg_lightest</item>
+        <item name="android:actionBarItemBackground">@drawable/bg_actionbar</item>
+        <item name="android:actionBarTabStyle">@style/TravisJrActionBarTabStyle</item>
+        <item name="android:actionBarTabTextStyle">@style/TravisJrActionBarText</item>
     </style>
 
-    <style name="TravisJrActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
+    <style name="TravisJrActionBar" parent="@android:Widget.Holo.ActionBar.Solid">
         <item name="android:background">@drawable/bg_actionbar</item>
+        <item name="android:backgroundStacked">@drawable/bg_actionbar_stacked</item>
+    </style>
+
+    <style name="TravisJrActionBarTabStyle" parent="@android:style/Widget.Holo.ActionBar.TabView">
+        <item name="android:background">@drawable/tab_indicator</item>
+    </style>
+
+    <style name="TravisJrActionBarText" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/txt_tab</item>
+        <item name="android:textSize">@dimen/txt_m</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
 </resources>

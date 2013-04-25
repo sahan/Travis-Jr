@@ -2,8 +2,8 @@
 <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@id/root"
-    style="@android:style/Widget.DeviceDefault.Light.ActionButton"
+    style="@android:style/Widget.Holo.ActionButton"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:src="@drawable/ic_navigation_accept"
+    android:src="@drawable/ic_navigation_accept_lt"
     tools:ignore="ContentDescription" />

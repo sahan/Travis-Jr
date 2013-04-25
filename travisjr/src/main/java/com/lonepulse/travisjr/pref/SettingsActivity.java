@@ -51,8 +51,6 @@ public class SettingsActivity extends PreferenceActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
-		setTheme(android.R.style.Theme_Holo_Light);
-		
 		super.onCreate(savedInstanceState);
 		
 		String title = getString(R.string.ttl_act_settings);
@@ -63,8 +61,7 @@ public class SettingsActivity extends PreferenceActivity {
 		((TextView)header.findViewById(R.id.subtitle)).setText(subtitle);
 
 		ActionBar actionBar = getActionBar();
-		actionBar.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_actionbar));
-		actionBar.setIcon(R.drawable.ic_action_bar);
+		actionBar.setIcon(R.drawable.ic_actionbar);
 		actionBar.setDisplayShowTitleEnabled(false);
 		actionBar.setDisplayShowCustomEnabled(true);
 		actionBar.setCustomView(header);

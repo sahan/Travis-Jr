@@ -3,7 +3,7 @@
 	
     <item
         android:id="@id/menu_sync"
-        android:icon="@drawable/ic_navigation_refresh"
+        android:icon="@drawable/ic_navigation_refresh_lt"
         android:orderInCategory="0"
         android:showAsAction="ifRoom"
         android:title="@string/menu_sync"/>

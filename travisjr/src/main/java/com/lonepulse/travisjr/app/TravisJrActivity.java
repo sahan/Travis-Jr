@@ -26,8 +26,6 @@ import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
 import android.app.Activity;
 import android.app.FragmentTransaction;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -117,8 +115,6 @@ public class TravisJrActivity extends IckleActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 	
-		setTheme(android.R.style.Theme_Holo_Light);
-		
 		super.onCreate(savedInstanceState);
 		
 		actionViewSync = getLayoutInflater().inflate(R.layout.action_view_sync, null);
@@ -164,11 +160,10 @@ public class TravisJrActivity extends IckleActivity {
 			((TextView)header.findViewById(R.id.title)).setText(onInitTitle());
 			((TextView)header.findViewById(R.id.subtitle)).setText(onInitSubtitle());
 	
-			actionBar.setIcon(R.drawable.ic_action_bar);
+			actionBar.setIcon(R.drawable.ic_actionbar);
 			actionBar.setDisplayShowTitleEnabled(false);
 			actionBar.setDisplayShowCustomEnabled(true);
 			actionBar.setCustomView(header);
-			actionBar.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_actionbar));
 		}
 	}
 	
@@ -187,9 +182,6 @@ public class TravisJrActivity extends IckleActivity {
 	protected void addTabs(int... stringResourceIds) {
 		
 		ActionBar actionBar = getActionBar();
-		
-		Drawable background = new ColorDrawable(getResources().getColor(R.color.bg_actionbar_tabs));
-		actionBar.setStackedBackgroundDrawable(background);
 		
 		if(actionBar != null) {
 			

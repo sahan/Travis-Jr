@@ -15,7 +15,7 @@
         android:layout_weight="0.5"
         android:gravity="left|bottom"
         android:text="@string/not_available"
-        android:textColor="@color/txt_darker"
+        android:textColor="@color/txt_lightest"
         android:textSize="@dimen/txt_m"
         android:textStyle="bold" />
 
@@ -26,7 +26,7 @@
         android:layout_weight="0.5"
         android:gravity="left|top"
         android:text="@string/not_available"
-        android:textColor="@color/txt_darker"
+        android:textColor="@color/txt_lightest"
         android:textSize="@dimen/txt_s" />
 
 </LinearLayout>

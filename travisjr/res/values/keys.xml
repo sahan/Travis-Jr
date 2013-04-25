@@ -8,8 +8,8 @@
     <string name="key_sign_out">account</string>
     <string name="key_oss_licenses">oss</string>
     <string name="key_version">version</string>
-    <string name="key_contributed">contributed</string>
-    <string name="key_created">created</string>
+    <string name="key_contributed">Contributed</string>
+    <string name="key_created">Created</string>
     <string name="key_user_mode">user_mode</string>
     <string name="key_member">member</string>
     <string name="key_organization">organization</string>

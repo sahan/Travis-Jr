@@ -39,7 +39,7 @@
 		<project.organization.name>Lonepulse</project.organization.name>
 		<project.organization.url>http://lonepulse.com</project.organization.url>
 		<license.licenseName>apache_v2</license.licenseName>
-		<platform.version>4.0.1.2</platform.version>
+		<platform.version>4.1.1.4</platform.version>
 	</properties>
 
 	<name>${project.name}</name>
