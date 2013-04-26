@@ -85,8 +85,7 @@
 								<versionCodeAutoIncrement>true</versionCodeAutoIncrement>
 							</manifest>
 							<proguard>
-								<skip>true</skip> <!-- skipping proguard for now -->
-								<config>proguard.cfg</config>
+								<skip>true</skip>
 							</proguard>
 						</configuration>
 						<executions>
