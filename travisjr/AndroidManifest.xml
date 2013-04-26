@@ -11,7 +11,7 @@
     <supports-screens
         android:largeScreens="true"
         android:normalScreens="true"
-        android:smallScreens="false"
+        android:smallScreens="true"
         android:xlargeScreens="true" />
 
     <uses-permission android:name="android.permission.GET_ACCOUNTS" /> <!-- to read GitHub credentials -->

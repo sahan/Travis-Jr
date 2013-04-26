@@ -4,12 +4,14 @@
     <string-array name="libraries">
         <item>IckleBot</item>
         <item>RoboZombie</item>
+        <item>AB Style Generator</item>
         <item>JUnit</item>
         <item>Robotium</item>
         <item>Robolectric</item>
     </string-array>
     
     <string-array name="library_licenses">
+        <item>@string/license_apache_v2</item>
         <item>@string/license_apache_v2</item>
         <item>@string/license_apache_v2</item>
         <item>@string/license_cpl_v1</item>
@@ -20,6 +22,7 @@
     <string-array name="library_urls">
         <item>https://github.com/sahan/IckleBot</item>
         <item>https://github.com/sahan/RoboZombie</item>
+        <item>https://github.com/jgilfelt/android-actionbarstylegenerator</item>
         <item>https://github.com/junit-team/junit</item>
         <item>https://github.com/jayway/robotium</item>
         <item>https://github.com/pivotal/robolectric</item>
