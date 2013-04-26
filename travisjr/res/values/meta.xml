@@ -12,7 +12,7 @@
     <string name="not_available">N/A</string>
     <string name="conf_clear_account">are you sure you want to purge your account?</string>
     <string name="sum_pref_sign_out">Clear all credentials, delete any saved data and sign out from your account.</string>
-    <string name="sum_pref_oss_licenses">Licenses for all open source libraries which are used in development and testing.</string>
+    <string name="sum_pref_oss_licenses">Licenses for all open source libraries used in development and testing.</string>
     <string name="sum_pref_user_mode">Treat this account as a member or an organization.</string>
 
 </resources>
