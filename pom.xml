@@ -24,6 +24,18 @@
 				<!-- adb shell am instrument -w com.lonepulse.travisjr.test/android.test.InstrumentationTestRunner -->
 			</properties>
 		</profile>
+		<profile>
+			<id>release</id>
+			<activation>
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<modules>
+				<module>travisjr</module>
+			</modules>
+		</profile>
 	</profiles>
 
 	<properties>
@@ -108,6 +120,7 @@
 			<plugin>
 				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
 				<artifactId>android-maven-plugin</artifactId>
+				<inherited>true</inherited>
 				<version>3.5.0</version>
 				<configuration>
 					<androidManifestFile>${project.basedir}/AndroidManifest.xml</androidManifestFile>
@@ -116,7 +129,7 @@
 					<assetsDirectory>${project.basedir}/assets</assetsDirectory>
 					<resourceDirectory>${project.basedir}/res</resourceDirectory>
 					<sdk>
-						<platform>15</platform>
+						<platform>16</platform>
 					</sdk>
 					<undeployBeforeDeploy>true</undeployBeforeDeploy>
 				</configuration>
