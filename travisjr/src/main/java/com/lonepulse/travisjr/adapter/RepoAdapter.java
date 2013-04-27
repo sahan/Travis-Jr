@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.List;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.provider.ContactsContract.Contacts.Data;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -295,8 +296,16 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 		viewHolder.startTime
 		.setText(TextUtils.isAvailable(DateUtils.formatTimeForDisplay(repo.getLast_build_started_at())));
 		
-		viewHolder.startDate
-		.setText(TextUtils.isAvailable(DateUtils.formatDateForDisplay(repo.getLast_build_started_at())));
+		if(context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+		
+			viewHolder.startDate
+			.setText(TextUtils.isAvailable(DateUtils.formatDateForDisplay(repo.getLast_build_started_at())));
+		}
+		else {
+			
+			viewHolder.startDate
+			.setText(TextUtils.isAvailable(DateUtils.formatMonthDayForDisplay(repo.getLast_build_started_at())));
+		}
 		
 		viewHolder.duration
 		.setText(String.valueOf(TextUtils.isAvailable(repo.getLast_build_duration())));
@@ -309,7 +318,7 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 		TextView endDate = viewHolder.endDate;
 		
 		if(endDate != null)
-			endDate.setText(TextUtils.isAvailable(DateUtils.formatDateForDisplay(repo.getLast_build_finished_at())));
+			endDate.setText(TextUtils.isAvailable(DateUtils.formatYearForDisplay(repo.getLast_build_finished_at())));
 		
 		return viewHolder.root;
 	}

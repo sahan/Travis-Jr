@@ -21,15 +21,17 @@ package com.lonepulse.travisjr.util;
  */
 
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * <p>This utility class is used to perform common processing on timestamps.
  * 
- * @version 1.1.1
+ * @version 1.1.2
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
@@ -59,7 +61,7 @@ public final class DateUtils {
 		try {
 			
 			SimpleDateFormat sdfFormatter 
-				= new SimpleDateFormat("dd MMM', 'yyyy' at 'h:mm:ss a", Locale.getDefault());
+				= new SimpleDateFormat("dd MMM', 'yyyy' at 'h:mm:ss a", Locale.getDefault());	
 			
 			return sdfFormatter.format(DateUtils.parseFromISO8601(iso8601Timestamp));
 		}
@@ -85,8 +87,8 @@ public final class DateUtils {
 		
 		try {
 			
-			SimpleDateFormat sdfFormatter = new SimpleDateFormat("dd MMM', 'yyyy", Locale.getDefault());
-			return sdfFormatter.format(DateUtils.parseFromISO8601(iso8601Timestamp));
+			DateFormat dateFormat = SimpleDateFormat.getDateInstance(SimpleDateFormat.LONG);
+			return dateFormat.format(DateUtils.parseFromISO8601(iso8601Timestamp));
 		}
 		catch(Exception e) {
 			
@@ -110,8 +112,56 @@ public final class DateUtils {
 		
 		try {
 			
-			SimpleDateFormat sdfFormatter = new SimpleDateFormat("h:mm:ss a", Locale.getDefault());
-			return sdfFormatter.format(DateUtils.parseFromISO8601(iso8601Timestamp));
+			DateFormat dateFormat = SimpleDateFormat.getTimeInstance(SimpleDateFormat.MEDIUM);
+			return dateFormat.format(DateUtils.parseFromISO8601(iso8601Timestamp));
+		}
+		catch(Exception e) {
+			
+			return "";
+		}
+	}
+	
+	/**
+	 * <p>Takes an ISO8601 timestamp string and converts it to 
+	 * a readable format in the form 'MMM dd'. 
+	 * 
+	 * @param iso8601Timestamp
+	 * 			the ISO8601 timestamp to be formatted
+	 * 
+	 * @return the formatted time string or an empty string 
+	 * 		   if formatting failed
+	 * 
+	 * @since 1.1.2
+	 */
+	public static String formatMonthDayForDisplay(String iso8601Timestamp) {
+		
+		try {
+			
+			return DateUtils.formatDateForDisplay(iso8601Timestamp).split(", ")[0];
+		}
+		catch(Exception e) {
+			
+			return "";
+		}
+	}
+	
+	/**
+	 * <p>Takes an ISO8601 timestamp string and converts it to 
+	 * a readable format in the form 'yyyy'. 
+	 * 
+	 * @param iso8601Timestamp
+	 * 			the ISO8601 timestamp to be formatted
+	 * 
+	 * @return the formatted time string or an empty string 
+	 * 		   if formatting failed
+	 * 
+	 * @since 1.1.2
+	 */
+	public static String formatYearForDisplay(String iso8601Timestamp) {
+		
+		try {
+			
+			return DateUtils.formatDateForDisplay(iso8601Timestamp).split(", ")[1];
 		}
 		catch(Exception e) {
 			
@@ -136,8 +186,10 @@ public final class DateUtils {
 	 * @since 1.1.0
 	 */
 	public static Date parseFromISO8601(String iso8601Timestamp) throws ParseException {
-			
+
 		SimpleDateFormat sdfParser = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
+		sdfParser.setTimeZone(TimeZone.getTimeZone("Zulu"));
+		
 		return sdfParser.parse(iso8601Timestamp);
 	}
 }
