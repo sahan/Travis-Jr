@@ -318,7 +318,7 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 		TextView endDate = viewHolder.endDate;
 		
 		if(endDate != null)
-			endDate.setText(TextUtils.isAvailable(DateUtils.formatYearForDisplay(repo.getLast_build_finished_at())));
+			endDate.setText(TextUtils.isAvailable(DateUtils.formatYearForDisplay(repo.getLast_build_started_at())));
 		
 		return viewHolder.root;
 	}
