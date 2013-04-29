@@ -22,7 +22,7 @@
 <resources>
 
     <string name="app_name">Travis Jr.</string>
-    <string name="version">Release 1.1.0</string>
+    <string name="version">0.1.1 (beta)</string>
     <string name="app_url">https://github.com/sahan/Travis-Jr</string>
     <string name="license_apache_v2">Apache License, Version 2.0</string>
     <string name="license_mit">The MIT License</string>

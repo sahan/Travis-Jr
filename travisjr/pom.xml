@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>com.lonepulse</groupId>
 		<artifactId>travisjr-parent</artifactId>
-		<version>0.1.1-SNAPSHOT</version>
+		<version>0.1.1</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
