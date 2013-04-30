@@ -29,7 +29,7 @@ After the APK is generated, change directory to the application module and deplo
 or a connected device.
 
 ```bash
-$ cd travis-jr
+$ cd travisjr
 $ mvn android:deploy
 ```
 
