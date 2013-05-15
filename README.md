@@ -49,5 +49,9 @@ For more information on building Android projects using Maven here's [Chapter 14
 	4. Sign off to switch user.   
 
 <br/>
+##Mailing Lists
+Find the Travis Jr. mailing list at [ost.io/@sahan/Travis-Jr](http://ost.io/@sahan/Travis-Jr).   
+
+<br/>
 ##License
 This application is licensed under [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
