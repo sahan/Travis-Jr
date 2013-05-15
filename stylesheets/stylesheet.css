@@ -101,6 +101,7 @@ header h2 {
 }
 
 #main-content {
+  margin-top: 60px;
   width: 690px;
   float: left;
 }
@@ -110,6 +111,7 @@ header h2 {
 }
 
 aside#sidebar {
+  margin-top: 60px;
   width: 225px;
   padding-left: 10px;
   min-height: 504px;
