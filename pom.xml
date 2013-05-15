@@ -157,6 +157,18 @@
 		<url>https://github.com/lonepulse/Travis-Jr/issues</url>
 	</issueManagement>
 
+	<mailingLists>
+		<mailingList>
+			<name>Travis-Jr-ost.io</name>
+			<post>http://ost.io/@sahan/Travis-Jr</post>
+		</mailingList>
+	</mailingLists>
+
+	<ciManagement>
+		<system>Travis-Jr</system>
+		<url>https://travis-ci.org/sahan/Travis-Jr</url>
+	</ciManagement>
+
 	<dependencies>
 		<dependency>
 			<groupId>com.google.android</groupId>
