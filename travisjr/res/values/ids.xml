@@ -59,5 +59,6 @@
     <item name="sec" type="id">sec</item>
     <item name="organization" type="id">organization</item>
     <item name="tab_content" type="id">tab_content</item>
+    <item name="content" type="id">content</item>
 
 </resources>

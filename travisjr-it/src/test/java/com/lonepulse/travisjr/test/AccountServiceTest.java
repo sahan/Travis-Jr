@@ -35,9 +35,9 @@ import android.preference.PreferenceManager;
 
 import com.lonepulse.travisjr.AuthenticationActivity;
 import com.lonepulse.travisjr.R;
-import com.lonepulse.travisjr.app.TravisJr;
 import com.lonepulse.travisjr.service.AccountService;
 import com.lonepulse.travisjr.service.BasicAccountService;
+import com.lonepulse.travisjr.test.app.TravisJr;
 import com.xtremelabs.robolectric.Robolectric;
 import com.xtremelabs.robolectric.RobolectricTestRunner;
 
@@ -79,8 +79,8 @@ public class AccountServiceTest {
 	 */
 	@Before
 	public final void setUp() throws Exception {
-		
-		TravisJr.Application.CONTEXT = Robolectric.application;
+
+		TravisJr.Application.context = Robolectric.application;
 		activity = new AuthenticationActivity();
 		
 		accountService = new BasicAccountService();

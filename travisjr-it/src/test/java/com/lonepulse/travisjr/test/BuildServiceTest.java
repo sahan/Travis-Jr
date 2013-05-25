@@ -35,10 +35,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.lonepulse.travisjr.app.TravisJr;
 import com.lonepulse.travisjr.model.Build;
 import com.lonepulse.travisjr.service.BasicBuildService;
 import com.lonepulse.travisjr.service.BuildService;
+import com.lonepulse.travisjr.test.app.TravisJr;
 import com.xtremelabs.robolectric.Robolectric;
 import com.xtremelabs.robolectric.RobolectricTestRunner;
 
@@ -76,7 +76,7 @@ public class BuildServiceTest {
 	@Before
 	public final void setUp() throws Exception {
 		
-		TravisJr.Application.CONTEXT = Robolectric.application;
+		TravisJr.Application.context = Robolectric.application;
 		buildService = new BasicBuildService();
 		executorService = Executors.newSingleThreadExecutor();
 	}

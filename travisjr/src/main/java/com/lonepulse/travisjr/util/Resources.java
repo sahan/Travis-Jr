@@ -51,7 +51,7 @@ public final class Resources {
 	 */
 	public static String key(int id) {
 		
-		return TravisJr.Application.CONTEXT.getString(id);
+		return TravisJr.Application.getContext().getString(id);
 	}
 	
 	/**
@@ -65,6 +65,6 @@ public final class Resources {
 	 */
 	public static String error(int id) {
 		
-		return TravisJr.Application.CONTEXT.getString(id);
+		return TravisJr.Application.getContext().getString(id);
 	}
 }

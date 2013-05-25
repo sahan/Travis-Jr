@@ -1,4 +1,4 @@
-package com.lonepulse.travisjr.app;
+package com.lonepulse.travisjr.test.app;
 
 /*
  * #%L
@@ -59,7 +59,7 @@ public interface TravisJr {
 		 * 
 		 * @since 1.1.0
 		 */
-		private static volatile Context context;
+		public static volatile Context context;
 		
 		/**
 		 * <p>The application context offered in a static context which conforms to the 

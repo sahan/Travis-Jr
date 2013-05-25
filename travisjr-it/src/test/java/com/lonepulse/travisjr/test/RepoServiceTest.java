@@ -36,12 +36,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.lonepulse.travisjr.app.TravisJr;
 import com.lonepulse.travisjr.model.Repo;
 import com.lonepulse.travisjr.service.AccountService;
 import com.lonepulse.travisjr.service.BasicAccountService;
 import com.lonepulse.travisjr.service.BasicRepoService;
 import com.lonepulse.travisjr.service.RepoService;
+import com.lonepulse.travisjr.test.app.TravisJr;
 import com.xtremelabs.robolectric.Robolectric;
 import com.xtremelabs.robolectric.RobolectricTestRunner;
 
@@ -78,8 +78,8 @@ public class RepoServiceTest {
 	 */
 	@Before
 	public final void setUp() throws Exception {
-		
-		TravisJr.Application.CONTEXT = Robolectric.application;
+
+		TravisJr.Application.context = Robolectric.application;
 		repoService = new BasicRepoService();
 		executorService = Executors.newSingleThreadExecutor();
 	}

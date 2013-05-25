@@ -25,13 +25,14 @@ import java.util.List;
 
 import com.lonepulse.icklebot.annotation.inject.Pojo;
 import com.lonepulse.travisjr.model.Build;
+import com.lonepulse.travisjr.model.BuildInfo;
 import com.lonepulse.travisjr.model.Repo;
 
 /**
  * <p>This contract specifies the service offered on the {@link Build}s for 
  * a {@link Repo}.
  * 
- * @version 1.1.0
+ * @version 1.1.1
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
@@ -52,4 +53,24 @@ public interface BuildService {
 	 * @since 1.1.0
 	 */
 	List<Build> getRecentBuilds(long repoId);
+	
+	/**
+	 * <p>Takes the repository name and owner name together with the id 
+	 * of the information file and retrieves an instance of {@link BuildInfo}.
+	 *
+	 * @param owner
+	 * 			the GitHub username of the repository owner
+	 * 
+	 * @param repository
+	 * 			the name of the repository
+	 * 
+	 * @param buildId
+	 * 			the id of the build whose information is to be retrieved
+	 * 
+	 * @return the instance of {@link BuildInfo} which contains detailed 
+	 * 		   information about the build
+	 * 
+	 * @since 1.1.1
+	 */
+	BuildInfo getBuildInfo(String owner, String repository, long buildId);
 }

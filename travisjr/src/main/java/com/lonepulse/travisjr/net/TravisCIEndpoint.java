@@ -25,14 +25,17 @@ import com.lonepulse.robozombie.core.annotation.Endpoint;
 import com.lonepulse.robozombie.core.annotation.Param;
 import com.lonepulse.robozombie.core.annotation.Parser;
 import com.lonepulse.robozombie.core.annotation.Request;
+import com.lonepulse.robozombie.rest.annotation.PathParam;
+import com.lonepulse.robozombie.rest.annotation.Rest;
 import com.lonepulse.travisjr.model.Build;
+import com.lonepulse.travisjr.model.BuildInfo;
 import com.lonepulse.travisjr.model.Repo;
 
 /**
  * <p>This endpoint contract defines the remote services which are used 
  * by Travis Jr.
  * 
- * @version 1.1.2
+ * @version 1.1.3
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
@@ -80,4 +83,27 @@ public interface TravisCIEndpoint {
 	 */
 	@Request(path = "builds")
 	Build[] getRecentBuilds(@Param("id") String repositoryId);
+	
+	/**
+	 * <p>Takes the repository name and owner name together with the id 
+	 * of the information file and retrieves an instance of {@link BuildInfo}.
+	 *
+	 * @param owner
+	 * 			the GitHub username of the repository owner
+	 * 
+	 * @param repo
+	 * 			the name of the repository
+	 * 
+	 * @param file
+	 * 			the JSON file which is prepended with the build id, e.g. {@code 6060738.json}
+	 * 
+	 * @return the instance of {@link BuildInfo} which contains detailed 
+	 * 		   information about the build
+	 * 
+	 * @since 1.1.3
+	 */
+	@Rest(path = "repositories/:owner/:repo/builds/:file")
+	BuildInfo getBuildInfo(@PathParam("owner") String owner, 
+						   @PathParam("repo") String repo,
+						   @PathParam("file") String file);
 }

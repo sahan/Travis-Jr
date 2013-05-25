@@ -75,7 +75,7 @@ public class BasicAccountService implements AccountService {
 	@Override
 	public String queryGitHubAccount() throws MissingCredentialsException {
 		
-		AccountManager accountManager = AccountManager.get(TravisJr.Application.CONTEXT);
+		AccountManager accountManager = AccountManager.get(TravisJr.Application.getContext());
 		
 		Account[] accounts = accountManager.getAccountsByType(GITHUB_TOKEN);
 		
@@ -126,6 +126,6 @@ public class BasicAccountService implements AccountService {
 	 */
 	private static final SharedPreferences prefs() {
 
-		return PreferenceManager.getDefaultSharedPreferences(TravisJr.Application.CONTEXT);
+		return PreferenceManager.getDefaultSharedPreferences(TravisJr.Application.getContext());
 	}
 }

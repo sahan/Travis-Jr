@@ -31,6 +31,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.lonepulse.icklebot.annotation.event.Click;
+import com.lonepulse.icklebot.annotation.event.ItemClick;
 import com.lonepulse.icklebot.annotation.inject.InjectPojo;
 import com.lonepulse.icklebot.annotation.inject.InjectView;
 import com.lonepulse.icklebot.annotation.inject.Layout;
@@ -40,6 +41,7 @@ import com.lonepulse.icklebot.annotation.thread.Async;
 import com.lonepulse.icklebot.annotation.thread.UI;
 import com.lonepulse.travisjr.adapter.BuildAdapter;
 import com.lonepulse.travisjr.app.TravisJrActivity;
+import com.lonepulse.travisjr.dialog.BuildInfoActivity;
 import com.lonepulse.travisjr.model.Build;
 import com.lonepulse.travisjr.model.Repo;
 import com.lonepulse.travisjr.service.BuildService;
@@ -159,7 +161,7 @@ public class BuildsActivity extends TravisJrActivity {
 	}
 	
 	@Async(ASYNC_FETCH_BUILDS)
-	private void fetchRepos() {
+	private void fetchBuilds() {
 		
 		startSyncAnimation();
 		
@@ -178,6 +180,47 @@ public class BuildsActivity extends TravisJrActivity {
 	private void enableData() {
 		
 		startActivity(new Intent(android.provider.Settings.ACTION_SETTINGS));
+	}
+	
+	/**
+	 * <p>Handles the item click event for the repository list.
+	 *
+	 * @param parent
+	 * 			the view within the list item which was clicked
+	 * 
+	 * @param position
+	 * 			the position of the list item which was clicked
+	 */
+	@ItemClick(android.R.id.list)
+	private void navigateToBuildInfo(final View parent, int position) {
+		
+		parent.setAlpha(0.60f);
+		parent.postDelayed(new Runnable() {
+			
+			@Override
+			public void run() {
+
+				parent.setAlpha(1.00f);
+			}
+		}, 100);
+
+		String[] slugTokens = repo.getSlug().split("/");
+		String ownerName; 
+		String repoName; 
+		
+		if(slugTokens.length > 1) {
+			
+			ownerName = slugTokens[0];
+			repoName = slugTokens[1];
+		}
+		else {
+			
+			repoName = slugTokens[0];
+			ownerName = getTravisJrApplication().getAccountService().getGitHubUsername();
+		}
+		
+		Build build = ((Build)listView.getItemAtPosition(position));
+		BuildInfoActivity.start(this, ownerName, repoName, build.getId());
 	}
 	
 	/**

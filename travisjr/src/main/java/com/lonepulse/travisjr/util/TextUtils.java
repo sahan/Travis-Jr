@@ -55,7 +55,7 @@ public final class TextUtils {
 	 */
 	public static String isAvailable(Object object) {
 		
-		return isAvailable(object, TravisJr.Application.CONTEXT.getString(R.string.not_available));
+		return isAvailable(object, TravisJr.Application.getContext().getString(R.string.not_available));
 	}
 	
 	/**

@@ -24,7 +24,7 @@
     android:id="@id/root"
     android:layout_width="match_parent"
     android:layout_height="77dp"
-    android:background="@color/bg_logo"
+    android:background="@color/bg_lightest"
     android:baselineAligned="false"
     android:orientation="horizontal" >
 

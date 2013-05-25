@@ -27,6 +27,7 @@ import java.util.List;
 import com.lonepulse.robozombie.core.annotation.Bite;
 import com.lonepulse.robozombie.core.inject.Zombie;
 import com.lonepulse.travisjr.model.Build;
+import com.lonepulse.travisjr.model.BuildInfo;
 import com.lonepulse.travisjr.net.TravisCIEndpoint;
 
 /**
@@ -59,6 +60,22 @@ public class BasicBuildService implements BuildService {
 		catch(Exception e) {
 			
 			throw new BuildsUnavailableException(repoId, e);
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public BuildInfo getBuildInfo(String owner, String repository, long buildId) {
+		
+		try {
+			
+			return travisCIEndpoint.getBuildInfo(owner, repository, String.valueOf(buildId) + ".json");
+		}
+		catch(Exception e) {
+			
+			throw new BuildInfoUnavailableException(owner, repository, buildId, e);
 		}
 	}
 }

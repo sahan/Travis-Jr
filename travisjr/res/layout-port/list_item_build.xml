@@ -138,5 +138,5 @@
                 android:textSize="@dimen/txt_s" />
         </RelativeLayout>
     </RelativeLayout>
-
+    
 </LinearLayout>
