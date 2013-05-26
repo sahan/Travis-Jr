@@ -75,10 +75,10 @@ public class ReposActivity extends TravisJrActivity {
 	@InjectView(R.id.alert_data)
 	private View alertData;
 	
-	@InjectView(R.id.alert_repos_empty)
+	@InjectView(R.id.alert_empty)
 	private View alertReposEmpty;
 	
-	@InjectView(R.id.alert_repos_error)
+	@InjectView(R.id.alert_error)
 	private View alertReposError;
 	
 	@InjectPojo
@@ -107,8 +107,8 @@ public class ReposActivity extends TravisJrActivity {
 			addTabs(R.string.key_created, R.string.key_contributed);
 			
 			enableTabSwiping(R.id.tab_content, android.R.id.list, R.id.root,
-							 R.id.alert_data, R.id.alert_repos_empty,
-							 R.id.alert_repos_error, R.id.alert_sync);
+							 R.id.alert_data, R.id.alert_empty,
+							 R.id.alert_error, R.id.alert_sync);
 		}
 	}
 	
@@ -143,7 +143,7 @@ public class ReposActivity extends TravisJrActivity {
 	 * <p>Updates the activity depending on the availability of data and the 
 	 * existence of a connected data network.
 	 */
-	@Click(R.id.alert_repos_error)
+	@Click(R.id.alert_error)
 	private void refresh() {
 		
 		if(isSyncing() && repos != null) {
@@ -280,7 +280,7 @@ public class ReposActivity extends TravisJrActivity {
 	 * <p>Purges the user account and reverts to the authentication screen so that 
 	 * the user may retry repository retrieval with an alternate GitHub username. 
 	 */
-	@Click(R.id.alert_repos_empty)
+	@Click(R.id.alert_empty)
 	private void retryFetchRepos() {
 		
 		getTravisJrApplication().purgeAccount(this);

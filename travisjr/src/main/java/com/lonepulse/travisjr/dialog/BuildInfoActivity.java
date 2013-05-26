@@ -25,8 +25,13 @@ import static android.text.TextUtils.isEmpty;
 import static com.lonepulse.travisjr.util.TextUtils.isAvailable;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Display;
+import android.view.View;
+import android.widget.FrameLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.lonepulse.icklebot.IckleActivity;
@@ -34,11 +39,13 @@ import com.lonepulse.icklebot.annotation.event.Click;
 import com.lonepulse.icklebot.annotation.inject.InjectPojo;
 import com.lonepulse.icklebot.annotation.inject.InjectView;
 import com.lonepulse.icklebot.annotation.inject.Layout;
+import com.lonepulse.icklebot.annotation.inject.Stateful;
 import com.lonepulse.icklebot.annotation.thread.Async;
 import com.lonepulse.icklebot.annotation.thread.UI;
 import com.lonepulse.travisjr.IllegalArgumentException;
 import com.lonepulse.travisjr.R;
 import com.lonepulse.travisjr.model.BuildInfo;
+import com.lonepulse.travisjr.service.BuildInfoUnavailableException;
 import com.lonepulse.travisjr.service.BuildService;
 import com.lonepulse.travisjr.util.DateUtils;
 import com.lonepulse.travisjr.util.TextUtils;
@@ -68,13 +75,20 @@ public class BuildInfoActivity extends IckleActivity {
 	private String repoName;
 	private long buildId;
 	
-//	@InjectView(R.id.alert_sync)
-//	private View alertSync;
-//	
-//	@InjectView(R.id.content)
-//	private View content;
+	@InjectView(R.id.alert_sync)
+	private View alertSync;
 	
+	@InjectView(R.id.alert_error)
+	private View alertError;
+	
+	@InjectView(R.id.content)
+	private View content;
+	
+	@Stateful
 	private BuildInfo buildInfo;
+	
+	@InjectView(R.id.root)
+	private View root;
 	
 	@InjectView(R.id.repo_name)
 	private TextView slug;
@@ -97,8 +111,8 @@ public class BuildInfoActivity extends IckleActivity {
 	@InjectView(R.id.committer_email)
 	private TextView committerEmail;
 	
-	@InjectView(R.id.message)
-	private TextView message;
+	@InjectView(R.id.commit_message)
+	private TextView commitMessage;
 	
 	@InjectView(R.id.branch)
 	private TextView branch;
@@ -115,13 +129,18 @@ public class BuildInfoActivity extends IckleActivity {
 		
 		super.onCreate(savedInstanceState);
 		
+		Display display = getWindowManager().getDefaultDisplay();
+		Point dimension = new Point();
+		display.getSize(dimension);
+		
+		LayoutParams layoutParams = new LayoutParams(dimension.x - 40, LayoutParams.MATCH_PARENT);
+		root.setLayoutParams(layoutParams);
+		
 		ownerName = getIntent().getStringExtra(EXTRA_OWNER_NAME);
 		repoName = getIntent().getStringExtra(EXTRA_REPO_NAME);
 		buildId = getIntent().getLongExtra(EXTRA_BUILD_ID, 0);
 		
 		slug.setText(ownerName + "/" + repoName);
-		
-		runAsyncTask(ASYNC_FETCH_BUILD_INFO);
 	}
 	
 	@Override
@@ -131,13 +150,30 @@ public class BuildInfoActivity extends IckleActivity {
 		
 		if(buildInfo != null)
 			runUITask(UI_UPDATE_BUILD_INFO);
+		else
+			runAsyncTask(ASYNC_FETCH_BUILD_INFO);
 	}
 	
 	@Async(ASYNC_FETCH_BUILD_INFO)
 	private void fetchBuildInfo() {
 		
-		buildInfo = buildService.getBuildInfo(ownerName, repoName, buildId);
-		runUITask(UI_UPDATE_BUILD_INFO);
+		try {
+			
+			alertSync.setVisibility(View.VISIBLE);
+			alertError.setVisibility(View.INVISIBLE);
+			content.setVisibility(View.INVISIBLE);
+		
+			buildInfo = buildService.getBuildInfo(ownerName, repoName, buildId);
+			runUITask(UI_UPDATE_BUILD_INFO);
+		}
+		catch(BuildInfoUnavailableException biue) {
+			
+			alertError.setVisibility(View.VISIBLE);
+			alertSync.setVisibility(View.INVISIBLE);
+			content.setVisibility(View.INVISIBLE);
+			
+			Log.e(getClass().getSimpleName(), "Failed to fetch build info.", biue);
+		}
 	}
 	
 	@UI(UI_UPDATE_BUILD_INFO)
@@ -149,13 +185,14 @@ public class BuildInfoActivity extends IckleActivity {
 		duration.setText(String.valueOf(TextUtils.isAvailable(buildInfo.getDuration())));
 		committerName.setText(isAvailable(buildInfo.getCommitter_name()));
 		committerEmail.setText(isAvailable(buildInfo.getCommitter_email()));
-		message.setText(isAvailable(buildInfo.getMessage()));
 		branch.setText(isAvailable(buildInfo.getBranch()));
 		event.setText(isAvailable(buildInfo.getEvent_type()));
+		commitMessage.setText(isAvailable(buildInfo.getMessage()));
 		commit.setText(isAvailable(buildInfo.getCommit()));
 		
-//		alertSync.setVisibility(View.INVISIBLE);
-//		content.setVisibility(View.VISIBLE);
+		alertSync.setVisibility(View.INVISIBLE);
+		alertError.setVisibility(View.INVISIBLE);
+		content.setVisibility(View.VISIBLE);
 	}
 	
 	@Click(R.id.commit)
@@ -189,7 +226,7 @@ public class BuildInfoActivity extends IckleActivity {
 		intent.setType("text/plain");
 		intent.putExtra(Intent.EXTRA_EMAIL, new String[]{buildInfo.getCommitter_email()});
 		intent.putExtra(Intent.EXTRA_SUBJECT, "Build " + buildInfo.getNumber() + " on " + slug.getText().toString());
-		intent.putExtra(Intent.EXTRA_TEXT, "Hi " + buildInfo.getCommitter_name() + ", ");
+		intent.putExtra(Intent.EXTRA_TEXT, "Hi " + buildInfo.getCommitter_name().split(" ")[0] + ", ");
 
 		startActivity(Intent.createChooser(intent, "Contact Committer"));
 	}

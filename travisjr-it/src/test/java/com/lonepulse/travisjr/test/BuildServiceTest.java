@@ -38,9 +38,7 @@ import org.junit.runner.RunWith;
 import com.lonepulse.travisjr.model.Build;
 import com.lonepulse.travisjr.service.BasicBuildService;
 import com.lonepulse.travisjr.service.BuildService;
-import com.lonepulse.travisjr.test.app.TravisJr;
 import com.xtremelabs.robolectric.Robolectric;
-import com.xtremelabs.robolectric.RobolectricTestRunner;
 
 /**
  * <p>Unit test for {@link BasicBuildService}.
@@ -51,7 +49,7 @@ import com.xtremelabs.robolectric.RobolectricTestRunner;
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
-@RunWith(RobolectricTestRunner.class)
+@RunWith(TravisJrTestRunner.class)
 public class BuildServiceTest {
 
 	
@@ -76,7 +74,6 @@ public class BuildServiceTest {
 	@Before
 	public final void setUp() throws Exception {
 		
-		TravisJr.Application.context = Robolectric.application;
 		buildService = new BasicBuildService();
 		executorService = Executors.newSingleThreadExecutor();
 	}

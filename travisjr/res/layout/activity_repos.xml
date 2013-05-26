@@ -41,14 +41,14 @@
             android:visibility="gone" />
 
         <include
-            android:id="@id/alert_repos_empty"
+            android:id="@id/alert_empty"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             layout="@layout/alert_no_repos_found"
             android:visibility="gone" />
 
         <include
-            android:id="@id/alert_repos_error"
+            android:id="@id/alert_error"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             layout="@layout/alert_error_fetching_repos"

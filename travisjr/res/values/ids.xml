@@ -27,6 +27,8 @@
     <item name="octocat" type="id">octocat</item>
     <item name="username" type="id">username</item>
     <item name="message" type="id">message</item>
+    <item name="commit_message" type="id">commit_message</item>
+    <item name="commit" type="id">commit</item>
     <item name="action" type="id">action</item>
     <item name="header" type="id">header</item>
     <item name="title" type="id">title</item>
@@ -47,8 +49,8 @@
     <item name="event" type="id">event</item>
     <item name="branch" type="id">branch</item>
     <item name="alert_data" type="id">alert_data</item>
-    <item name="alert_repos_empty" type="id">alert_repos_empty</item>
-    <item name="alert_repos_error" type="id">alert_repos_error</item>
+    <item name="alert_empty" type="id">alert_repos_empty</item>
+    <item name="alert_error" type="id">alert_repos_error</item>
     <item name="alert_sync" type="id">alert_repos</item>
     <item name="menu_sync" type="id">sync</item>
     <item name="menu_credentials" type="id">credentials</item>

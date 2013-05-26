@@ -37,9 +37,6 @@ import com.lonepulse.travisjr.AuthenticationActivity;
 import com.lonepulse.travisjr.R;
 import com.lonepulse.travisjr.service.AccountService;
 import com.lonepulse.travisjr.service.BasicAccountService;
-import com.lonepulse.travisjr.test.app.TravisJr;
-import com.xtremelabs.robolectric.Robolectric;
-import com.xtremelabs.robolectric.RobolectricTestRunner;
 
 /**
  * <p>Unit test for {@link BasicAccountService}.
@@ -50,7 +47,7 @@ import com.xtremelabs.robolectric.RobolectricTestRunner;
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
-@RunWith(RobolectricTestRunner.class)
+@RunWith(TravisJrTestRunner.class)
 public class AccountServiceTest {
 
 	
@@ -80,7 +77,6 @@ public class AccountServiceTest {
 	@Before
 	public final void setUp() throws Exception {
 
-		TravisJr.Application.context = Robolectric.application;
 		activity = new AuthenticationActivity();
 		
 		accountService = new BasicAccountService();

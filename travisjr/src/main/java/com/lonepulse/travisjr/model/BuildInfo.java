@@ -33,9 +33,9 @@ import java.io.Serializable;
 public class BuildInfo implements Serializable {
 
 
-	private static final long serialVersionUID = 8345843127155454353L;
+	private static final long serialVersionUID = -8755854557147767907L;
 	
-	
+
 	/**
 	 * <p>Identifies a {@link BuildInfo} uniquely.
 	 */

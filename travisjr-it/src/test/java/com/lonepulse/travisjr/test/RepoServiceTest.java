@@ -41,9 +41,7 @@ import com.lonepulse.travisjr.service.AccountService;
 import com.lonepulse.travisjr.service.BasicAccountService;
 import com.lonepulse.travisjr.service.BasicRepoService;
 import com.lonepulse.travisjr.service.RepoService;
-import com.lonepulse.travisjr.test.app.TravisJr;
 import com.xtremelabs.robolectric.Robolectric;
-import com.xtremelabs.robolectric.RobolectricTestRunner;
 
 /**
  * <p>Unit test for {@link BasicRepoService}.
@@ -54,7 +52,7 @@ import com.xtremelabs.robolectric.RobolectricTestRunner;
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
-@RunWith(RobolectricTestRunner.class)
+@RunWith(TravisJrTestRunner.class)
 public class RepoServiceTest {
 
 	
@@ -79,7 +77,6 @@ public class RepoServiceTest {
 	@Before
 	public final void setUp() throws Exception {
 
-		TravisJr.Application.context = Robolectric.application;
 		repoService = new BasicRepoService();
 		executorService = Executors.newSingleThreadExecutor();
 	}
