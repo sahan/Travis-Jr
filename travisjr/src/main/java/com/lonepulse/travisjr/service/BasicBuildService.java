@@ -71,7 +71,7 @@ public class BasicBuildService implements BuildService {
 		
 		try {
 			
-			return travisCIEndpoint.getBuildInfo(owner, repository, String.valueOf(buildId) + ".json");
+			return travisCIEndpoint.getBuildInfo(owner, repository, String.valueOf(buildId));
 		}
 		catch(Exception e) {
 			

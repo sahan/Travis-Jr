@@ -160,7 +160,6 @@ public class TravisJrActivity extends IckleActivity {
 			((TextView)header.findViewById(R.id.title)).setText(onInitTitle());
 			((TextView)header.findViewById(R.id.subtitle)).setText(onInitSubtitle());
 	
-			actionBar.setIcon(R.drawable.ic_actionbar);
 			actionBar.setDisplayShowTitleEnabled(false);
 			actionBar.setDisplayShowCustomEnabled(true);
 			actionBar.setCustomView(header);

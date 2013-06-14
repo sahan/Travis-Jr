@@ -61,7 +61,6 @@ public class SettingsActivity extends PreferenceActivity {
 		((TextView)header.findViewById(R.id.subtitle)).setText(subtitle);
 
 		ActionBar actionBar = getActionBar();
-		actionBar.setIcon(R.drawable.ic_actionbar);
 		actionBar.setDisplayShowTitleEnabled(false);
 		actionBar.setDisplayShowCustomEnabled(true);
 		actionBar.setCustomView(header);

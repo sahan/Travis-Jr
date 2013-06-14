@@ -35,9 +35,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ReposActivity" />
-        <activity android:name=".BuildsActivity" />
-        <activity android:name=".pref.SettingsActivity" />
+        <activity android:name=".ReposActivity"
+            	  android:icon="@drawable/ic_actionbar" />
+        <activity android:name=".BuildsActivity"
+            	  android:icon="@drawable/ic_actionbar" />
+        <activity android:name=".pref.SettingsActivity" 
+            	  android:icon="@drawable/ic_actionbar" />
         <activity
             android:name=".dialog.LicensesActivity"
             android:label="@string/ttl_pref_oss_licenses"

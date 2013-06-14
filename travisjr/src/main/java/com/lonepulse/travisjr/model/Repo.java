@@ -42,6 +42,7 @@ public class Repo implements Serializable, Comparable<Repo>, Cloneable {
 
 	private static final long serialVersionUID = 6970742314687312453L;
 
+	
 	/**
 	 * <p>Unique identifier for each repository. 
 	 */

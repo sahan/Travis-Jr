@@ -94,7 +94,7 @@ public interface TravisCIEndpoint {
 	 * @param repo
 	 * 			the name of the repository
 	 * 
-	 * @param file
+	 * @param buildId
 	 * 			the JSON file which is prepended with the build id, e.g. {@code 6060738.json}
 	 * 
 	 * @return the instance of {@link BuildInfo} which contains detailed 
@@ -102,8 +102,8 @@ public interface TravisCIEndpoint {
 	 * 
 	 * @since 1.1.3
 	 */
-	@Rest(path = "repositories/:owner/:repo/builds/:file")
+	@Rest(path = "repositories/:owner/:repo/builds/:build_id")
 	BuildInfo getBuildInfo(@PathParam("owner") String owner, 
 						   @PathParam("repo") String repo,
-						   @PathParam("file") String file);
+						   @PathParam("build_id") String buildId);
 }
