@@ -35,7 +35,7 @@ import com.lonepulse.travisjr.model.Repo;
  * <p>This endpoint contract defines the remote services which are used 
  * by Travis Jr.
  * 
- * @version 1.1.3
+ * @version 1.1.4
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
@@ -95,7 +95,7 @@ public interface TravisCIEndpoint {
 	 * 			the name of the repository
 	 * 
 	 * @param buildId
-	 * 			the JSON file which is prepended with the build id, e.g. {@code 6060738.json}
+	 * 			the id of the build job 
 	 * 
 	 * @return the instance of {@link BuildInfo} which contains detailed 
 	 * 		   information about the build

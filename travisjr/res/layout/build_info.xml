@@ -18,244 +18,253 @@
   limitations under the License.
   #L%
   -->
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@id/root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:background="@color/bg_lightest">
-    
-	<include
-		android:id="@id/alert_error"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        layout="@layout/alert_error_fetching_build_info"
-        android:layout_centerInParent="true"
-        android:visibility="visible" />
-	
-	<include
-		android:id="@id/alert_sync"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        layout="@layout/alert_syncing_build_info"
-        android:layout_centerInParent="true"
-        android:visibility="invisible" />
-    
-	<LinearLayout 
-	    android:id="@id/content"
+    android:orientation="vertical">
+	<RelativeLayout 
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:gravity="center"
 	    android:orientation="vertical"
-	    android:visibility="invisible">
-	
-		<LinearLayout
-		    android:id="@+id/section_repo"
-		    android:layout_width="match_parent"
-		    android:layout_height="77dp"
-		    android:baselineAligned="false"
-		    android:orientation="horizontal">
+	    android:background="@color/bg_lightest">
+	    
+		<include
+			android:id="@id/alert_error"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        layout="@layout/alert_error_fetching_build_info"
+	        android:layout_centerInParent="true"
+	        android:visibility="visible" />
 		
-		    <RelativeLayout
+		<include
+			android:id="@id/alert_sync"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        layout="@layout/alert_syncing_build_info"
+	        android:layout_centerInParent="true"
+	        android:visibility="invisible" />
+	    
+		<LinearLayout 
+		    android:id="@id/content"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:gravity="center"
+		    android:orientation="vertical"
+		    android:visibility="invisible">
+		
+			<LinearLayout
+			    android:id="@+id/section_repo"
+			    android:layout_width="match_parent"
+			    android:layout_height="77dp"
+			    android:baselineAligned="false"
+			    android:orientation="horizontal">
+			
+			    <RelativeLayout
+			        android:layout_width="match_parent"
+			        android:layout_height="77dp"
+			        android:weightSum="1"
+			        tools:ignore="UselessParent" 
+			        android:paddingLeft="15dp"
+			        android:paddingRight="15dp"
+			        android:paddingTop="10dp"
+			        android:paddingBottom="10dp">
+			
+			        <RelativeLayout
+			            android:id="@+id/panel_repo"
+			            android:layout_width="wrap_content"
+			            android:layout_height="wrap_content"
+			            android:layout_alignParentLeft="true"
+			            android:layout_alignParentTop="true"
+			            android:layout_toLeftOf="@id/start_time"
+			            android:paddingRight="5dp" >
+			
+			            <TextView
+			                android:id="@id/repo_name"
+			                android:layout_width="wrap_content"
+			                android:layout_height="wrap_content"
+			                android:singleLine="true"
+			                android:text="@string/not_available"
+			                android:textColor="@color/txt_blue"
+			                android:textSize="@dimen/txt_xl"
+			                android:textStyle="bold" />
+			
+			            <TextView
+			                android:id="@id/build_number"
+			                android:layout_width="wrap_content"
+			                android:layout_height="wrap_content"
+			                android:layout_alignLeft="@id/repo_name"
+			                android:layout_below="@id/repo_name"
+			                android:singleLine="true"
+			                android:text="@string/not_available"
+			                android:textColor="@color/txt_dark"
+			                android:textSize="@dimen/txt_xxl"
+			                android:textStyle="bold" />
+			        </RelativeLayout>
+			
+			        <TextView
+			            android:id="@+id/start_time"
+			            android:layout_width="wrap_content"
+			            android:layout_height="wrap_content"
+			            android:layout_alignParentBottom="true"
+			            android:layout_alignParentRight="true"
+			            android:paddingBottom="2dp"
+			            android:text="@string/not_available"
+			            android:textColor="@color/txt_blue"
+			            android:textSize="@dimen/txt_m"
+			            android:textStyle="bold" />
+			
+			        <TextView
+			            android:id="@+id/start_date"
+			            android:layout_width="wrap_content"
+			            android:layout_height="wrap_content"
+			            android:layout_above="@id/start_time"
+			            android:layout_alignRight="@id/start_time"
+			            android:text="@string/not_available"
+			            android:textColor="@color/txt_dark"
+			            android:textSize="@dimen/txt_s" />
+			
+			        <RelativeLayout
+			            android:id="@+id/panel_duration"
+			            android:layout_width="wrap_content"
+			            android:layout_height="wrap_content"
+			            android:layout_alignParentRight="true"
+			            android:layout_alignParentTop="true">
+			
+			            <TextView
+			                android:id="@id/duration"
+			                android:layout_width="wrap_content"
+			                android:layout_height="wrap_content"
+			                android:gravity="bottom"
+			                android:singleLine="true"
+			                android:text="@string/not_available"
+			                android:textColor="@color/txt_blue"
+			                android:textSize="@dimen/txt_l" />
+			
+			            <TextView
+			                android:id="@id/sec"
+			                android:layout_width="wrap_content"
+			                android:layout_height="wrap_content"
+			                android:layout_alignBaseline="@id/duration"
+			                android:layout_toRightOf="@id/duration"
+			                android:gravity="bottom"
+			                android:singleLine="true"
+			                android:text="@string/lbl_seconds"
+			                android:textColor="@color/txt_dark"
+			                android:textSize="@dimen/txt_s" />
+			        </RelativeLayout>
+			    </RelativeLayout>
+			</LinearLayout>
+		
+			<View 
+			    android:background="@color/txt_blue"
+			    android:layout_width="match_parent"
+			    android:layout_height="1dp" />
+			
+		    <LinearLayout 
+		        android:id="@+id/section_build"
 		        android:layout_width="match_parent"
-		        android:layout_height="77dp"
-		        android:weightSum="1"
-		        tools:ignore="UselessParent" 
+		        android:layout_height="wrap_content"
+		        android:orientation="horizontal"
+		        android:paddingTop="15dp"
+		        android:paddingBottom="10dp"
 		        android:paddingLeft="15dp"
 		        android:paddingRight="15dp"
-		        android:paddingTop="10dp"
-		        android:paddingBottom="10dp">
-		
-		        <RelativeLayout
-		            android:id="@+id/panel_repo"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:layout_alignParentLeft="true"
-		            android:layout_alignParentTop="true"
-		            android:layout_toLeftOf="@id/start_time"
-		            android:paddingRight="5dp" >
-		
-		            <TextView
-		                android:id="@id/repo_name"
-		                android:layout_width="wrap_content"
-		                android:layout_height="wrap_content"
-		                android:singleLine="true"
-		                android:text="@string/not_available"
-		                android:textColor="@color/txt_blue"
-		                android:textSize="@dimen/txt_xl"
-		                android:textStyle="bold" />
-		
-		            <TextView
-		                android:id="@id/build_number"
-		                android:layout_width="wrap_content"
-		                android:layout_height="wrap_content"
-		                android:layout_alignLeft="@id/repo_name"
-		                android:layout_below="@id/repo_name"
-		                android:singleLine="true"
-		                android:text="@string/not_available"
-		                android:textColor="@color/txt_dark"
-		                android:textSize="@dimen/txt_xxl"
-		                android:textStyle="bold" />
-		        </RelativeLayout>
-		
-		        <TextView
-		            android:id="@+id/start_time"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:layout_alignParentBottom="true"
-		            android:layout_alignParentRight="true"
-		            android:paddingBottom="2dp"
-		            android:text="@string/not_available"
-		            android:textColor="@color/txt_blue"
-		            android:textSize="@dimen/txt_m"
-		            android:textStyle="bold" />
-		
-		        <TextView
-		            android:id="@+id/start_date"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:layout_above="@id/start_time"
-		            android:layout_alignRight="@id/start_time"
-		            android:text="@string/not_available"
-		            android:textColor="@color/txt_dark"
-		            android:textSize="@dimen/txt_s" />
-		
-		        <RelativeLayout
-		            android:id="@+id/panel_duration"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:layout_alignParentRight="true"
-		            android:layout_alignParentTop="true">
-		
-		            <TextView
-		                android:id="@id/duration"
-		                android:layout_width="wrap_content"
-		                android:layout_height="wrap_content"
-		                android:gravity="bottom"
-		                android:singleLine="true"
-		                android:text="@string/not_available"
-		                android:textColor="@color/txt_blue"
-		                android:textSize="@dimen/txt_l" />
-		
-		            <TextView
-		                android:id="@id/sec"
-		                android:layout_width="wrap_content"
-		                android:layout_height="wrap_content"
-		                android:layout_alignBaseline="@id/duration"
-		                android:layout_toRightOf="@id/duration"
-		                android:gravity="bottom"
-		                android:singleLine="true"
-		                android:text="@string/lbl_seconds"
-		                android:textColor="@color/txt_dark"
-		                android:textSize="@dimen/txt_s" />
-		        </RelativeLayout>
-		    </RelativeLayout>
-		</LinearLayout>
-	
-		<View 
-		    android:background="@color/txt_blue"
-		    android:layout_width="match_parent"
-		    android:layout_height="1dp" />
-		
-	    <LinearLayout 
-	        android:id="@+id/section_build"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:orientation="horizontal"
-	        android:paddingTop="15dp"
-	        android:paddingBottom="10dp"
-	        android:paddingLeft="15dp"
-	        android:paddingRight="15dp"
-	        android:weightSum="1" 
-	        android:baselineAligned="false">
-	        
-	        <LinearLayout 
-	            android:layout_width="0dp"
-	            android:layout_height="wrap_content"
-	            android:layout_weight="0.7"
-	            android:orientation="vertical">
-	            
-		        <TextView 
-		            android:id="@+id/committer_name"
-		            android:layout_width="match_parent"
-		            android:layout_height="wrap_content"
-		            android:maxLines="1"
-		            android:text="@string/not_available"
-		            android:textColor="@color/txt_blue"
-					android:textSize="@dimen/txt_l" />
+		        android:weightSum="1" 
+		        android:baselineAligned="false">
 		        
-		        <TextView 
-		            android:id="@+id/committer_email"
-		            android:layout_width="match_parent"
+		        <LinearLayout 
+		            android:layout_width="0dp"
 		            android:layout_height="wrap_content"
-		            android:maxLines="1"
-		            android:text="@string/not_available"
-		            android:textColor="@color/txt_dark"
-					android:textSize="@dimen/txt_m" />
-	        </LinearLayout>
-	        
-	        <RelativeLayout
-		        android:id="@id/panel_event"
-		        android:layout_width="0dp"
+		            android:layout_weight="0.7"
+		            android:orientation="vertical">
+		            
+			        <TextView 
+			            android:id="@+id/committer_name"
+			            android:layout_width="match_parent"
+			            android:layout_height="wrap_content"
+			            android:maxLines="1"
+			            android:text="@string/not_available"
+			            android:textColor="@color/txt_blue"
+						android:textSize="@dimen/txt_l" />
+			        
+			        <TextView 
+			            android:id="@+id/committer_email"
+			            android:layout_width="match_parent"
+			            android:layout_height="wrap_content"
+			            android:maxLines="1"
+			            android:text="@string/not_available"
+			            android:textColor="@color/txt_dark"
+						android:textSize="@dimen/txt_m" />
+		        </LinearLayout>
+		        
+		        <RelativeLayout
+			        android:id="@id/panel_event"
+			        android:layout_width="0dp"
+			        android:layout_height="wrap_content"
+			        android:layout_weight="0.3"
+			        android:gravity="right" >
+			
+			        <TextView
+			            android:id="@id/branch"
+			            android:layout_width="wrap_content"
+			            android:layout_height="wrap_content"
+			            android:layout_alignParentRight="true"
+			            android:layout_alignParentTop="true"
+			            android:singleLine="true"
+			            android:text="@string/not_available"
+			            android:textColor="@color/txt_blue"
+			            android:textSize="@dimen/txt_m"
+			            android:textStyle="bold" />
+			
+			        <TextView
+			            android:id="@id/event"
+			            android:layout_width="wrap_content"
+			            android:layout_height="wrap_content"
+			            android:layout_alignRight="@id/branch"
+			            android:layout_below="@id/branch"
+			            android:singleLine="true"
+			            android:text="@string/not_available"
+			            android:textColor="@color/txt_dark"
+			            android:textSize="@dimen/txt_s" />
+			    </RelativeLayout>
+		    </LinearLayout>
+		    
+			<TextView
+				android:id="@id/commit_message"
+				android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:layout_marginLeft="15dp"
+			    android:layout_marginRight="15dp"
+			    android:gravity="left" 
+			    android:ellipsize="end"
+			    android:maxLines="3"
+			    android:text="@string/not_available"
+			    android:textColor="@color/txt_dark"
+			    android:textSize="@dimen/txt_s"
+			    android:textStyle="bold" />
+		    
+			<TextView 
+		    	android:id="@id/commit"
+		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
-		        android:layout_weight="0.3"
-		        android:gravity="right" >
-		
-		        <TextView
-		            android:id="@id/branch"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:layout_alignParentRight="true"
-		            android:layout_alignParentTop="true"
-		            android:singleLine="true"
-		            android:text="@string/not_available"
-		            android:textColor="@color/txt_blue"
-		            android:textSize="@dimen/txt_m"
-		            android:textStyle="bold" />
-		
-		        <TextView
-		            android:id="@id/event"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:layout_alignRight="@id/branch"
-		            android:layout_below="@id/branch"
-		            android:singleLine="true"
-		            android:text="@string/not_available"
-		            android:textColor="@color/txt_dark"
-		            android:textSize="@dimen/txt_s" />
-		    </RelativeLayout>
-	    </LinearLayout>
-	    
-		<TextView
-			android:id="@id/commit_message"
-			android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:layout_marginLeft="15dp"
-		    android:layout_marginRight="15dp"
-		    android:gravity="left" 
-		    android:ellipsize="end"
-		    android:maxLines="3"
-		    android:text="@string/not_available"
-		    android:textColor="@color/txt_dark"
-		    android:textSize="@dimen/txt_s"
-		    android:textStyle="bold" />
-	    
-		<TextView 
-	    	android:id="@id/commit"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:background="@color/txt_blue"
-	        android:maxLines="1"
-	        android:ellipsize="end"
-	        android:layout_marginTop="20dp"
-	        android:paddingTop="15dp"
-	        android:paddingBottom="15dp"
-	        android:gravity="center_horizontal"
-	        android:text="@string/not_available"
-	        android:textColor="@color/txt_lightest"
-			android:textSize="@dimen/txt_s" />
-	</LinearLayout>
-</RelativeLayout>
+		        android:background="@color/txt_blue"
+		        android:maxLines="1"
+		        android:ellipsize="end"
+		        android:layout_marginTop="20dp"
+		        android:paddingTop="15dp"
+		        android:paddingBottom="15dp"
+		        android:gravity="center_horizontal"
+		        android:text="@string/not_available"
+		        android:textColor="@color/txt_lightest"
+				android:textSize="@dimen/txt_s" />
+		</LinearLayout>
+	</RelativeLayout>
+	<WebView
+	    android:id="@id/log" 
+	    android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:padding="5dp" />
+</LinearLayout>

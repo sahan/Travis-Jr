@@ -22,6 +22,7 @@ package com.lonepulse.travisjr.model;
 
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * <p>This entity provides detailed information about a {@link Build}.
@@ -133,6 +134,12 @@ public class BuildInfo implements Serializable {
 	 */
 	private String event_type;
 
+	/**
+	 * <p>The build matrix which contains information on all the individual <i>build jobs</i>. 
+	 */
+	private BuildJob[] matrix;
+	
+	
 	/**
 	 * <p>Accessor for id.
 	 *
@@ -493,6 +500,14 @@ public class BuildInfo implements Serializable {
 	public void setEvent_type(String event_type) {
 		this.event_type = event_type;
 	}
+	
+	public BuildJob[] getMatrix() {
+		return matrix;
+	}
+
+	public void setMatrix(BuildJob[] matrix) {
+		this.matrix = matrix;
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -531,9 +546,7 @@ public class BuildInfo implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		
 		StringBuilder builder = new StringBuilder();
-		
 		builder.append("BuildInfo [id=");
 		builder.append(id);
 		builder.append(", repository_id=");
@@ -572,8 +585,9 @@ public class BuildInfo implements Serializable {
 		builder.append(compare_url);
 		builder.append(", event_type=");
 		builder.append(event_type);
+		builder.append(", matrix=");
+		builder.append(Arrays.toString(matrix));
 		builder.append("]");
-		
 		return builder.toString();
 	}
 }

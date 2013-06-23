@@ -30,7 +30,7 @@ import java.io.Serializable;
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
-public class Matrix implements Serializable {
+public class BuildJob implements Serializable {
 
 
 	private static final long serialVersionUID = -654655019370021900L;
@@ -49,7 +49,7 @@ public class Matrix implements Serializable {
 	/**
 	 * <p>The id of the build within the build matrix.
 	 */
-	private long number;
+	private double number;
 	
 	/**
 	 * <p>Whether the build script exited successfully or whether is failed.
@@ -71,6 +71,11 @@ public class Matrix implements Serializable {
 	 */
 	private boolean allow_failure;
 
+	/**
+	 * <p>The configuration which was used to run this build.
+	 */
+	private Config config;
+	
 	
 	/**
 	 * <p>Accessor for id.
@@ -115,7 +120,7 @@ public class Matrix implements Serializable {
 	 *
 	 * @return the number
 	 */
-	public long getNumber() {
+	public double getNumber() {
 		return number;
 	}
 
@@ -125,7 +130,7 @@ public class Matrix implements Serializable {
 	 * @param number 
 	 *			the number to set
 	 */
-	public void setNumber(long number) {
+	public void setNumber(double number) {
 		this.number = number;
 	}
 
@@ -204,6 +209,25 @@ public class Matrix implements Serializable {
 	public void setAllow_failure(boolean allow_failure) {
 		this.allow_failure = allow_failure;
 	}
+	
+	/**
+	 * <p>Accessor for config.
+	 *
+	 * @return the config
+	 */
+	public Config getConfig() {
+		return config;
+	}
+
+	/**
+	 * <p>Mutator for config.
+	 *
+	 * @param config 
+	 *			the config to set
+	 */
+	public void setConfig(Config config) {
+		this.config = config;
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -227,7 +251,7 @@ public class Matrix implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Matrix other = (Matrix) obj;
+		BuildJob other = (BuildJob) obj;
 		if (id != other.id)
 			return false;
 		return true;
@@ -239,7 +263,7 @@ public class Matrix implements Serializable {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Matrix [id=");
+		builder.append("BuildJob [id=");
 		builder.append(id);
 		builder.append(", repository_id=");
 		builder.append(repository_id);
@@ -253,6 +277,8 @@ public class Matrix implements Serializable {
 		builder.append(finished_at);
 		builder.append(", allow_failure=");
 		builder.append(allow_failure);
+		builder.append(", config=");
+		builder.append(config);
 		builder.append("]");
 		return builder.toString();
 	}

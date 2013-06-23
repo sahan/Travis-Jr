@@ -22,6 +22,7 @@ package com.lonepulse.travisjr.service;
 
 
 import com.lonepulse.icklebot.annotation.inject.Pojo;
+import com.lonepulse.travisjr.view.MissingViewException;
 
 /**
  * <p>This contract specifies the services offered for managing the 

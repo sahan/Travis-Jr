@@ -22,18 +22,24 @@ package com.lonepulse.travisjr.service;
 
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import android.util.Log;
 
 import com.lonepulse.robozombie.core.annotation.Bite;
 import com.lonepulse.robozombie.core.inject.Zombie;
 import com.lonepulse.travisjr.model.Build;
 import com.lonepulse.travisjr.model.BuildInfo;
+import com.lonepulse.travisjr.model.BuildJob;
+import com.lonepulse.travisjr.net.AmazonS3Endpoint;
 import com.lonepulse.travisjr.net.TravisCIEndpoint;
 
 /**
  * <p>A basic implementation of {@link BuildService}.
  * 
- * @version 1.1.0
+ * @version 1.1.2
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
@@ -42,6 +48,10 @@ public class BasicBuildService implements BuildService {
 
 	@Bite
 	private TravisCIEndpoint travisCIEndpoint;
+	
+	@Bite
+	private AmazonS3Endpoint amazonS3Endpoint;
+	
 	{
 		Zombie.infect(this);
 	}
@@ -76,6 +86,39 @@ public class BasicBuildService implements BuildService {
 		catch(Exception e) {
 			
 			throw new BuildInfoUnavailableException(owner, repository, buildId, e);
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Map<BuildJob, StringBuilder> getJobLogs(BuildInfo buildInfo) {
+		
+		try {
+			
+			Map<BuildJob, StringBuilder> logMap = new HashMap<BuildJob, StringBuilder>();
+			BuildJob[] buildJobs = buildInfo.getMatrix();
+			
+			for (BuildJob buildJob : buildJobs) {
+			
+				try {
+					
+					String log = amazonS3Endpoint.getJobLog(String.valueOf(buildJob.getId()));
+					logMap.put(buildJob, new StringBuilder(log));
+				}
+				catch(Exception e) {
+					
+					Log.e(getClass().getName(), "Failed to fetch build job log.", 
+						  new JobLogUnavailableException(buildJob, e));
+				}
+			}
+			
+			return logMap;
+		}
+		catch(Exception e) {
+			
+			throw new FetchingLogsFailedException(buildInfo, e);
 		}
 	}
 }

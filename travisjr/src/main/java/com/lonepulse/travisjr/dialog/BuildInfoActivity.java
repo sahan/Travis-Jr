@@ -23,6 +23,11 @@ package com.lonepulse.travisjr.dialog;
 
 import static android.text.TextUtils.isEmpty;
 import static com.lonepulse.travisjr.util.TextUtils.isAvailable;
+
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
@@ -31,6 +36,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.TextView;
 
@@ -45,6 +51,7 @@ import com.lonepulse.icklebot.annotation.thread.UI;
 import com.lonepulse.travisjr.IllegalArgumentException;
 import com.lonepulse.travisjr.R;
 import com.lonepulse.travisjr.model.BuildInfo;
+import com.lonepulse.travisjr.model.BuildJob;
 import com.lonepulse.travisjr.service.BuildInfoUnavailableException;
 import com.lonepulse.travisjr.service.BuildService;
 import com.lonepulse.travisjr.util.DateUtils;
@@ -67,6 +74,9 @@ public class BuildInfoActivity extends IckleActivity {
 	
 	private static final int ASYNC_FETCH_BUILD_INFO = 0;
 	private static final int UI_UPDATE_BUILD_INFO = 0;
+	private static final int UI_SYNC = 1;
+	private static final int UI_ERROR = 2;
+	private static final int UI_CONTENT = 3;
 	
 	@InjectPojo
 	private BuildService buildService;
@@ -86,6 +96,9 @@ public class BuildInfoActivity extends IckleActivity {
 	
 	@Stateful
 	private BuildInfo buildInfo;
+	
+	@Stateful
+	Map<BuildJob, StringBuilder> logs; 
 	
 	@InjectView(R.id.root)
 	private View root;
@@ -123,6 +136,9 @@ public class BuildInfoActivity extends IckleActivity {
 	@InjectView(R.id.commit)
 	private TextView commit;
 	
+	@InjectView(R.id.log)
+	private WebView log;
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -159,19 +175,16 @@ public class BuildInfoActivity extends IckleActivity {
 		
 		try {
 			
-			alertSync.setVisibility(View.VISIBLE);
-			alertError.setVisibility(View.INVISIBLE);
-			content.setVisibility(View.INVISIBLE);
+			runUITask(UI_SYNC);
 		
 			buildInfo = buildService.getBuildInfo(ownerName, repoName, buildId);
+			logs = buildService.getJobLogs(buildInfo);
+			
 			runUITask(UI_UPDATE_BUILD_INFO);
 		}
 		catch(BuildInfoUnavailableException biue) {
 			
-			alertError.setVisibility(View.VISIBLE);
-			alertSync.setVisibility(View.INVISIBLE);
-			content.setVisibility(View.INVISIBLE);
-			
+			runUITask(UI_ERROR);
 			Log.e(getClass().getSimpleName(), "Failed to fetch build info.", biue);
 		}
 	}
@@ -189,6 +202,39 @@ public class BuildInfoActivity extends IckleActivity {
 		event.setText(isAvailable(buildInfo.getEvent_type()));
 		commitMessage.setText(isAvailable(buildInfo.getMessage()));
 		commit.setText(isAvailable(buildInfo.getCommit()));
+
+		Set<Entry<BuildJob, StringBuilder>> logEntries = logs.entrySet();
+		
+		for (Entry<BuildJob, StringBuilder> logEntry : logEntries) {
+			
+			String content = "<html><body><small><code style=\"white-space:pre-line;\">" + 
+							  logEntry.getValue().toString() + 
+							  "</code></small></body></html>";
+			
+			log.loadData(content, "text/html", "utf-8");
+		}
+		
+		runUITask(UI_CONTENT);
+	}
+	
+	@UI(UI_SYNC)
+	private void uiSync() {
+		
+		alertSync.setVisibility(View.VISIBLE);
+		alertError.setVisibility(View.INVISIBLE);
+		content.setVisibility(View.INVISIBLE);
+	}
+	
+	@UI(UI_ERROR)
+	private void uiError() {
+		
+		alertError.setVisibility(View.VISIBLE);
+		alertSync.setVisibility(View.INVISIBLE);
+		content.setVisibility(View.INVISIBLE);
+	}
+	
+	@UI(UI_CONTENT)
+	private void uiContent() {
 		
 		alertSync.setVisibility(View.INVISIBLE);
 		alertError.setVisibility(View.INVISIBLE);

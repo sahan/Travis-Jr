@@ -25,6 +25,7 @@ import java.util.List;
 
 import com.lonepulse.icklebot.annotation.inject.Pojo;
 import com.lonepulse.travisjr.model.Repo;
+import com.lonepulse.travisjr.view.TabSwipeListenerException;
 
 /**
  * <p>This contract specifies the service offered on the {@link Repo}s which 

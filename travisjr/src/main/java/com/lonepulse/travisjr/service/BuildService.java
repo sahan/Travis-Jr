@@ -22,17 +22,18 @@ package com.lonepulse.travisjr.service;
 
 
 import java.util.List;
+import java.util.Map;
 
 import com.lonepulse.icklebot.annotation.inject.Pojo;
 import com.lonepulse.travisjr.model.Build;
 import com.lonepulse.travisjr.model.BuildInfo;
+import com.lonepulse.travisjr.model.BuildJob;
 import com.lonepulse.travisjr.model.Repo;
 
 /**
- * <p>This contract specifies the service offered on the {@link Build}s for 
- * a {@link Repo}.
+ * <p>This contract specifies the service offered on the {@link Build}s for a {@link Repo}.
  * 
- * @version 1.1.1
+ * @version 1.1.2
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
@@ -55,8 +56,8 @@ public interface BuildService {
 	List<Build> getRecentBuilds(long repoId);
 	
 	/**
-	 * <p>Takes the repository name and owner name together with the id 
-	 * of the information file and retrieves an instance of {@link BuildInfo}.
+	 * <p>Takes the repository name and owner name together with the id of the information 
+	 * file and retrieves an instance of {@link BuildInfo}.
 	 *
 	 * @param owner
 	 * 			the GitHub username of the repository owner
@@ -73,4 +74,16 @@ public interface BuildService {
 	 * @since 1.1.1
 	 */
 	BuildInfo getBuildInfo(String owner, String repository, long buildId);
+	
+	/**
+	 * <p>Takes the {@link BuildInfo} and retrieves the log for each of the {@link BuildJob}s.
+	 *
+	 * @param buildId
+	 * 			the {@link BuildInfo} containing the {@link BuildJob}s whose logs are to be fetched
+	 * 
+	 * @return a {@link Map} which maps {@link BuildJob}s to their logs  
+	 * 
+	 * @since 1.1.2
+	 */
+	Map<BuildJob, StringBuilder> getJobLogs(BuildInfo buildInfo);
 }

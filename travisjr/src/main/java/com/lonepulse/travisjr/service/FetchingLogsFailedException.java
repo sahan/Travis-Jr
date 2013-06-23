@@ -22,44 +22,38 @@ package com.lonepulse.travisjr.service;
 
 
 import com.lonepulse.travisjr.TravisJrRuntimeException;
+import com.lonepulse.travisjr.model.BuildInfo;
 import com.lonepulse.travisjr.model.Repo;
 
 /**
- * <p>This exception is thrown when detailed build information cannot be retrieved 
- * for a certain build.
+ * <p>This exception is thrown when the logs for a {@link BuildInfo} cannot be retrieved.
  * 
  * @version 1.1.0
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
-public class BuildInfoUnavailableException extends TravisJrRuntimeException {
+public class FetchingLogsFailedException extends TravisJrRuntimeException {
 
 
-	private static final long serialVersionUID = -2436724976240029692L;
+	private static final long serialVersionUID = -3826393213196417026L;
 	
 
 	/**
 	 * <p>Prints a detailed message which specifies the ID of the {@link Repo} 
 	 * whose builds were unavailable.
 	 * 
-	 * @param owner
-	 * 			the name of the repository owner 
-	 * 
-	 * @param repo
-	 * 			the name of the repository
-	 * 
-	 * @param buildId
-	 * 			the ID of the build
+	 * @param buildInfo
+	 * 			the {@link BuildInfo} whose logs failed to be fetched
 	 * 
 	 * @param rootCause
 	 * 			the root cause of this exception
 	 * 
 	 * @since 1.1.0
 	 */
-	public BuildInfoUnavailableException(String owner, String repo, long buildId, Throwable rootCause) {
+	public FetchingLogsFailedException(BuildInfo buildInfo, Throwable rootCause) {
 		
-		this("No detailed buid information was available for buid with ID " + 
-			 buildId + " on repository " + repo + " by " + owner + ". ", rootCause);
+		this("Failed to fetch the logs for the build with ID " + buildInfo.getId() + " on repository " + 
+			  buildInfo.getRepository_id() + " by " + buildInfo.getAuthor_name() + ". ", rootCause);
 	}
 
 	/**
@@ -67,7 +61,7 @@ public class BuildInfoUnavailableException extends TravisJrRuntimeException {
 	 * 
 	 * @since 1.1.0
 	 */
-	public BuildInfoUnavailableException(String detailMessage) {
+	public FetchingLogsFailedException(String detailMessage) {
 		super(detailMessage);
 	}
 
@@ -76,7 +70,7 @@ public class BuildInfoUnavailableException extends TravisJrRuntimeException {
 	 * 
 	 * @since 1.1.0
 	 */
-	public BuildInfoUnavailableException(Throwable throwable) {
+	public FetchingLogsFailedException(Throwable throwable) {
 		super(throwable);
 	}
 
@@ -85,7 +79,7 @@ public class BuildInfoUnavailableException extends TravisJrRuntimeException {
 	 * 
 	 * @since 1.1.0
 	 */
-	public BuildInfoUnavailableException(String detailMessage, Throwable throwable) {
+	public FetchingLogsFailedException(String detailMessage, Throwable throwable) {
 		super(detailMessage, throwable);
 	}
 }
