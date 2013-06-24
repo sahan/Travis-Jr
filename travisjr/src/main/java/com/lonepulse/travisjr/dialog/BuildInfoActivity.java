@@ -40,7 +40,7 @@ import android.webkit.WebView;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.TextView;
 
-import com.lonepulse.icklebot.IckleActivity;
+import com.lonepulse.icklebot.activity.IckleActivity;
 import com.lonepulse.icklebot.annotation.event.Click;
 import com.lonepulse.icklebot.annotation.inject.InjectPojo;
 import com.lonepulse.icklebot.annotation.inject.InjectView;

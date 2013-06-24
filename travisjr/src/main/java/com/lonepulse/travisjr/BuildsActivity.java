@@ -32,6 +32,7 @@ import android.widget.TextView;
 
 import com.lonepulse.icklebot.annotation.event.Click;
 import com.lonepulse.icklebot.annotation.event.ItemClick;
+import com.lonepulse.icklebot.annotation.inject.InjectIckleService;
 import com.lonepulse.icklebot.annotation.inject.InjectPojo;
 import com.lonepulse.icklebot.annotation.inject.InjectView;
 import com.lonepulse.icklebot.annotation.inject.Layout;
@@ -39,6 +40,7 @@ import com.lonepulse.icklebot.annotation.inject.Stateful;
 import com.lonepulse.icklebot.annotation.inject.Title;
 import com.lonepulse.icklebot.annotation.thread.Async;
 import com.lonepulse.icklebot.annotation.thread.UI;
+import com.lonepulse.icklebot.network.NetworkManager;
 import com.lonepulse.travisjr.adapter.BuildAdapter;
 import com.lonepulse.travisjr.app.TravisJrActivity;
 import com.lonepulse.travisjr.dialog.BuildInfoActivity;
@@ -81,6 +83,8 @@ public class BuildsActivity extends TravisJrActivity {
 	@Stateful
 	private int scrollPosition;
 	
+	@InjectIckleService
+	private NetworkManager network;
 	
 	/**
 	 * <p>The {@link Repo} whose {@link Build}s are being displayed.
@@ -144,7 +148,7 @@ public class BuildsActivity extends TravisJrActivity {
 		listView.setEmptyView(alertSync);
 		alertData.setVisibility(View.GONE);
 		
-		boolean connected = network().isConnected();
+		boolean connected = network.isConnected();
 		
 		if(builds == null && connected) {
 			

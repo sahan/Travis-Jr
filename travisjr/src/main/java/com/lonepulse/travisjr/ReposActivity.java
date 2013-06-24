@@ -33,6 +33,7 @@ import android.widget.ListView;
 
 import com.lonepulse.icklebot.annotation.event.Click;
 import com.lonepulse.icklebot.annotation.event.ItemClick;
+import com.lonepulse.icklebot.annotation.inject.InjectIckleService;
 import com.lonepulse.icklebot.annotation.inject.InjectPojo;
 import com.lonepulse.icklebot.annotation.inject.InjectView;
 import com.lonepulse.icklebot.annotation.inject.Layout;
@@ -40,6 +41,7 @@ import com.lonepulse.icklebot.annotation.inject.Stateful;
 import com.lonepulse.icklebot.annotation.inject.Title;
 import com.lonepulse.icklebot.annotation.thread.Async;
 import com.lonepulse.icklebot.annotation.thread.UI;
+import com.lonepulse.icklebot.network.NetworkManager;
 import com.lonepulse.travisjr.adapter.RepoAdapter;
 import com.lonepulse.travisjr.app.TravisJrActivity;
 import com.lonepulse.travisjr.model.Repo;
@@ -95,6 +97,9 @@ public class ReposActivity extends TravisJrActivity {
 	
 	@Stateful
 	private int scrollPosition;
+	
+	@InjectIckleService
+	private NetworkManager network;
 	
 	
 	@Override
@@ -156,7 +161,7 @@ public class ReposActivity extends TravisJrActivity {
 		alertData.setVisibility(View.GONE);
 		alertReposError.setVisibility(View.GONE);
 		
-		boolean connected = network().isConnected();
+		boolean connected = network.isConnected();
 		
 		if(repos == null && connected) {
 			

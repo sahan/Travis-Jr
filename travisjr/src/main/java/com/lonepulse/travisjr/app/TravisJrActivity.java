@@ -35,7 +35,9 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
-import com.lonepulse.icklebot.IckleActivity;
+import com.lonepulse.icklebot.activity.IckleActivity;
+import com.lonepulse.icklebot.network.NetworkManager;
+import com.lonepulse.icklebot.network.NetworkService;
 import com.lonepulse.travisjr.R;
 import com.lonepulse.travisjr.pref.SettingsActivity;
 import com.lonepulse.travisjr.view.TabSwipeDetector;
@@ -44,7 +46,7 @@ import com.lonepulse.travisjr.view.TabSwipeDetector;
  * <p>A custom {@link IckleActivity} which is tailored to setup the 
  * action bar and provide support for synchronization.
  * 
- * @version 1.1.2
+ * @version 1.2.0
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
@@ -86,6 +88,12 @@ public class TravisJrActivity extends IckleActivity {
 	 */
 	private Animation fadeOut;
 	
+	/**
+	 * <p>The instance of {@link NetworkManager} which will be used 
+	 * to detect network state,
+	 */
+	private NetworkManager network;
+	
 	
 	/**
 	 * <p>The instance of {@link ActionBar.Tab} which handles navigation tabs.
@@ -116,6 +124,8 @@ public class TravisJrActivity extends IckleActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 	
 		super.onCreate(savedInstanceState);
+		
+		network = new NetworkService(this);
 		
 		actionViewSync = getLayoutInflater().inflate(R.layout.action_view_sync, null);
 		actionViewComplete = getLayoutInflater().inflate(R.layout.action_view_complete, null);
@@ -314,7 +324,7 @@ public class TravisJrActivity extends IckleActivity {
 		
 			case R.id.menu_sync: {
 				
-				if(network().isConnected()) {
+				if(network.isConnected()) {
 					
 					onSync();
 				}
