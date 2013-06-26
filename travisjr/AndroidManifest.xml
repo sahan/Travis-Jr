@@ -47,7 +47,7 @@
             android:theme="@android:style/Theme.Holo.Light.Dialog" />
         <activity 
             android:name=".dialog.BuildInfoActivity"
-            android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar" />
+            android:hardwareAccelerated="true"/>
     </application>
 
 </manifest>

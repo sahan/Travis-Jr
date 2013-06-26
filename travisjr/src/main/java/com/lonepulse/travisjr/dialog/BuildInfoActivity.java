@@ -36,12 +36,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebSettings.LayoutAlgorithm;
+import android.webkit.WebSettings.RenderPriority;
 import android.webkit.WebView;
-import android.widget.FrameLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.lonepulse.icklebot.activity.IckleActivity;
 import com.lonepulse.icklebot.annotation.event.Click;
+import com.lonepulse.icklebot.annotation.inject.Fullscreen;
 import com.lonepulse.icklebot.annotation.inject.InjectPojo;
 import com.lonepulse.icklebot.annotation.inject.InjectView;
 import com.lonepulse.icklebot.annotation.inject.Layout;
@@ -64,7 +67,8 @@ import com.lonepulse.travisjr.util.TextUtils;
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
-@Layout(R.layout.build_info)
+@Fullscreen
+@Layout(R.layout.act_build_info)
 public class BuildInfoActivity extends IckleActivity {
 	
 	
@@ -149,14 +153,21 @@ public class BuildInfoActivity extends IckleActivity {
 		Point dimension = new Point();
 		display.getSize(dimension);
 		
-		LayoutParams layoutParams = new LayoutParams(dimension.x - 40, LayoutParams.MATCH_PARENT);
-		root.setLayoutParams(layoutParams);
-		
 		ownerName = getIntent().getStringExtra(EXTRA_OWNER_NAME);
 		repoName = getIntent().getStringExtra(EXTRA_REPO_NAME);
 		buildId = getIntent().getLongExtra(EXTRA_BUILD_ID, 0);
 		
 		slug.setText(ownerName + "/" + repoName);
+		
+		WebSettings settings = log.getSettings();
+		
+		settings.setDefaultZoom(WebSettings.ZoomDensity.FAR);
+		settings.setLayoutAlgorithm(LayoutAlgorithm.NORMAL);
+		settings.setUseWideViewPort(true);
+		settings.setBuiltInZoomControls(true);
+		settings.setDisplayZoomControls(false);
+		settings.setRenderPriority(RenderPriority.HIGH);
+		settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
 	}
 	
 	@Override
@@ -205,13 +216,16 @@ public class BuildInfoActivity extends IckleActivity {
 
 		Set<Entry<BuildJob, StringBuilder>> logEntries = logs.entrySet();
 		
+		//TODO allow user to choose the Build Job whose log is to be shown
 		for (Entry<BuildJob, StringBuilder> logEntry : logEntries) {
 			
-			String content = "<html><body><small><code style=\"white-space:pre-line;\">" + 
-							  logEntry.getValue().toString() + 
-							  "</code></small></body></html>";
+			StringBuilder content = new StringBuilder()
+			.append("<html><body style=\"background-color:black; color:white;") 
+			.append(" white-space:nowrap;\"><code>")
+			.append(logEntry.getValue().toString().replaceAll("(\r\n|\n)", "<br/>"))
+			.append("</code></body></html>");
 			
-			log.loadData(content, "text/html", "utf-8");
+			log.loadData(content.toString(), "text/html", "utf-8");
 		}
 		
 		runUITask(UI_CONTENT);
@@ -236,8 +250,8 @@ public class BuildInfoActivity extends IckleActivity {
 	@UI(UI_CONTENT)
 	private void uiContent() {
 		
-		alertSync.setVisibility(View.INVISIBLE);
-		alertError.setVisibility(View.INVISIBLE);
+		alertSync.setVisibility(View.GONE);
+		alertError.setVisibility(View.GONE);
 		content.setVisibility(View.VISIBLE);
 	}
 	

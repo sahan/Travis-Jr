@@ -34,7 +34,7 @@
 		<include
 			android:id="@id/alert_error"
 	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
+	        android:layout_height="match_parent"
 	        layout="@layout/alert_error_fetching_build_info"
 	        android:layout_centerInParent="true"
 	        android:visibility="visible" />
@@ -42,7 +42,7 @@
 		<include
 			android:id="@id/alert_sync"
 	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
+	        android:layout_height="match_parent"
 	        layout="@layout/alert_syncing_build_info"
 	        android:layout_centerInParent="true"
 	        android:visibility="invisible" />
@@ -263,8 +263,7 @@
 		</LinearLayout>
 	</RelativeLayout>
 	<WebView
-	    android:id="@id/log" 
-	    android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:padding="5dp" />
+	    android:id="@id/log"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"/>
 </LinearLayout>
