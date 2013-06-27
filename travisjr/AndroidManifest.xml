@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.lonepulse.travisjr"
     android:versionCode="1"
-    android:versionName="0.1.1" >
+    android:versionName="0.1.2" >
 
     <uses-sdk
         android:minSdkVersion="13"
@@ -41,13 +41,14 @@
             	  android:icon="@drawable/ic_actionbar" />
         <activity android:name=".pref.SettingsActivity" 
             	  android:icon="@drawable/ic_actionbar" />
+        <activity 
+            android:name=".BuildInfoActivity"
+            android:hardwareAccelerated="true"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar"/>
         <activity
             android:name=".dialog.LicensesActivity"
             android:label="@string/ttl_pref_oss_licenses"
             android:theme="@android:style/Theme.Holo.Light.Dialog" />
-        <activity 
-            android:name=".dialog.BuildInfoActivity"
-            android:hardwareAccelerated="true"/>
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package com.lonepulse.travisjr.dialog;
+package com.lonepulse.travisjr;
 
 /*
  * #%L
@@ -44,15 +44,12 @@ import android.widget.TextView;
 
 import com.lonepulse.icklebot.activity.IckleActivity;
 import com.lonepulse.icklebot.annotation.event.Click;
-import com.lonepulse.icklebot.annotation.inject.Fullscreen;
 import com.lonepulse.icklebot.annotation.inject.InjectPojo;
 import com.lonepulse.icklebot.annotation.inject.InjectView;
 import com.lonepulse.icklebot.annotation.inject.Layout;
 import com.lonepulse.icklebot.annotation.inject.Stateful;
 import com.lonepulse.icklebot.annotation.thread.Async;
 import com.lonepulse.icklebot.annotation.thread.UI;
-import com.lonepulse.travisjr.IllegalArgumentException;
-import com.lonepulse.travisjr.R;
 import com.lonepulse.travisjr.model.BuildInfo;
 import com.lonepulse.travisjr.model.BuildJob;
 import com.lonepulse.travisjr.service.BuildInfoUnavailableException;
@@ -67,7 +64,6 @@ import com.lonepulse.travisjr.util.TextUtils;
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
-@Fullscreen
 @Layout(R.layout.act_build_info)
 public class BuildInfoActivity extends IckleActivity {
 	

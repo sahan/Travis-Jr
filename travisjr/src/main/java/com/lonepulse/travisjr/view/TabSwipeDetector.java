@@ -49,7 +49,8 @@ import com.lonepulse.travisjr.R;
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
 public class TabSwipeDetector extends SimpleOnGestureListener implements OnTouchListener {
-
+	
+	
 	/**
 	 * <p>The minimum fling distance which qualifies for a swipe.
 	 */

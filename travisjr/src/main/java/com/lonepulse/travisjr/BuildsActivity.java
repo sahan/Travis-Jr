@@ -43,7 +43,6 @@ import com.lonepulse.icklebot.annotation.thread.UI;
 import com.lonepulse.icklebot.network.NetworkManager;
 import com.lonepulse.travisjr.adapter.BuildAdapter;
 import com.lonepulse.travisjr.app.TravisJrActivity;
-import com.lonepulse.travisjr.dialog.BuildInfoActivity;
 import com.lonepulse.travisjr.model.Build;
 import com.lonepulse.travisjr.model.Repo;
 import com.lonepulse.travisjr.service.BuildService;

@@ -25,6 +25,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -36,6 +37,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.lonepulse.travisjr.model.Build;
+import com.lonepulse.travisjr.model.BuildInfo;
+import com.lonepulse.travisjr.model.BuildJob;
 import com.lonepulse.travisjr.service.BasicBuildService;
 import com.lonepulse.travisjr.service.BuildService;
 import com.xtremelabs.robolectric.Robolectric;
@@ -45,7 +48,7 @@ import com.xtremelabs.robolectric.Robolectric;
  * 
  * @category test
  * <br><br>
- * @version 1.1.0
+ * @version 1.1.1
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
@@ -102,9 +105,72 @@ public class BuildServiceTest {
 		});
 		
 		List<Build> repos = future.get();
-		
+				
 		assertNotNull(repos);
 		assertTrue(repos.size() > 0);
+	}
+	
+	/**
+	 * <p>Test for {@link BuildService#getBuildInfo(String, String, long)}.
+	 * 
+	 * @throws Exception
+	 * 			if test terminated with an error
+	 * 
+	 * @since 1.1.1
+	 */
+	@Test
+	public final void testBuildInfo() throws Exception {
+		
+		final String owner = "sahan";
+		final String repo = "IckleBot";
+		final long buildId = 8432801;
+		
+		
+		Robolectric.getFakeHttpLayer().interceptHttpRequests(false);
+		
+		Future<BuildInfo> future = executorService.submit(new Callable<BuildInfo>() {
+			
+			public BuildInfo call() throws Exception {
+				
+				return buildService.getBuildInfo(owner, repo, buildId);
+			}
+		});
+		
+		BuildInfo buildInfo = future.get();
+		
+		assertNotNull(buildInfo);
+	}
+	
+	/**
+	 * <p>Test for {@link BuildService#getBuildInfo(String, String, long)}.
+	 * 
+	 * @throws Exception
+	 * 			if test terminated with an error
+	 * 
+	 * @since 1.1.1
+	 */
+	@Test
+	public final void testJobLogs() throws Exception {
+		
+		final String owner = "sahan";
+		final String repo = "IckleBot";
+		final long buildId = 8432801;
+		
+		Robolectric.getFakeHttpLayer().interceptHttpRequests(false);
+		
+		Future<Map<BuildJob, StringBuilder>> future = executorService.submit(
+		new Callable<Map<BuildJob, StringBuilder>>() {
+			
+				public Map<BuildJob, StringBuilder> call() throws Exception {
+	
+					BuildInfo buildInfo = buildService.getBuildInfo(owner, repo, buildId);
+					return buildService.getJobLogs(buildInfo);
+				}
+		});
+		
+		Map<BuildJob, StringBuilder> jobLogs = future.get();
+		assertNotNull(jobLogs);
+		assertTrue(jobLogs.entrySet().size() > 0);
 	}
 	
 	/**
