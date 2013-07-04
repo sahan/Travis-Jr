@@ -98,7 +98,7 @@
 			                android:layout_alignLeft="@id/repo_name"
 			                android:layout_below="@id/repo_name"
 			                android:singleLine="true"
-			                android:text="@string/not_available"
+			                android:text="@string/xp_build_info_number"
 			                android:textColor="@color/txt_dark"
 			                android:textSize="@dimen/txt_xxl"
 			                android:textStyle="bold" />
@@ -111,7 +111,7 @@
 			            android:layout_alignParentBottom="true"
 			            android:layout_alignParentRight="true"
 			            android:paddingBottom="2dp"
-			            android:text="@string/not_available"
+			            android:text="@string/xp_build_info_start_time"
 			            android:textColor="@color/txt_blue"
 			            android:textSize="@dimen/txt_m"
 			            android:textStyle="bold" />
@@ -122,7 +122,7 @@
 			            android:layout_height="wrap_content"
 			            android:layout_above="@id/start_time"
 			            android:layout_alignRight="@id/start_time"
-			            android:text="@string/not_available"
+			            android:text="@string/xp_build_info_start_date"
 			            android:textColor="@color/txt_dark"
 			            android:textSize="@dimen/txt_s" />
 			
@@ -139,7 +139,7 @@
 			                android:layout_height="wrap_content"
 			                android:gravity="bottom"
 			                android:singleLine="true"
-			                android:text="@string/not_available"
+			                android:text="@string/xp_build_info_duration"
 			                android:textColor="@color/txt_blue"
 			                android:textSize="@dimen/txt_l" />
 			
@@ -186,7 +186,7 @@
 			            android:layout_width="match_parent"
 			            android:layout_height="wrap_content"
 			            android:maxLines="1"
-			            android:text="@string/not_available"
+			            android:text="@string/xp_build_info_committer_name"
 			            android:textColor="@color/txt_blue"
 						android:textSize="@dimen/txt_l" />
 			        
@@ -195,7 +195,7 @@
 			            android:layout_width="match_parent"
 			            android:layout_height="wrap_content"
 			            android:maxLines="1"
-			            android:text="@string/not_available"
+			            android:text="@string/xp_build_info_committer_email"
 			            android:textColor="@color/txt_dark"
 						android:textSize="@dimen/txt_m" />
 		        </LinearLayout>
@@ -214,7 +214,7 @@
 			            android:layout_alignParentRight="true"
 			            android:layout_alignParentTop="true"
 			            android:singleLine="true"
-			            android:text="@string/not_available"
+			            android:text="@string/xp_build_info_branch"
 			            android:textColor="@color/txt_blue"
 			            android:textSize="@dimen/txt_m"
 			            android:textStyle="bold" />
@@ -226,7 +226,7 @@
 			            android:layout_alignRight="@id/branch"
 			            android:layout_below="@id/branch"
 			            android:singleLine="true"
-			            android:text="@string/not_available"
+			            android:text="@string/xp_build_info_event_type"
 			            android:textColor="@color/txt_dark"
 			            android:textSize="@dimen/txt_s" />
 			    </RelativeLayout>
@@ -241,7 +241,7 @@
 			    android:gravity="left" 
 			    android:ellipsize="end"
 			    android:maxLines="3"
-			    android:text="@string/not_available"
+			    android:text="@string/xp_build_info_message"
 			    android:textColor="@color/txt_dark"
 			    android:textSize="@dimen/txt_s"
 			    android:textStyle="bold" />
@@ -257,7 +257,7 @@
 		        android:paddingTop="15dp"
 		        android:paddingBottom="15dp"
 		        android:gravity="center_horizontal"
-		        android:text="@string/not_available"
+		        android:text="@string/xp_build_info_commit"
 		        android:textColor="@color/txt_lightest"
 				android:textSize="@dimen/txt_s" />
 		</LinearLayout>

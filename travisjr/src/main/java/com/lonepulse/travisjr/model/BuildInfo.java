@@ -24,6 +24,10 @@ package com.lonepulse.travisjr.model;
 import java.io.Serializable;
 import java.util.Arrays;
 
+import com.lonepulse.icklebot.annotation.bind.BindText;
+import com.lonepulse.icklebot.annotation.bind.Model;
+import com.lonepulse.travisjr.R;
+
 /**
  * <p>This entity provides detailed information about a {@link Build}.
  * 
@@ -31,6 +35,7 @@ import java.util.Arrays;
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
+@Model
 public class BuildInfo implements Serializable {
 
 
@@ -51,6 +56,7 @@ public class BuildInfo implements Serializable {
 	 * <p>The number assigned to this build from all builds 
 	 * executed in order.
 	 */
+	@BindText(R.id.build_number)
 	private Long number;
 	
 	/**
@@ -82,21 +88,25 @@ public class BuildInfo implements Serializable {
 	/**
 	 * <p>The total time taked by this build.
 	 */
+	@BindText(R.id.duration)
 	private Integer duration;
 	
 	/**
 	 * <p>The commit hash for the current build.
 	 */
+	@BindText(R.id.commit)
 	private String commit;
 	
 	/**
 	 * <p>The branch to which this commit was made.
 	 */
+	@BindText(R.id.branch)
 	private String branch;
 	
 	/**
 	 * <p>The message provided with this commit.
 	 */
+	@BindText(R.id.commit_message)
 	private String message;
 	
 	/**
@@ -117,11 +127,13 @@ public class BuildInfo implements Serializable {
 	/**
 	 * <p>The name of the developer who committed the this build.
 	 */
+	@BindText(R.id.committer_name)
 	private String committer_name;
 	
 	/**
 	 * <p>The email of the developer who committed the this build.
 	 */
+	@BindText(R.id.committer_email)
 	private String committer_email;
 	
 	/**
@@ -132,6 +144,7 @@ public class BuildInfo implements Serializable {
 	/**
 	 * <p>The event which triggered this build - e.g. a {@code git push}.
 	 */
+	@BindText(R.id.event)
 	private String event_type;
 
 	/**
@@ -139,364 +152,167 @@ public class BuildInfo implements Serializable {
 	 */
 	private BuildJob[] matrix;
 	
+	/**
+	 * <p>The formatted start time of the build.
+	 */
+	@BindText(R.id.start_time)
+	private String start_time;
 	
 	/**
-	 * <p>Accessor for id.
-	 *
-	 * @return the id
+	 * <p>The formatted start date of the build.
 	 */
+	@BindText(R.id.start_date)
+	private String start_date;
+	
+	
 	public long getId() {
 		return id;
 	}
 
-	/**
-	 * <p>Mutator for id.
-	 *
-	 * @param id 
-	 *			the id to set
-	 */
 	public void setId(long id) {
 		this.id = id;
 	}
 
-	/**
-	 * <p>Accessor for repository_id.
-	 *
-	 * @return the repository_id
-	 */
 	public Long getRepository_id() {
 		return repository_id;
 	}
 
-	/**
-	 * <p>Mutator for repository_id.
-	 *
-	 * @param repository_id 
-	 *			the repository_id to set
-	 */
 	public void setRepository_id(Long repository_id) {
 		this.repository_id = repository_id;
 	}
 
-	/**
-	 * <p>Accessor for number.
-	 *
-	 * @return the number
-	 */
 	public Long getNumber() {
 		return number;
 	}
 
-	/**
-	 * <p>Mutator for number.
-	 *
-	 * @param number 
-	 *			the number to set
-	 */
 	public void setNumber(Long number) {
 		this.number = number;
 	}
 
-	/**
-	 * <p>Accessor for state.
-	 *
-	 * @return the state
-	 */
 	public String getState() {
 		return state;
 	}
 
-	/**
-	 * <p>Mutator for state.
-	 *
-	 * @param state 
-	 *			the state to set
-	 */
 	public void setState(String state) {
 		this.state = state;
 	}
 
-	/**
-	 * <p>Accessor for result.
-	 *
-	 * @return the result
-	 */
 	public Short getResult() {
 		return result;
 	}
 
-	/**
-	 * <p>Mutator for result.
-	 *
-	 * @param result 
-	 *			the result to set
-	 */
 	public void setResult(Short result) {
 		this.result = result;
 	}
 
-	/**
-	 * <p>Accessor for status.
-	 *
-	 * @return the status
-	 */
 	public Short getStatus() {
 		return status;
 	}
 
-	/**
-	 * <p>Mutator for status.
-	 *
-	 * @param status 
-	 *			the status to set
-	 */
 	public void setStatus(Short status) {
 		this.status = status;
 	}
 
-	/**
-	 * <p>Accessor for started_at.
-	 *
-	 * @return the started_at
-	 */
 	public String getStarted_at() {
 		return started_at;
 	}
 
-	/**
-	 * <p>Mutator for started_at.
-	 *
-	 * @param started_at 
-	 *			the started_at to set
-	 */
 	public void setStarted_at(String started_at) {
 		this.started_at = started_at;
 	}
 
-	/**
-	 * <p>Accessor for finished_at.
-	 *
-	 * @return the finished_at
-	 */
 	public String getFinished_at() {
 		return finished_at;
 	}
 
-	/**
-	 * <p>Mutator for finished_at.
-	 *
-	 * @param finished_at 
-	 *			the finished_at to set
-	 */
 	public void setFinished_at(String finished_at) {
 		this.finished_at = finished_at;
 	}
 
-	/**
-	 * <p>Accessor for duration.
-	 *
-	 * @return the duration
-	 */
 	public Integer getDuration() {
 		return duration;
 	}
 
-	/**
-	 * <p>Mutator for duration.
-	 *
-	 * @param duration 
-	 *			the duration to set
-	 */
 	public void setDuration(Integer duration) {
 		this.duration = duration;
 	}
 
-	/**
-	 * <p>Accessor for commit.
-	 *
-	 * @return the commit
-	 */
 	public String getCommit() {
 		return commit;
 	}
 
-	/**
-	 * <p>Mutator for commit.
-	 *
-	 * @param commit 
-	 *			the commit to set
-	 */
 	public void setCommit(String commit) {
 		this.commit = commit;
 	}
 
-	/**
-	 * <p>Accessor for branch.
-	 *
-	 * @return the branch
-	 */
 	public String getBranch() {
 		return branch;
 	}
 
-	/**
-	 * <p>Mutator for branch.
-	 *
-	 * @param branch 
-	 *			the branch to set
-	 */
 	public void setBranch(String branch) {
 		this.branch = branch;
 	}
 
-	/**
-	 * <p>Accessor for message.
-	 *
-	 * @return the message
-	 */
 	public String getMessage() {
 		return message;
 	}
 
-	/**
-	 * <p>Mutator for message.
-	 *
-	 * @param message 
-	 *			the message to set
-	 */
 	public void setMessage(String message) {
 		this.message = message;
 	}
 
-	/**
-	 * <p>Accessor for committed_at.
-	 *
-	 * @return the committed_at
-	 */
 	public String getCommitted_at() {
 		return committed_at;
 	}
 
-	/**
-	 * <p>Mutator for committed_at.
-	 *
-	 * @param committed_at 
-	 *			the committed_at to set
-	 */
 	public void setCommitted_at(String committed_at) {
 		this.committed_at = committed_at;
 	}
 
-	/**
-	 * <p>Accessor for author_name.
-	 *
-	 * @return the author_name
-	 */
 	public String getAuthor_name() {
 		return author_name;
 	}
 
-	/**
-	 * <p>Mutator for author_name.
-	 *
-	 * @param author_name 
-	 *			the author_name to set
-	 */
 	public void setAuthor_name(String author_name) {
 		this.author_name = author_name;
 	}
 
-	/**
-	 * <p>Accessor for author_email.
-	 *
-	 * @return the author_email
-	 */
 	public String getAuthor_email() {
 		return author_email;
 	}
 
-	/**
-	 * <p>Mutator for author_email.
-	 *
-	 * @param author_email 
-	 *			the author_email to set
-	 */
 	public void setAuthor_email(String author_email) {
 		this.author_email = author_email;
 	}
 
-	/**
-	 * <p>Accessor for committer_name.
-	 *
-	 * @return the committer_name
-	 */
 	public String getCommitter_name() {
 		return committer_name;
 	}
 
-	/**
-	 * <p>Mutator for committer_name.
-	 *
-	 * @param committer_name 
-	 *			the committer_name to set
-	 */
 	public void setCommitter_name(String committer_name) {
 		this.committer_name = committer_name;
 	}
 
-	/**
-	 * <p>Accessor for committer_email.
-	 *
-	 * @return the committer_email
-	 */
 	public String getCommitter_email() {
 		return committer_email;
 	}
 
-	/**
-	 * <p>Mutator for committer_email.
-	 *
-	 * @param committer_email 
-	 *			the committer_email to set
-	 */
 	public void setCommitter_email(String committer_email) {
 		this.committer_email = committer_email;
 	}
 
-	/**
-	 * <p>Accessor for compare_url.
-	 *
-	 * @return the compare_url
-	 */
 	public String getCompare_url() {
 		return compare_url;
 	}
 
-	/**
-	 * <p>Mutator for compare_url.
-	 *
-	 * @param compare_url 
-	 *			the compare_url to set
-	 */
 	public void setCompare_url(String compare_url) {
 		this.compare_url = compare_url;
 	}
 
-	/**
-	 * <p>Accessor for event_type.
-	 *
-	 * @return the event_type
-	 */
 	public String getEvent_type() {
 		return event_type;
 	}
 
-	/**
-	 * <p>Mutator for event_type.
-	 *
-	 * @param event_type 
-	 *			the event_type to set
-	 */
 	public void setEvent_type(String event_type) {
 		this.event_type = event_type;
 	}
@@ -507,6 +323,22 @@ public class BuildInfo implements Serializable {
 
 	public void setMatrix(BuildJob[] matrix) {
 		this.matrix = matrix;
+	}
+	
+	public String getStart_time() {
+		return start_time;
+	}
+
+	public void setStart_time(String startTime) {
+		this.start_time = startTime;
+	}
+
+	public String getStart_date() {
+		return start_date;
+	}
+
+	public void setStart_date(String startDate) {
+		this.start_date = startDate;
 	}
 
 	/**
@@ -587,6 +419,10 @@ public class BuildInfo implements Serializable {
 		builder.append(event_type);
 		builder.append(", matrix=");
 		builder.append(Arrays.toString(matrix));
+		builder.append(", start_time=");
+		builder.append(start_time);
+		builder.append(", start_date=");
+		builder.append(start_date);
 		builder.append("]");
 		return builder.toString();
 	}

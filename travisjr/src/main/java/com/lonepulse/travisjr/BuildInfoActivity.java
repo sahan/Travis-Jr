@@ -22,7 +22,6 @@ package com.lonepulse.travisjr;
 
 
 import static android.text.TextUtils.isEmpty;
-import static com.lonepulse.travisjr.util.TextUtils.isAvailable;
 
 import java.util.Map;
 import java.util.Map.Entry;
@@ -44,18 +43,19 @@ import android.widget.TextView;
 
 import com.lonepulse.icklebot.activity.IckleActivity;
 import com.lonepulse.icklebot.annotation.event.Click;
+import com.lonepulse.icklebot.annotation.inject.InjectIckleService;
 import com.lonepulse.icklebot.annotation.inject.InjectPojo;
 import com.lonepulse.icklebot.annotation.inject.InjectView;
 import com.lonepulse.icklebot.annotation.inject.Layout;
 import com.lonepulse.icklebot.annotation.inject.Stateful;
 import com.lonepulse.icklebot.annotation.thread.Async;
 import com.lonepulse.icklebot.annotation.thread.UI;
+import com.lonepulse.icklebot.bind.BindManager;
 import com.lonepulse.travisjr.model.BuildInfo;
 import com.lonepulse.travisjr.model.BuildJob;
 import com.lonepulse.travisjr.service.BuildInfoUnavailableException;
 import com.lonepulse.travisjr.service.BuildService;
 import com.lonepulse.travisjr.util.DateUtils;
-import com.lonepulse.travisjr.util.TextUtils;
 
 /**
  * <p>Displays detailed information about a single build.
@@ -81,6 +81,9 @@ public class BuildInfoActivity extends IckleActivity {
 	@InjectPojo
 	private BuildService buildService;
 	
+	@InjectIckleService
+	private BindManager bindManager;
+	
 	private String ownerName;
 	private String repoName;
 	private long buildId;
@@ -105,36 +108,6 @@ public class BuildInfoActivity extends IckleActivity {
 	
 	@InjectView(R.id.repo_name)
 	private TextView slug;
-	
-	@InjectView(R.id.build_number)
-	private TextView buildNo;
-	
-	@InjectView(R.id.start_time)
-	private TextView startTime;
-	
-	@InjectView(R.id.start_date)
-	private TextView startDate;
-	
-	@InjectView(R.id.duration)
-	private TextView duration;
-	
-	@InjectView(R.id.committer_name)
-	private TextView committerName;
-	
-	@InjectView(R.id.committer_email)
-	private TextView committerEmail;
-	
-	@InjectView(R.id.commit_message)
-	private TextView commitMessage;
-	
-	@InjectView(R.id.branch)
-	private TextView branch;
-	
-	@InjectView(R.id.event)
-	private TextView event;
-	
-	@InjectView(R.id.commit)
-	private TextView commit;
 	
 	@InjectView(R.id.log)
 	private WebView log;
@@ -199,16 +172,11 @@ public class BuildInfoActivity extends IckleActivity {
 	@UI(UI_UPDATE_BUILD_INFO)
 	private void updateBuildInfo() {
 		
-		buildNo.setText(isAvailable(buildInfo.getNumber()));
-		startTime.setText(isAvailable(DateUtils.formatTimeForDisplay(buildInfo.getStarted_at())));
-		startDate.setText(isAvailable(DateUtils.formatDateForDisplay(buildInfo.getStarted_at())));
-		duration.setText(String.valueOf(TextUtils.isAvailable(buildInfo.getDuration())));
-		committerName.setText(isAvailable(buildInfo.getCommitter_name()));
-		committerEmail.setText(isAvailable(buildInfo.getCommitter_email()));
-		branch.setText(isAvailable(buildInfo.getBranch()));
-		event.setText(isAvailable(buildInfo.getEvent_type()));
-		commitMessage.setText(isAvailable(buildInfo.getMessage()));
-		commit.setText(isAvailable(buildInfo.getCommit()));
+		String startedAt = buildInfo.getStarted_at();
+		buildInfo.setStart_time(DateUtils.formatTimeForDisplay(startedAt));
+		buildInfo.setStart_date(DateUtils.formatDateForDisplay(startedAt));
+		
+		bindManager.bind(content, buildInfo);
 
 		Set<Entry<BuildJob, StringBuilder>> logEntries = logs.entrySet();
 		
