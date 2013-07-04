@@ -33,6 +33,7 @@ import android.widget.ListView;
 
 import com.lonepulse.icklebot.annotation.event.Click;
 import com.lonepulse.icklebot.annotation.event.ItemClick;
+import com.lonepulse.icklebot.annotation.inject.InjectApplication;
 import com.lonepulse.icklebot.annotation.inject.InjectIckleService;
 import com.lonepulse.icklebot.annotation.inject.InjectPojo;
 import com.lonepulse.icklebot.annotation.inject.InjectView;
@@ -43,6 +44,7 @@ import com.lonepulse.icklebot.annotation.thread.Async;
 import com.lonepulse.icklebot.annotation.thread.UI;
 import com.lonepulse.icklebot.network.NetworkManager;
 import com.lonepulse.travisjr.adapter.RepoAdapter;
+import com.lonepulse.travisjr.app.TravisJr;
 import com.lonepulse.travisjr.app.TravisJrActivity;
 import com.lonepulse.travisjr.model.Repo;
 import com.lonepulse.travisjr.service.RepoAccessException;
@@ -68,6 +70,10 @@ public class ReposActivity extends TravisJrActivity {
 	private static final int UI_UPDATE_REPOS = 0;
 	private static final int UI_ALERT_ERROR = 1;
 
+	
+	@InjectApplication
+	private TravisJr application;
+	
 	@InjectView(android.R.id.list)
 	private ListView listView;
 	
@@ -107,7 +113,7 @@ public class ReposActivity extends TravisJrActivity {
 		
 		super.onInitActionBar(actionBar);
 		
-		if(!getTravisJrApplication().getAccountService().isUserModeOrganization()) {
+		if(!application.getAccountService().isUserModeOrganization()) {
 			
 			addTabs(R.string.key_created, R.string.key_contributed);
 			
@@ -188,7 +194,7 @@ public class ReposActivity extends TravisJrActivity {
 		
 		try {
 			
-			if(getTravisJrApplication().getAccountService().isUserModeOrganization()) {
+			if(application.getAccountService().isUserModeOrganization()) {
 				
 				repos = repoService.getReposByOwner();
 			}
@@ -288,7 +294,7 @@ public class ReposActivity extends TravisJrActivity {
 	@Click(R.id.alert_empty)
 	private void retryFetchRepos() {
 		
-		getTravisJrApplication().purgeAccount(this);
+		application.purgeAccount(this);
 	}
 	
 	/**

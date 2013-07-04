@@ -29,6 +29,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 
+import com.lonepulse.icklebot.annotation.inject.ApplicationContract;
 import com.lonepulse.travisjr.AuthenticationActivity;
 import com.lonepulse.travisjr.R;
 import com.lonepulse.travisjr.service.AccountService;
@@ -42,6 +43,7 @@ import com.lonepulse.travisjr.service.BasicAccountService;
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
+@ApplicationContract
 public interface TravisJr {
 	
 	

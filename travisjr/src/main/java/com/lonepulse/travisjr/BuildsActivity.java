@@ -32,6 +32,7 @@ import android.widget.TextView;
 
 import com.lonepulse.icklebot.annotation.event.Click;
 import com.lonepulse.icklebot.annotation.event.ItemClick;
+import com.lonepulse.icklebot.annotation.inject.InjectApplication;
 import com.lonepulse.icklebot.annotation.inject.InjectIckleService;
 import com.lonepulse.icklebot.annotation.inject.InjectPojo;
 import com.lonepulse.icklebot.annotation.inject.InjectView;
@@ -42,6 +43,7 @@ import com.lonepulse.icklebot.annotation.thread.Async;
 import com.lonepulse.icklebot.annotation.thread.UI;
 import com.lonepulse.icklebot.network.NetworkManager;
 import com.lonepulse.travisjr.adapter.BuildAdapter;
+import com.lonepulse.travisjr.app.TravisJr;
 import com.lonepulse.travisjr.app.TravisJrActivity;
 import com.lonepulse.travisjr.model.Build;
 import com.lonepulse.travisjr.model.Repo;
@@ -64,6 +66,9 @@ public class BuildsActivity extends TravisJrActivity {
 	private static final int ASYNC_FETCH_BUILDS = 0;
 	private static final int UI_UPDATE_BUILDS = 0;
 
+	@InjectApplication
+	private TravisJr application;
+	
 	@InjectView(android.R.id.list)
 	private ListView listView;
 	
@@ -219,7 +224,7 @@ public class BuildsActivity extends TravisJrActivity {
 		else {
 			
 			repoName = slugTokens[0];
-			ownerName = getTravisJrApplication().getAccountService().getGitHubUsername();
+			ownerName = application.getAccountService().getGitHubUsername();
 		}
 		
 		Build build = ((Build)listView.getItemAtPosition(position));
