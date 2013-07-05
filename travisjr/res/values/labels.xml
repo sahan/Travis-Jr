@@ -31,6 +31,7 @@
     <string name="lbl_tap_to_retry">(Tap To Retry)</string>
     <string name="lbl_syncing_repos">Syncing Repositories</string>
     <string name="lbl_syncing_builds">Syncing Builds</string>
+    <string name="lbl_syncing_build_info">Syncing Information</string>
     <string name="lbl_temporal_stats">Temporal Stats</string>
     <string name="lbl_sign_in_organization">I\'m an organization.</string>
 

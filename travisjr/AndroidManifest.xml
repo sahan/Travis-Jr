@@ -44,7 +44,7 @@
         <activity 
             android:name=".BuildInfoActivity"
             android:hardwareAccelerated="true"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar"/>
+            android:icon="@drawable/ic_actionbar"/>
         <activity
             android:name=".dialog.LicensesActivity"
             android:label="@string/ttl_pref_oss_licenses"

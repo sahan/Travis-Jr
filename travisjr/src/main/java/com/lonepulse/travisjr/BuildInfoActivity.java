@@ -29,11 +29,10 @@ import java.util.Set;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Point;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Display;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebSettings.LayoutAlgorithm;
@@ -41,16 +40,17 @@ import android.webkit.WebSettings.RenderPriority;
 import android.webkit.WebView;
 import android.widget.TextView;
 
-import com.lonepulse.icklebot.activity.IckleActivity;
 import com.lonepulse.icklebot.annotation.event.Click;
 import com.lonepulse.icklebot.annotation.inject.InjectIckleService;
 import com.lonepulse.icklebot.annotation.inject.InjectPojo;
+import com.lonepulse.icklebot.annotation.inject.InjectString;
 import com.lonepulse.icklebot.annotation.inject.InjectView;
 import com.lonepulse.icklebot.annotation.inject.Layout;
 import com.lonepulse.icklebot.annotation.inject.Stateful;
 import com.lonepulse.icklebot.annotation.thread.Async;
 import com.lonepulse.icklebot.annotation.thread.UI;
 import com.lonepulse.icklebot.bind.BindManager;
+import com.lonepulse.travisjr.app.TravisJrActivity;
 import com.lonepulse.travisjr.model.BuildInfo;
 import com.lonepulse.travisjr.model.BuildJob;
 import com.lonepulse.travisjr.service.BuildInfoUnavailableException;
@@ -65,7 +65,7 @@ import com.lonepulse.travisjr.util.DateUtils;
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
 @Layout(R.layout.act_build_info)
-public class BuildInfoActivity extends IckleActivity {
+public class BuildInfoActivity extends TravisJrActivity {
 	
 	
 	private static final String EXTRA_BUILD_ID = "EXTRA_BUILD_ID";
@@ -77,6 +77,12 @@ public class BuildInfoActivity extends IckleActivity {
 	private static final int UI_SYNC = 1;
 	private static final int UI_ERROR = 2;
 	private static final int UI_CONTENT = 3;
+	
+	@InjectString(R.string.ttl_act_log)
+	private String ttlActLog;
+	
+	@InjectString(R.string.ttl_act_build_info)
+	private String ttlActBuildInfo;
 	
 	@InjectPojo
 	private BuildService buildService;
@@ -111,16 +117,21 @@ public class BuildInfoActivity extends IckleActivity {
 	
 	@InjectView(R.id.log)
 	private WebView log;
+
 	
+	@Override
+	protected String onInitTitle() {
+	
+		return (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)?
+				ttlActLog :ttlActBuildInfo;
+	}
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
 		
-		Display display = getWindowManager().getDefaultDisplay();
-		Point dimension = new Point();
-		display.getSize(dimension);
+		runUITask(UI_SYNC);
 		
 		ownerName = getIntent().getStringExtra(EXTRA_OWNER_NAME);
 		repoName = getIntent().getStringExtra(EXTRA_REPO_NAME);
@@ -144,10 +155,21 @@ public class BuildInfoActivity extends IckleActivity {
 	
 		super.onResume();
 		
-		if(buildInfo != null)
+		if(buildInfo != null) {
+			
 			runUITask(UI_UPDATE_BUILD_INFO);
-		else
-			runAsyncTask(ASYNC_FETCH_BUILD_INFO);
+		}
+		else {
+			
+			onSync();
+		}
+	}
+	
+	@Override
+	protected synchronized void onSync() {
+	
+		startSyncAnimation();
+		runAsyncTask(ASYNC_FETCH_BUILD_INFO);
 	}
 	
 	@Async(ASYNC_FETCH_BUILD_INFO)
@@ -155,8 +177,6 @@ public class BuildInfoActivity extends IckleActivity {
 		
 		try {
 			
-			runUITask(UI_SYNC);
-		
 			buildInfo = buildService.getBuildInfo(ownerName, repoName, buildId);
 			logs = buildService.getJobLogs(buildInfo);
 			
@@ -197,7 +217,7 @@ public class BuildInfoActivity extends IckleActivity {
 	
 	@UI(UI_SYNC)
 	private void uiSync() {
-		
+	
 		alertSync.setVisibility(View.VISIBLE);
 		alertError.setVisibility(View.INVISIBLE);
 		content.setVisibility(View.INVISIBLE);
@@ -209,6 +229,7 @@ public class BuildInfoActivity extends IckleActivity {
 		alertError.setVisibility(View.VISIBLE);
 		alertSync.setVisibility(View.INVISIBLE);
 		content.setVisibility(View.INVISIBLE);
+		stopSyncAnimation();
 	}
 	
 	@UI(UI_CONTENT)
@@ -217,6 +238,7 @@ public class BuildInfoActivity extends IckleActivity {
 		alertSync.setVisibility(View.GONE);
 		alertError.setVisibility(View.GONE);
 		content.setVisibility(View.VISIBLE);
+		stopSyncAnimation();
 	}
 	
 	@Click(R.id.commit)

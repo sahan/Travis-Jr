@@ -33,5 +33,6 @@
     <string name="ttl_pref_oss_licenses">Open Source Licenses</string>
     <string name="ttl_pref_version">Version</string>
     <string name="ttl_pref_author">Author</string>
+    <string name="ttl_act_log">Build Logs</string>
 
 </resources>

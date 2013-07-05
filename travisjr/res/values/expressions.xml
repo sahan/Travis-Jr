@@ -15,6 +15,7 @@
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
+  
   limitations under the License.
   #L%
   -->
@@ -23,15 +24,15 @@
 
 	<!-- expressive, for IckleBot 1.2.1 (upcoming release) -->
 
-    <string name="xp_build_info_number">#{number?:N/A}</string>
-    <string name="xp_build_info_start_time">#{start_time?:time n/a}</string>
-    <string name="xp_build_info_start_date">#{start_date?:date n/a}</string>
-    <string name="xp_build_info_duration">#{duration?:n/a}</string>
-    <string name="xp_build_info_committer_name">#{committer_name?:committer name unknown}</string>
-    <string name="xp_build_info_committer_email">#{committer_email?:committer email unknown}</string>
-    <string name="xp_build_info_message">#{message?:commit message unknown}</string>
-    <string name="xp_build_info_commit">#{message?:commit hash unknown}</string>
-    <string name="xp_build_info_branch">#{branch?:branch n/a}</string>
-    <string name="xp_build_info_event_type">#{event_type?:event n/a}</string>
+    <string name="xp_build_info_number">${number?:N/A}</string>
+    <string name="xp_build_info_start_time">${start_time?:time n/a}</string>
+    <string name="xp_build_info_start_date">${start_date?:date n/a}</string>
+    <string name="xp_build_info_duration">${duration?:n/a}</string>
+    <string name="xp_build_info_committer_name">${committer_name?:committer name unknown}</string>
+    <string name="xp_build_info_committer_email">${committer_email?:committer email unknown}</string>
+    <string name="xp_build_info_message">${message?:commit message unknown}</string>
+    <string name="xp_build_info_commit">${message?:commit hash unknown}</string>
+    <string name="xp_build_info_branch">${branch?:branch n/a}</string>
+    <string name="xp_build_info_event_type">${event_type?:event n/a}</string>
     
 </resources>
