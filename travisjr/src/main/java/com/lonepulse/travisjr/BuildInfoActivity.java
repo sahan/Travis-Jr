@@ -30,7 +30,6 @@ import java.util.Set;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -56,6 +55,7 @@ import com.lonepulse.travisjr.model.BuildJob;
 import com.lonepulse.travisjr.service.BuildInfoUnavailableException;
 import com.lonepulse.travisjr.service.BuildService;
 import com.lonepulse.travisjr.util.DateUtils;
+import com.lonepulse.travisjr.util.IntentUtills;
 
 /**
  * <p>Displays detailed information about a single build.
@@ -244,37 +244,23 @@ public class BuildInfoActivity extends TravisJrActivity {
 	@Click(R.id.commit)
 	private void displayCommitDetails() {
 		
-		String uri = "https://github.com/" + ownerName + "/" + repoName + 
-					 "/commit/" + buildInfo.getCommit();
-		
-		Intent intent = new Intent(Intent.ACTION_VIEW);
-		intent.setData(Uri.parse(uri));
-		
-		startActivity(Intent.createChooser(intent, "Display Commit"));
+		IntentUtills.viewCommit(this, ownerName, repoName, buildInfo.getCommit());
 	}
 	
 	@Click(R.id.section_repo)
 	private void displayRepo() {
 		
-		String uri = "https://github.com/" + ownerName + "/" + repoName; 
-		
-		Intent intent = new Intent(Intent.ACTION_VIEW);
-		intent.setData(Uri.parse(uri));
-		
-		startActivity(Intent.createChooser(intent, "Display Repository"));
+		IntentUtills.viewRepo(this, ownerName, repoName);
 	}
 	
 	@Click(R.id.section_build)
 	private void emailCommitter() {
 		
-		Intent intent = new Intent(Intent.ACTION_SEND);
-		
-		intent.setType("text/plain");
-		intent.putExtra(Intent.EXTRA_EMAIL, new String[]{buildInfo.getCommitter_email()});
-		intent.putExtra(Intent.EXTRA_SUBJECT, "Build " + buildInfo.getNumber() + " on " + slug.getText().toString());
-		intent.putExtra(Intent.EXTRA_TEXT, "Hi " + buildInfo.getCommitter_name().split(" ")[0] + ", ");
-
-		startActivity(Intent.createChooser(intent, "Contact Committer"));
+		IntentUtills.send(this, 
+			new String[]{buildInfo.getCommitter_email()}, 
+			"Build " + buildInfo.getNumber() + " on " + slug.getText().toString(), 
+			"Hi " + buildInfo.getCommitter_name().split(" ")[0] + ", ", 
+			"Contact Committer");
 	}
 	
 	/**

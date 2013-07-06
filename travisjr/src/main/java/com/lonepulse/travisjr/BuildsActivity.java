@@ -27,6 +27,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -48,6 +49,7 @@ import com.lonepulse.travisjr.app.TravisJrActivity;
 import com.lonepulse.travisjr.model.Build;
 import com.lonepulse.travisjr.model.Repo;
 import com.lonepulse.travisjr.service.BuildService;
+import com.lonepulse.travisjr.util.IntentUtills;
 import com.lonepulse.travisjr.util.Resources;
 
 /**
@@ -68,6 +70,9 @@ public class BuildsActivity extends TravisJrActivity {
 
 	@InjectApplication
 	private TravisJr application;
+	
+	@Layout(R.layout.header_repo)
+	private View headerRepo;
 	
 	@InjectView(android.R.id.list)
 	private ListView listView;
@@ -103,13 +108,31 @@ public class BuildsActivity extends TravisJrActivity {
 		
 		repo = (Repo)getIntent().getSerializableExtra(Resources.key(R.string.key_repo));
 		
-		View headerRepo = getLayoutInflater().inflate(R.layout.header_repo, null);
-		
 		((TextView)headerRepo.findViewById(R.id.repo_name))
 		.setText(repo.getSlug());
 		
 		((TextView)headerRepo.findViewById(R.id.description))
 		.setText(repo.getDescription());
+		
+		headerRepo.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+
+				String slug = repo.getSlug();
+				
+				if(slug.contains("/")) {
+					
+					String[] slugTokens = slug.split("/");
+					IntentUtills.viewRepo(BuildsActivity.this, slugTokens[0], slugTokens[1]);
+				}
+				else {
+					
+					IntentUtills.viewRepo(
+						BuildsActivity.this, application.getAccountService().getGitHubUsername(), slug);
+				}
+			}
+		});
 		
 		listView.addHeaderView(headerRepo);
 	}
