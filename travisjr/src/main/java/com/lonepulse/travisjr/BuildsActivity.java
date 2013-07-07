@@ -26,8 +26,9 @@ import java.util.List;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -49,7 +50,7 @@ import com.lonepulse.travisjr.app.TravisJrActivity;
 import com.lonepulse.travisjr.model.Build;
 import com.lonepulse.travisjr.model.Repo;
 import com.lonepulse.travisjr.service.BuildService;
-import com.lonepulse.travisjr.util.IntentUtills;
+import com.lonepulse.travisjr.util.IntentUtils;
 import com.lonepulse.travisjr.util.Resources;
 
 /**
@@ -113,27 +114,7 @@ public class BuildsActivity extends TravisJrActivity {
 		
 		((TextView)headerRepo.findViewById(R.id.description))
 		.setText(repo.getDescription());
-		
-		headerRepo.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
 
-				String slug = repo.getSlug();
-				
-				if(slug.contains("/")) {
-					
-					String[] slugTokens = slug.split("/");
-					IntentUtills.viewRepo(BuildsActivity.this, slugTokens[0], slugTokens[1]);
-				}
-				else {
-					
-					IntentUtills.viewRepo(
-						BuildsActivity.this, application.getAccountService().getGitHubUsername(), slug);
-				}
-			}
-		});
-		
 		listView.addHeaderView(headerRepo);
 	}
 	
@@ -211,6 +192,44 @@ public class BuildsActivity extends TravisJrActivity {
 	private void enableData() {
 		
 		startActivity(new Intent(android.provider.Settings.ACTION_SETTINGS));
+	}
+	
+	private void viewRepo() {
+
+		if(repo == null) return; //syncing incomplete
+		String slug = repo.getSlug();
+		
+		if(slug.contains("/")) {
+			
+			String[] slugTokens = slug.split("/");
+			IntentUtils.viewRepo(BuildsActivity.this, slugTokens[0], slugTokens[1]);
+		}
+		else {
+			
+			IntentUtils.viewRepo(
+				BuildsActivity.this, application.getAccountService().getGitHubUsername(), slug);
+		}
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		
+		getMenuInflater().inflate(R.menu.builds, menu);
+		setMenuItemSync(menu.findItem(R.id.menu_sync));
+		
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		
+		switch (item.getItemId()) {
+		
+			case R.id.menu_repo: viewRepo(); break;
+			default: return super.onOptionsItemSelected(item); 
+		}
+		
+		return true;
 	}
 	
 	/**

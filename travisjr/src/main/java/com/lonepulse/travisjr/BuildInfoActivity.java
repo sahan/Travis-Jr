@@ -32,6 +32,8 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebSettings.LayoutAlgorithm;
@@ -39,7 +41,6 @@ import android.webkit.WebSettings.RenderPriority;
 import android.webkit.WebView;
 import android.widget.TextView;
 
-import com.lonepulse.icklebot.annotation.event.Click;
 import com.lonepulse.icklebot.annotation.inject.InjectIckleService;
 import com.lonepulse.icklebot.annotation.inject.InjectPojo;
 import com.lonepulse.icklebot.annotation.inject.InjectString;
@@ -54,8 +55,10 @@ import com.lonepulse.travisjr.model.BuildInfo;
 import com.lonepulse.travisjr.model.BuildJob;
 import com.lonepulse.travisjr.service.BuildInfoUnavailableException;
 import com.lonepulse.travisjr.service.BuildService;
+import com.lonepulse.travisjr.util.BuildState;
+import com.lonepulse.travisjr.util.BuildUtils;
 import com.lonepulse.travisjr.util.DateUtils;
-import com.lonepulse.travisjr.util.IntentUtills;
+import com.lonepulse.travisjr.util.IntentUtils;
 
 /**
  * <p>Displays detailed information about a single build.
@@ -241,26 +244,61 @@ public class BuildInfoActivity extends TravisJrActivity {
 		stopSyncAnimation();
 	}
 	
-	@Click(R.id.commit)
-	private void displayCommitDetails() {
+	private void viewCommit() {
 		
-		IntentUtills.viewCommit(this, ownerName, repoName, buildInfo.getCommit());
+		if(buildInfo == null) return; //syncing is incomplete
+		IntentUtils.viewCommit(this, ownerName, repoName, buildInfo.getCommit());
 	}
 	
-	@Click(R.id.section_repo)
-	private void displayRepo() {
+	private void shareBuildInfo() {
 		
-		IntentUtills.viewRepo(this, ownerName, repoName);
+		if(buildInfo == null) return; //syncing is incomplete
+		BuildState buildState = BuildUtils.discoverState(buildInfo);
+		
+		StringBuilder titleContext = new StringBuilder()
+		.append("Travis Jr: ")
+		.append(slug.getText().toString())
+		.append("/")
+		.append(buildInfo.getNumber());
+		
+		StringBuilder messageContext = new StringBuilder()
+		.append("Travis Jr. says that build ")
+		.append(buildInfo.getNumber())
+		.append(" on ")
+		.append(slug.getText().toString());
+		
+		switch (buildState) {
+		
+			case ONGOING: messageContext.append(" is ongoing. "); break;
+			case FAILED: messageContext.append(" has failed. "); break;
+			case ERRORED: messageContext.append(" has errored. "); break;
+			case PASSED: messageContext.append(" has passed. "); break;
+		}
+		
+		IntentUtils.send(this, new String[]{buildInfo.getCommitter_email()}, titleContext.toString(), 
+						 messageContext.toString(), "Share this build...");
 	}
 	
-	@Click(R.id.section_build)
-	private void emailCommitter() {
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	
+		getMenuInflater().inflate(R.menu.build_info, menu);
+		setMenuItemSync(menu.findItem(R.id.menu_sync));
 		
-		IntentUtills.send(this, 
-			new String[]{buildInfo.getCommitter_email()}, 
-			"Build " + buildInfo.getNumber() + " on " + slug.getText().toString(), 
-			"Hi " + buildInfo.getCommitter_name().split(" ")[0] + ", ", 
-			"Contact Committer");
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		
+		switch (item.getItemId()) {
+		
+			case R.id.menu_commit: viewCommit(); break;
+			case R.id.menu_share: shareBuildInfo(); break;
+			default: return super.onOptionsItemSelected(item); 
+		}
+		
+		return true;
 	}
 	
 	/**

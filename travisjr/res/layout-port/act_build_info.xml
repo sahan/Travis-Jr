@@ -37,7 +37,7 @@
 	        android:layout_height="match_parent"
 	        layout="@layout/alert_error_fetching_build_info"
 	        android:layout_centerInParent="true"
-	        android:visibility="visible" />
+	        android:visibility="invisible" />
 		
 		<include
 			android:id="@id/alert_sync"
@@ -53,25 +53,32 @@
 		    android:layout_height="wrap_content"
 		    android:gravity="center"
 		    android:orientation="vertical"
-		    android:visibility="invisible">
-		
+		    android:visibility="visible">
+		    
 			<LinearLayout
 			    android:id="@+id/section_repo"
 			    android:layout_width="match_parent"
 			    android:layout_height="77dp"
 			    android:baselineAligned="false"
-			    android:orientation="horizontal">
-			
+			    android:orientation="horizontal"
+			    android:background="@color/bg_list_header">
+			    
 			    <RelativeLayout
 			        android:layout_width="match_parent"
 			        android:layout_height="77dp"
 			        android:weightSum="1"
-			        tools:ignore="UselessParent" 
-			        android:paddingLeft="15dp"
-			        android:paddingRight="15dp"
-			        android:paddingTop="10dp"
-			        android:paddingBottom="10dp">
+			        tools:ignore="UselessParent">
 			
+			        <ImageView
+			            android:id="@id/travis"
+			            android:layout_width="wrap_content"
+			            android:layout_height="wrap_content"
+			            android:layout_alignParentLeft="true"
+			            android:layout_marginTop="-5dp"
+			            android:scaleType="centerCrop"
+			            android:src="@drawable/travis_blue"
+			            tools:ignore="ContentDescription" />
+			        
 			        <RelativeLayout
 			            android:id="@+id/panel_repo"
 			            android:layout_width="wrap_content"
@@ -79,6 +86,8 @@
 			            android:layout_alignParentLeft="true"
 			            android:layout_alignParentTop="true"
 			            android:layout_toLeftOf="@id/start_time"
+				        android:paddingLeft="15dp"
+				        android:paddingTop="10dp"
 			            android:paddingRight="5dp" >
 			
 			            <TextView
@@ -87,9 +96,11 @@
 			                android:layout_height="wrap_content"
 			                android:singleLine="true"
 			                android:text="@string/not_available"
-			                android:textColor="@color/txt_blue"
+			                android:textColor="@color/txt_lightest"
 			                android:textSize="@dimen/txt_xl"
-			                android:textStyle="bold" />
+			                android:textStyle="bold"
+			                android:shadowColor="@color/bg_darkest"
+            				android:shadowRadius="2.0" />
 			
 			            <TextView
 			                android:id="@id/build_number"
@@ -99,7 +110,7 @@
 			                android:layout_below="@id/repo_name"
 			                android:singleLine="true"
 			                android:text="@string/xp_build_info_number"
-			                android:textColor="@color/txt_dark"
+			                android:textColor="@color/txt_darker"
 			                android:textSize="@dimen/txt_xxl"
 			                android:textStyle="bold" />
 			        </RelativeLayout>
@@ -110,11 +121,14 @@
 			            android:layout_height="wrap_content"
 			            android:layout_alignParentBottom="true"
 			            android:layout_alignParentRight="true"
-			            android:paddingBottom="2dp"
+			        	android:paddingBottom="10dp"
+			        	android:paddingRight="15dp"
 			            android:text="@string/xp_build_info_start_time"
-			            android:textColor="@color/txt_blue"
+			            android:textColor="@color/txt_lightest"
 			            android:textSize="@dimen/txt_m"
-			            android:textStyle="bold" />
+			            android:textStyle="bold"
+			            android:shadowColor="@color/bg_darkest"
+            			android:shadowRadius="1.5" />
 			
 			        <TextView
 			            android:id="@+id/start_date"
@@ -123,15 +137,19 @@
 			            android:layout_above="@id/start_time"
 			            android:layout_alignRight="@id/start_time"
 			            android:text="@string/xp_build_info_start_date"
-			            android:textColor="@color/txt_dark"
-			            android:textSize="@dimen/txt_s" />
+			            android:textColor="@color/txt_darker"
+			            android:textStyle="bold"
+			            android:textSize="@dimen/txt_s"
+			            android:paddingRight="15dp" />
 			
 			        <RelativeLayout
 			            android:id="@+id/panel_duration"
 			            android:layout_width="wrap_content"
 			            android:layout_height="wrap_content"
 			            android:layout_alignParentRight="true"
-			            android:layout_alignParentTop="true">
+			            android:layout_alignParentTop="true"
+			            android:paddingTop="10dp"
+			            android:paddingRight="15dp">
 			
 			            <TextView
 			                android:id="@id/duration"
@@ -140,8 +158,10 @@
 			                android:gravity="bottom"
 			                android:singleLine="true"
 			                android:text="@string/xp_build_info_duration"
-			                android:textColor="@color/txt_blue"
-			                android:textSize="@dimen/txt_l" />
+			                android:textColor="@color/txt_lightest"
+			                android:textSize="@dimen/txt_l"
+			                android:shadowColor="@color/bg_darkest"
+            				android:shadowRadius="1.5" />
 			
 			            <TextView
 			                android:id="@id/sec"
@@ -152,23 +172,25 @@
 			                android:gravity="bottom"
 			                android:singleLine="true"
 			                android:text="@string/lbl_seconds"
-			                android:textColor="@color/txt_dark"
+			                android:textStyle="bold"
+			                android:textColor="@color/txt_darker"
 			                android:textSize="@dimen/txt_s" />
 			        </RelativeLayout>
 			    </RelativeLayout>
 			</LinearLayout>
 		
-			<View 
-			    android:background="@color/txt_blue"
-			    android:layout_width="match_parent"
-			    android:layout_height="1dp" />
+			<View
+		    	android:id="@id/divider"
+		        android:layout_width="match_parent"
+		        android:layout_height="5dp"
+		        android:background="@drawable/dv_ver_dark_to_white" />
 			
 		    <LinearLayout 
 		        android:id="@+id/section_build"
 		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
 		        android:orientation="horizontal"
-		        android:paddingTop="15dp"
+		        android:paddingTop="5dp"
 		        android:paddingBottom="10dp"
 		        android:paddingLeft="15dp"
 		        android:paddingRight="15dp"
@@ -238,6 +260,7 @@
 			    android:layout_height="wrap_content"
 			    android:layout_marginLeft="15dp"
 			    android:layout_marginRight="15dp"
+			    android:layout_marginBottom="15dp"
 			    android:gravity="left" 
 			    android:ellipsize="end"
 			    android:maxLines="3"
@@ -245,21 +268,6 @@
 			    android:textColor="@color/txt_dark"
 			    android:textSize="@dimen/txt_s"
 			    android:textStyle="bold" />
-		    
-			<TextView 
-		    	android:id="@id/commit"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:background="@color/txt_blue"
-		        android:maxLines="1"
-		        android:ellipsize="end"
-		        android:layout_marginTop="20dp"
-		        android:paddingTop="15dp"
-		        android:paddingBottom="15dp"
-		        android:gravity="center_horizontal"
-		        android:text="@string/xp_build_info_commit"
-		        android:textColor="@color/txt_lightest"
-				android:textSize="@dimen/txt_s" />
 		</LinearLayout>
 	</RelativeLayout>
 	<WebView

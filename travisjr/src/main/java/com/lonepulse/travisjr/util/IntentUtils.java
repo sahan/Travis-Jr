@@ -33,15 +33,15 @@ import android.text.TextUtils;
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
-public final class IntentUtills {
+public final class IntentUtils {
 
 	
 	/**
-	 * <p>Constructor visibility is restricted. Instantiation is non-sensical.
+	 * <p>Constructor visibility is restricted. Instantiation is nonsensical.
 	 * 
 	 * @since 1.1.0
 	 */
-	private IntentUtills() {}
+	private IntentUtils() {}
 
 	
 	/**
@@ -106,7 +106,7 @@ public final class IntentUtills {
 		Intent intent = new Intent(Intent.ACTION_VIEW);
 		intent.setData(Uri.parse(uri));
 		
-		context.startActivity(Intent.createChooser(intent, "View Repository"));
+		context.startActivity(intent);
 	}
 	
 	/**
@@ -131,6 +131,6 @@ public final class IntentUtills {
 		Intent intent = new Intent(Intent.ACTION_VIEW);
 		intent.setData(Uri.parse(uri));
 		
-		context.startActivity(Intent.createChooser(intent, "View Commit"));
+		context.startActivity(intent);
 	}
 }

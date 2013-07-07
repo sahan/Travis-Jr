@@ -119,7 +119,14 @@ public class TravisJrActivity extends IckleActivity {
 		}
 	};
 	
+	protected MenuItem getMenuItemSync() {
+		return menuItemSync;
+	}
 	
+	protected void setMenuItemSync(MenuItem menuItemSync) {
+		this.menuItemSync = menuItemSync;
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 	

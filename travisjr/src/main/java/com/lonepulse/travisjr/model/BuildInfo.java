@@ -94,7 +94,6 @@ public class BuildInfo implements Serializable {
 	/**
 	 * <p>The commit hash for the current build.
 	 */
-	@BindText(R.id.commit)
 	private String commit;
 	
 	/**

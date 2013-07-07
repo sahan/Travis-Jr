@@ -25,6 +25,7 @@
     <item name="divider" type="id">divider</item>
     <item name="icon" type="id">icon</item>
     <item name="octocat" type="id">octocat</item>
+    <item name="travis" type="id">travis</item>
     <item name="username" type="id">username</item>
     <item name="message" type="id">message</item>
     <item name="commit_message" type="id">commit_message</item>
@@ -55,6 +56,9 @@
     <item name="menu_sync" type="id">sync</item>
     <item name="menu_credentials" type="id">credentials</item>
     <item name="menu_settings" type="id">settings</item>
+    <item name="menu_commit" type="id">commit</item>
+    <item name="menu_share" type="id">share</item>
+    <item name="menu_repo" type="id">repo</item>
     <item name="temporal" type="id">temporal</item>
     <item name="panel_temporal" type="id">panel_temporal</item>
     <item name="panel_event" type="id">panel_event</item>

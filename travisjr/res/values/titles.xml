@@ -24,7 +24,7 @@
     <string name="ttl_act_authentication">Authenticate via GitHub.</string>
     <string name="ttl_act_repos">Repositories</string>
     <string name="ttl_act_builds">Recent Builds</string>
-    <string name="ttl_act_build_info">Build Information</string>
+    <string name="ttl_act_build_info">Build Info</string>
     <string name="ttl_act_settings">Settings</string>
     <string name="ttl_dialog_account">Purge Account</string>
     <string name="ttl_pref_cat_account">Account</string>
