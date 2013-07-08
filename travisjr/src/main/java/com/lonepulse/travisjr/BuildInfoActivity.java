@@ -120,7 +120,7 @@ public class BuildInfoActivity extends TravisJrActivity {
 	
 	@InjectView(R.id.log)
 	private WebView log;
-
+	
 	
 	@Override
 	protected String onInitTitle() {

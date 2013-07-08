@@ -27,5 +27,6 @@
     <string name="menu_commit">Commit</string>
     <string name="menu_share">Share</string>
     <string name="menu_repo">Repo</string>
+    <string name="menu_filter">Filter</string>
 
 </resources>

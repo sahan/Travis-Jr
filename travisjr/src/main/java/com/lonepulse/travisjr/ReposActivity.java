@@ -27,6 +27,8 @@ import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -295,6 +297,25 @@ public class ReposActivity extends TravisJrActivity {
 	private void retryFetchRepos() {
 		
 		application.purgeAccount(this);
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		
+		getMenuInflater().inflate(R.menu.repos, menu);
+		setMenuItemSync(menu.findItem(R.id.menu_sync));
+		
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		
+		switch (item.getItemId()) {
+		
+			case R.id.menu_filter: ; //TODO action for filter repos
+			default: return super.onOptionsItemSelected(item); 
+		}
 	}
 	
 	/**

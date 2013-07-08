@@ -75,6 +75,7 @@
 			            android:layout_height="wrap_content"
 			            android:layout_alignParentLeft="true"
 			            android:layout_marginTop="-5dp"
+			            android:layout_marginLeft="-20dp"
 			            android:scaleType="centerCrop"
 			            android:src="@drawable/travis_blue"
 			            tools:ignore="ContentDescription" />
@@ -272,6 +273,6 @@
 	</RelativeLayout>
 	<WebView
 	    android:id="@id/log"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"/>
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"/>
 </LinearLayout>

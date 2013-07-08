@@ -59,6 +59,7 @@
     <item name="menu_commit" type="id">commit</item>
     <item name="menu_share" type="id">share</item>
     <item name="menu_repo" type="id">repo</item>
+    <item name="menu_filter" type="id">filter</item>
     <item name="temporal" type="id">temporal</item>
     <item name="panel_temporal" type="id">panel_temporal</item>
     <item name="panel_event" type="id">panel_event</item>
