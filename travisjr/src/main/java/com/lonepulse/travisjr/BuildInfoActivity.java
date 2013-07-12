@@ -31,6 +31,7 @@ import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.regex.Pattern;
 
 import android.app.ActionBar;
 import android.content.Context;
@@ -256,34 +257,36 @@ public class BuildInfoActivity extends TravisJrActivity {
 		if(logIds != null) {
 		
 			ArrayAdapter<String> logAdapter = new ArrayAdapter<String>(
-					getActionBar().getThemedContext(), R.layout.view_resource_log, logIds);
+				getActionBar().getThemedContext(), R.layout.view_resource_log, logIds);
 					
 			logAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			logChooser.setAdapter(logAdapter);
 			logChooser.setOnItemSelectedListener(new OnItemSelectedListener() {
 
+				final String logPlaceholder = "${log}";
+				
+				final StringBuilder content = new StringBuilder()
+				.append("<html><body style=\"background-color:black; color:white;") 
+				.append(" white-space:nowrap;\"><code>")
+				.append(logPlaceholder)
+				.append("</code></body></html>");
+				
 				@Override
 				public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 					
-					StringBuilder content = new StringBuilder()
-					.append("<html><body style=\"background-color:black; color:white;") 
-					.append(" white-space:nowrap;\"><code>")
-					.append(logs.get(logIds.get(position)).toString().replaceAll("(\r\n|\n)", "<br/>"))
-					.append("</code></body></html>");
+					String html = content.toString().replaceAll(Pattern.quote(logPlaceholder), 
+						logs.get(logIds.get(position)).toString().replaceAll("(\r\n|\n)", "<br/>"));					
 					
-					log.loadData(content.toString(), "text/html", "utf-8");
+					log.loadData(html, "text/html", "utf-8");
 				}
 
 				@Override
 				public void onNothingSelected(AdapterView<?> parent) {
 					
-					StringBuilder content = new StringBuilder()
-					.append("<html><body style=\"background-color:black; color:white;") 
-					.append(" white-space:nowrap;\"><code>")
-					.append(logs.get(logs.firstKey()).toString().replaceAll("(\r\n|\n)", "<br/>"))
-					.append("</code></body></html>");
+					String html = content.toString().replaceAll(Pattern.quote(logPlaceholder), 
+						logs.get(logs.firstKey()).toString().replaceAll("(\r\n|\n)", "<br/>"));					
 					
-					log.loadData(content.toString(), "text/html", "utf-8");
+					log.loadData(html, "text/html", "utf-8");
 				}
 			});
 			
