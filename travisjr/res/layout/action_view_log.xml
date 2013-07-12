@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginLeft="10dp">
+    
+    <include 
+        layout="@layout/action_view_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|left"
+        android:layout_marginRight="20dp"/>
+        
+    <Spinner 
+	    android:id="@id/action_log"
+	    style="@android:style/Widget.Holo.Spinner"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"/>
+    
+</LinearLayout>

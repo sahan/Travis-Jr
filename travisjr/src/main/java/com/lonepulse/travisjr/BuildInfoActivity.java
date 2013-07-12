@@ -23,10 +23,16 @@ package com.lonepulse.travisjr;
 
 import static android.text.TextUtils.isEmpty;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map.Entry;
+import java.util.NavigableMap;
 import java.util.Set;
+import java.util.TreeMap;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -39,8 +45,13 @@ import android.webkit.WebSettings;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebSettings.RenderPriority;
 import android.webkit.WebView;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.lonepulse.icklebot.annotation.inject.InjectArray;
 import com.lonepulse.icklebot.annotation.inject.InjectIckleService;
 import com.lonepulse.icklebot.annotation.inject.InjectPojo;
 import com.lonepulse.icklebot.annotation.inject.InjectString;
@@ -110,7 +121,7 @@ public class BuildInfoActivity extends TravisJrActivity {
 	private BuildInfo buildInfo;
 	
 	@Stateful
-	Map<BuildJob, StringBuilder> logs; 
+	NavigableMap<String, StringBuilder> logs;
 	
 	@InjectView(R.id.root)
 	private View root;
@@ -121,12 +132,37 @@ public class BuildInfoActivity extends TravisJrActivity {
 	@InjectView(R.id.log)
 	private WebView log;
 	
+	@InjectArray(R.array.logs)
+	private String[] logArray;
+	
+	private Spinner logChooser;
+	
 	
 	@Override
 	protected String onInitTitle() {
 	
 		return (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)?
 				ttlActLog :ttlActBuildInfo;
+	}
+	
+	@Override
+	protected void onInitActionBar(ActionBar actionBar) {
+		
+		super.onInitActionBar(actionBar);
+		
+		View header = getLayoutInflater().inflate(R.layout.action_view_log, null);
+		((TextView)header.findViewById(R.id.title)).setText(onInitTitle());
+		((TextView)header.findViewById(R.id.subtitle)).setText(onInitSubtitle());
+
+		ArrayAdapter<String> logAdapter = new ArrayAdapter<String>(
+			getActionBar().getThemedContext(), R.layout.view_resource_log, Arrays.asList(logArray));
+		
+		logAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		logChooser = ((Spinner)header.findViewById(R.id.action_log));
+		logChooser.setAdapter(logAdapter);
+		logChooser.setEnabled(false);
+		
+		actionBar.setCustomView(header);
 	}
 	
 	@Override
@@ -181,7 +217,14 @@ public class BuildInfoActivity extends TravisJrActivity {
 		try {
 			
 			buildInfo = buildService.getBuildInfo(ownerName, repoName, buildId);
-			logs = buildService.getJobLogs(buildInfo);
+			Set<Entry<BuildJob, StringBuilder>> logEntries = buildService.getJobLogs(buildInfo).entrySet();
+
+			logs = new TreeMap<String, StringBuilder>();
+			
+			for (Entry<BuildJob, StringBuilder> entry : logEntries) {
+				
+				logs.put(String.valueOf(entry.getKey().getNumber()), entry.getValue());
+			}
 			
 			runUITask(UI_UPDATE_BUILD_INFO);
 		}
@@ -201,21 +244,51 @@ public class BuildInfoActivity extends TravisJrActivity {
 		
 		bindManager.bind(content, buildInfo);
 
-		Set<Entry<BuildJob, StringBuilder>> logEntries = logs.entrySet();
-		
-		//TODO allow user to choose the Build Job whose log is to be shown
-		for (Entry<BuildJob, StringBuilder> logEntry : logEntries) {
-			
-			StringBuilder content = new StringBuilder()
-			.append("<html><body style=\"background-color:black; color:white;") 
-			.append(" white-space:nowrap;\"><code>")
-			.append(logEntry.getValue().toString().replaceAll("(\r\n|\n)", "<br/>"))
-			.append("</code></body></html>");
-			
-			log.loadData(content.toString(), "text/html", "utf-8");
-		}
-		
+		List<String> logIds = new ArrayList<String>(logs.keySet());
+		Collections.sort(logIds);
+		updateLogChooser(logIds);
+				
 		runUITask(UI_CONTENT);
+	}
+	
+	private void updateLogChooser(final List<String> logIds) {
+		
+		if(logIds != null) {
+		
+			ArrayAdapter<String> logAdapter = new ArrayAdapter<String>(
+					getActionBar().getThemedContext(), R.layout.view_resource_log, logIds);
+					
+			logAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			logChooser.setAdapter(logAdapter);
+			logChooser.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+				@Override
+				public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+					
+					StringBuilder content = new StringBuilder()
+					.append("<html><body style=\"background-color:black; color:white;") 
+					.append(" white-space:nowrap;\"><code>")
+					.append(logs.get(logIds.get(position)).toString().replaceAll("(\r\n|\n)", "<br/>"))
+					.append("</code></body></html>");
+					
+					log.loadData(content.toString(), "text/html", "utf-8");
+				}
+
+				@Override
+				public void onNothingSelected(AdapterView<?> parent) {
+					
+					StringBuilder content = new StringBuilder()
+					.append("<html><body style=\"background-color:black; color:white;") 
+					.append(" white-space:nowrap;\"><code>")
+					.append(logs.get(logs.firstKey()).toString().replaceAll("(\r\n|\n)", "<br/>"))
+					.append("</code></body></html>");
+					
+					log.loadData(content.toString(), "text/html", "utf-8");
+				}
+			});
+			
+			logChooser.setEnabled(true);
+		}
 	}
 	
 	@UI(UI_SYNC)

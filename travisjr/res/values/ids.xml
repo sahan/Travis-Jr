@@ -60,6 +60,7 @@
     <item name="menu_share" type="id">share</item>
     <item name="menu_repo" type="id">repo</item>
     <item name="menu_filter" type="id">filter</item>
+    <item name="menu_log" type="id">log</item>
     <item name="temporal" type="id">temporal</item>
     <item name="panel_temporal" type="id">panel_temporal</item>
     <item name="panel_event" type="id">panel_event</item>
@@ -68,5 +69,7 @@
     <item name="tab_content" type="id">tab_content</item>
     <item name="content" type="id">content</item>
     <item name="log" type="id">log</item>
+    <item name="log_number" type="id">log_number</item>
+    <item name="action_log" type="id">action_log</item>
 
 </resources>

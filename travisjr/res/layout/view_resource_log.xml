@@ -17,17 +17,17 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   #L%
-  -->
+-->
 
-<resources>
-
-    <string name="menu_sync">Sync</string>
-    <string name="menu_credentials">Credentials</string>
-    <string name="menu_settings">Settings</string>
-    <string name="menu_commit">Commit</string>
-    <string name="menu_share">Share</string>
-    <string name="menu_repo">Repo</string>
-    <string name="menu_filter">Filter</string>
-    <string name="menu_log">log</string>
-
-</resources>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@id/log_number"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:drawableLeft="@drawable/ic_terminal"
+    android:drawablePadding="10dp"
+    android:gravity="center"
+    android:text="@string/not_available"
+    android:textColor="@color/txt_lightest"
+    android:textSize="@dimen/txt_l"
+    android:textStyle="bold" />

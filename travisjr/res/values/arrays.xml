@@ -47,5 +47,9 @@
         <item>https://github.com/jayway/robotium</item>
         <item>https://github.com/pivotal/robolectric</item>
     </string-array>
+    
+    <string-array name="logs">
+        <item>syncing...</item>
+    </string-array>
 
 </resources>
