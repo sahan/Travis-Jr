@@ -23,9 +23,12 @@
 
     <style name="TravisJrTheme" parent="android:Theme.Holo.Light.DarkActionBar">
         <item name="android:actionBarStyle">@style/TravisJrActionBar</item>
-        <item name="android:actionBarItemBackground">@drawable/bg_actionbar</item>
+        <item name="android:actionBarItemBackground">@drawable/sel_bg_actionbar</item>
         <item name="android:actionBarTabStyle">@style/TravisJrActionBarTabStyle</item>
         <item name="android:actionBarTabTextStyle">@style/TravisJrActionBarText</item>
+        <item name="android:actionModeBackground">@drawable/bg_actionbar</item>
+        <item name="android:actionModeSplitBackground">@drawable/bg_actionbar</item>
+        <item name="android:actionModeCloseButtonStyle">@style/TravisJrActionButtonCloseMode</item>
     </style>
 
     <style name="TravisJrActionBar" parent="@android:Widget.Holo.ActionBar.Solid">
@@ -42,6 +45,10 @@
         <item name="android:textColor">@color/txt_tab</item>
         <item name="android:textSize">@dimen/txt_m</item>
         <item name="android:textStyle">bold</item>
+    </style>
+    
+    <style name="TravisJrActionButtonCloseMode" parent="@android:style/Widget.Holo.Light.ActionButton.CloseMode">
+        <item name="android:background">@drawable/bg_actionbar</item>
     </style>
 
 </resources>

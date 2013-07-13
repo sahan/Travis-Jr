@@ -37,14 +37,24 @@
         <activity android:name=".ReposActivity"
             	  android:icon="@drawable/ic_actionbar" />
         <activity android:name=".BuildsActivity"
-            	  android:icon="@drawable/ic_actionbar" />
-        <activity android:name=".pref.SettingsActivity" 
-            	  android:icon="@drawable/ic_actionbar" />
+            	  android:icon="@drawable/ic_actionbar"
+            	  android:parentActivityName=".ReposActivity">
+	        <meta-data
+	            android:name="android.support.PARENT_ACTIVITY"
+	            android:value=".ReposActivity" />
+        </activity>
         <activity 
             android:name=".BuildInfoActivity"
             android:hardwareAccelerated="true"
             android:icon="@drawable/ic_actionbar"
-            android:uiOptions="splitActionBarWhenNarrow"/>
+            android:parentActivityName=".BuildsActivity"
+            android:uiOptions="splitActionBarWhenNarrow">
+	        <meta-data
+	            android:name="android.support.PARENT_ACTIVITY"
+	            android:value=".BuildsActivity" />
+	    </activity>
+        <activity android:name=".pref.SettingsActivity" 
+            	  android:icon="@drawable/ic_actionbar" />
         <activity
             android:name=".dialog.LicensesActivity"
             android:label="@string/ttl_pref_oss_licenses"

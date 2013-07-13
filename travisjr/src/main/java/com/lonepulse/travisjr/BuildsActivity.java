@@ -135,7 +135,8 @@ public class BuildsActivity extends TravisJrActivity {
 	
 	@Override
 	protected synchronized void onSync() {
-	
+		
+		super.onSync();
 		runAsyncTask(ASYNC_FETCH_BUILDS);
 	}
 	
@@ -174,8 +175,6 @@ public class BuildsActivity extends TravisJrActivity {
 	
 	@Async(ASYNC_FETCH_BUILDS)
 	private void fetchBuilds() {
-		
-		startSyncAnimation();
 		
 		builds = buildService.getRecentBuilds(repo.getId());
 		runUITask(UI_UPDATE_BUILDS, builds);
@@ -226,6 +225,7 @@ public class BuildsActivity extends TravisJrActivity {
 		switch (item.getItemId()) {
 		
 			case R.id.menu_repo: viewRepo(); break;
+			
 			default: return super.onOptionsItemSelected(item); 
 		}
 		

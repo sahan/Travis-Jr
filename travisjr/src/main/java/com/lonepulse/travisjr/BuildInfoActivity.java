@@ -24,7 +24,6 @@ package com.lonepulse.travisjr;
 import static android.text.TextUtils.isEmpty;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
@@ -154,14 +153,9 @@ public class BuildInfoActivity extends TravisJrActivity {
 		((TextView)header.findViewById(R.id.title)).setText(onInitTitle());
 		((TextView)header.findViewById(R.id.subtitle)).setText(onInitSubtitle());
 
-		ArrayAdapter<String> logAdapter = new ArrayAdapter<String>(
-			getActionBar().getThemedContext(), R.layout.view_resource_log, Arrays.asList(logArray));
-		
-		logAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		logChooser = ((Spinner)header.findViewById(R.id.action_log));
-		logChooser.setAdapter(logAdapter);
-		logChooser.setEnabled(false);
-		
+		logChooser = (Spinner)header.findViewById(R.id.action_log);
+		logChooser.setVisibility(View.INVISIBLE);
+
 		actionBar.setCustomView(header);
 	}
 	
@@ -207,7 +201,7 @@ public class BuildInfoActivity extends TravisJrActivity {
 	@Override
 	protected synchronized void onSync() {
 	
-		startSyncAnimation();
+		super.onSync();
 		runAsyncTask(ASYNC_FETCH_BUILD_INFO);
 	}
 	
@@ -254,7 +248,7 @@ public class BuildInfoActivity extends TravisJrActivity {
 	private void updateLogChooser(final List<String> logIds) {
 		
 		if(logIds != null) {
-		
+			
 			ArrayAdapter<String> logAdapter = new ArrayAdapter<String>(
 				getActionBar().getThemedContext(), R.layout.view_resource_log, logIds);
 					
@@ -287,7 +281,7 @@ public class BuildInfoActivity extends TravisJrActivity {
 				}
 			});
 			
-			logChooser.setEnabled(true);
+			logChooser.setVisibility(View.VISIBLE);
 		}
 	}
 	

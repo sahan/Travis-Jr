@@ -28,7 +28,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -149,6 +148,7 @@ public class ReposActivity extends TravisJrActivity {
 	@Override
 	protected synchronized void onSync() {
 	
+		super.onSync();
 		runAsyncTask(ASYNC_FETCH_REPOS);
 	}
 	
@@ -191,8 +191,6 @@ public class ReposActivity extends TravisJrActivity {
 	 */
 	@Async(ASYNC_FETCH_REPOS)
 	private void fetchRepos() {
-		
-		startSyncAnimation();
 		
 		try {
 			
@@ -298,7 +296,7 @@ public class ReposActivity extends TravisJrActivity {
 		
 		application.purgeAccount(this);
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		
@@ -306,16 +304,6 @@ public class ReposActivity extends TravisJrActivity {
 		setMenuItemSync(menu.findItem(R.id.menu_sync));
 		
 		return true;
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		
-		switch (item.getItemId()) {
-		
-			case R.id.menu_filter: ; //TODO action for filter repos
-			default: return super.onOptionsItemSelected(item); 
-		}
 	}
 	
 	/**

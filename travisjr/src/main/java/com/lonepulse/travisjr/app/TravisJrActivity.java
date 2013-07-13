@@ -320,7 +320,7 @@ public class TravisJrActivity extends IckleActivity {
 		
 		getMenuInflater().inflate(R.menu.basic, menu);
 		menuItemSync = menu.findItem(R.id.menu_sync);
-		
+
 		return true;
 	}
 	
@@ -366,7 +366,10 @@ public class TravisJrActivity extends IckleActivity {
 	 * 
 	 * @since 1.1.0
 	 */
-	protected synchronized void onSync() {}
+	protected synchronized void onSync() {
+		
+		startSyncAnimation();
+	}
 	
 	/**
 	 * <p>Invoke this service to set the sync lock and start the default 
