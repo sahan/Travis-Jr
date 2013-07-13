@@ -50,7 +50,7 @@ public class Config implements Serializable {
 	/**
 	 * <p>The script which installs the repository.
 	 */
-	private String install;
+	private String[] install;
 	
 	/**
 	 * <p>The script(s) to be run before the build-script is executed.
@@ -60,7 +60,7 @@ public class Config implements Serializable {
 	/**
 	 * <p>The script which runs and tests the build.
 	 */
-	private String script;
+	private String[] script;
 	
 	/**
 	 * <p>The script(s) to be run after the build-script is executed.
@@ -110,7 +110,7 @@ public class Config implements Serializable {
 	 *
 	 * @return the install
 	 */
-	public String getInstall() {
+	public String[] getInstall() {
 		return install;
 	}
 
@@ -120,7 +120,7 @@ public class Config implements Serializable {
 	 * @param install 
 	 *			the install to set
 	 */
-	public void setInstall(String install) {
+	public void setInstall(String[] install) {
 		this.install = install;
 	}
 
@@ -148,7 +148,7 @@ public class Config implements Serializable {
 	 *
 	 * @return the script
 	 */
-	public String getScript() {
+	public String[] getScript() {
 		return script;
 	}
 
@@ -158,7 +158,7 @@ public class Config implements Serializable {
 	 * @param script 
 	 *			the script to set
 	 */
-	public void setScript(String script) {
+	public void setScript(String[] script) {
 		this.script = script;
 	}
 
@@ -245,11 +245,11 @@ public class Config implements Serializable {
 		builder.append(", before_install=");
 		builder.append(Arrays.toString(before_install));
 		builder.append(", install=");
-		builder.append(install);
+		builder.append(Arrays.toString(install));
 		builder.append(", before_script=");
 		builder.append(Arrays.toString(before_script));
 		builder.append(", script=");
-		builder.append(script);
+		builder.append(Arrays.toString(script));
 		builder.append(", after_script=");
 		builder.append(Arrays.toString(after_script));
 		builder.append("]");

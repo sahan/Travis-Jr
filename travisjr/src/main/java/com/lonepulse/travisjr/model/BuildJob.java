@@ -71,10 +71,10 @@ public class BuildJob implements Serializable {
 	 */
 	private boolean allow_failure;
 
-	/**
-	 * <p>The configuration which was used to run this build.
-	 */
-	private Config config;
+//	/**
+//	 * <p>The configuration which was used to run this build.
+//	 */
+//	private Config config;
 	
 	
 	/**
@@ -210,24 +210,24 @@ public class BuildJob implements Serializable {
 		this.allow_failure = allow_failure;
 	}
 	
-	/**
-	 * <p>Accessor for config.
-	 *
-	 * @return the config
-	 */
-	public Config getConfig() {
-		return config;
-	}
-
-	/**
-	 * <p>Mutator for config.
-	 *
-	 * @param config 
-	 *			the config to set
-	 */
-	public void setConfig(Config config) {
-		this.config = config;
-	}
+//	/**
+//	 * <p>Accessor for config.
+//	 *
+//	 * @return the config
+//	 */
+//	public Config getConfig() {
+//		return config;
+//	}
+//
+//	/**
+//	 * <p>Mutator for config.
+//	 *
+//	 * @param config 
+//	 *			the config to set
+//	 */
+//	public void setConfig(Config config) {
+//		this.config = config;
+//	}
 
 	/**
 	 * {@inheritDoc}
@@ -278,7 +278,7 @@ public class BuildJob implements Serializable {
 		builder.append(", allow_failure=");
 		builder.append(allow_failure);
 		builder.append(", config=");
-		builder.append(config);
+//		builder.append(config);
 		builder.append("]");
 		return builder.toString();
 	}
