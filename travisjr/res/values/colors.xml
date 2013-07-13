@@ -31,6 +31,7 @@
     <color name="txt_blue">#01A9DB</color>
     <color name="txt_tab">#FFFFFF</color>
     <color name="bg_actionbar">#CC0000</color>
+    <color name="bg_actionbar_shadow">#AA0202</color>
     <color name="bg_actionbar_a50">#50CC0000</color>
     <color name="bg_action_pressed">#CCFFFFFF</color>
     <color name="bg_logo">#FF1C08</color>

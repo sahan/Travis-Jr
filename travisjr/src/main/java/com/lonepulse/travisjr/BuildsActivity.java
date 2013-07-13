@@ -195,7 +195,8 @@ public class BuildsActivity extends TravisJrActivity {
 	
 	private void viewRepo() {
 
-		if(repo == null) return; //syncing incomplete
+		if(repo == null) return;
+		
 		String slug = repo.getSlug();
 		
 		if(slug.contains("/")) {
