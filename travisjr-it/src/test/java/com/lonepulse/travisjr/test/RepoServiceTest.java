@@ -35,13 +35,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.Robolectric;
+import org.robolectric.RobolectricTestRunner;
 
 import com.lonepulse.travisjr.model.Repo;
 import com.lonepulse.travisjr.service.AccountService;
 import com.lonepulse.travisjr.service.BasicAccountService;
 import com.lonepulse.travisjr.service.BasicRepoService;
 import com.lonepulse.travisjr.service.RepoService;
-import com.xtremelabs.robolectric.Robolectric;
 
 /**
  * <p>Unit test for {@link BasicRepoService}.
@@ -52,7 +53,7 @@ import com.xtremelabs.robolectric.Robolectric;
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
-@RunWith(TravisJrTestRunner.class)
+@RunWith(RobolectricTestRunner.class)
 public class RepoServiceTest {
 
 	

@@ -27,6 +27,8 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.Robolectric;
+import org.robolectric.RobolectricTestRunner;
 
 import android.app.Activity;
 import android.content.Context;
@@ -47,7 +49,7 @@ import com.lonepulse.travisjr.service.BasicAccountService;
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
-@RunWith(TravisJrTestRunner.class)
+@RunWith(RobolectricTestRunner.class)
 public class AccountServiceTest {
 
 	
@@ -77,7 +79,7 @@ public class AccountServiceTest {
 	@Before
 	public final void setUp() throws Exception {
 
-		activity = new AuthenticationActivity();
+		activity = Robolectric.buildActivity(AuthenticationActivity.class).get();
 		
 		accountService = new BasicAccountService();
 		accountService.setGitHubUsername(USERNAME);

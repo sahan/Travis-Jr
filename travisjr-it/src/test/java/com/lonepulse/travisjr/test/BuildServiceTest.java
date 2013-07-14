@@ -35,13 +35,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.Robolectric;
+import org.robolectric.RobolectricTestRunner;
 
 import com.lonepulse.travisjr.model.Build;
 import com.lonepulse.travisjr.model.BuildInfo;
 import com.lonepulse.travisjr.model.BuildJob;
 import com.lonepulse.travisjr.service.BasicBuildService;
 import com.lonepulse.travisjr.service.BuildService;
-import com.xtremelabs.robolectric.Robolectric;
 
 /**
  * <p>Unit test for {@link BasicBuildService}.
@@ -52,7 +53,7 @@ import com.xtremelabs.robolectric.Robolectric;
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
-@RunWith(TravisJrTestRunner.class)
+@RunWith(RobolectricTestRunner.class)
 public class BuildServiceTest {
 
 	
