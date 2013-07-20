@@ -23,7 +23,6 @@ package com.lonepulse.travisjr.view;
 
 import android.animation.ObjectAnimator;
 import android.app.ActionBar;
-import android.app.ActionBar.Tab;
 import android.app.Activity;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -40,15 +39,15 @@ import android.view.animation.LinearInterpolator;
 import com.lonepulse.travisjr.R;
 
 /**
- * <p>An {@link OnTouchListener} which detects a lateral {@link ActionBar.Tab} 
- * swipe and switches to the appropriate tab once the {@link View} which responds 
- * to the swipe is <i>flinged</i>.
+ * <p>An {@link OnTouchListener} which detects a lateral {@link ActionBar} navigation 
+ * swipe and switches to the appropriate tab once the {@link View} which responds to 
+ * the swipe is <i>flinged</i>.
  * 
  * @version 1.1.0
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
-public class TabSwipeDetector extends SimpleOnGestureListener implements OnTouchListener {
+public class NavigationSwipeDetector extends SimpleOnGestureListener implements OnTouchListener {
 	
 	
 	/**
@@ -113,34 +112,34 @@ public class TabSwipeDetector extends SimpleOnGestureListener implements OnTouch
 	
 	
 	/**
-	 * <p>Creates a new {@link TabSwipeDetector} by taking the {@link ActionBar} whose 
-	 * navigation tabs are to swiped.
+	 * <p>Creates a new {@link NavigationSwipeDetector} by taking the {@link ActionBar} for which 
+	 * navigation swiping is to be enabled.
 	 * 
 	 * @param activity
 	 * 			the {@link Activity} whose navigation tabs are to be swiped
 	 *
 	 * @since 1.1.0
 	 */
-	public TabSwipeDetector(Activity activity) {
+	public NavigationSwipeDetector(Activity activity) {
 		
 		View tabContent = activity.findViewById(R.id.tab_content);
 			
 		if(tabContent == null) {
 			
 			RuntimeException mve = new MissingViewException("R.id.tab_content");
-			throw new TabSwipeListenerException(activity.getLocalClassName(), mve);
+			throw new NavigationSwipeListenerException(activity.getLocalClassName(), mve);
 		}
 		
 		if(!(tabContent instanceof ViewGroup)) {
 			
 			String reason = "R.id.tab_content should be a ViewGroup with only one child view.";
-			throw new TabSwipeListenerException(activity.getLocalClassName(), reason);
+			throw new NavigationSwipeListenerException(activity.getLocalClassName(), reason);
 		}
 		
 		if(((ViewGroup)tabContent).getChildCount() != 1) {
 			
 			String reason = "R.id.tab_content must have one and only one child view.";
-			throw new TabSwipeListenerException(activity.getLocalClassName(), reason);
+			throw new NavigationSwipeListenerException(activity.getLocalClassName(), reason);
 		}
 		
 		this.content = ((ViewGroup)tabContent).getChildAt(0);
@@ -161,8 +160,8 @@ public class TabSwipeDetector extends SimpleOnGestureListener implements OnTouch
 	}
 	
 	/**
-	 * <p>Detects a lateral navigation {@link ActionBar.Tab} swipe and switched to the 
-	 * appropriate tab.
+	 * <p>Detects a lateral navigation swipe and switches to the appropriate navigation item 
+	 * on the {@link ActionBar}.
 	 * 
 	 * @since 1.1.0
 	 */
@@ -172,11 +171,10 @@ public class TabSwipeDetector extends SimpleOnGestureListener implements OnTouch
 		final ActionBar actionBar = activity.getActionBar();
 		if(actionBar == null) return false;
 		
-		Tab selectedTab = actionBar.getSelectedTab();
-		if(selectedTab == null) return false;
+		int navigationItemCount = actionBar.getNavigationItemCount();
+		if(navigationItemCount == 0) return false;
 		
-		int selectedIndex = selectedTab.getPosition();
-		int tabCount = actionBar.getTabCount();
+		int selectedIndex = actionBar.getSelectedNavigationIndex();
 		
 		try {
 			
@@ -190,7 +188,7 @@ public class TabSwipeDetector extends SimpleOnGestureListener implements OnTouch
 				
 				if(swipedLeft) {
 					
-					if(++selectedIndex <= tabCount - 1) {
+					if(++selectedIndex <= navigationItemCount - 1) {
 					
 						final int index = selectedIndex; 
 						
@@ -262,7 +260,7 @@ public class TabSwipeDetector extends SimpleOnGestureListener implements OnTouch
 	}
 
 	/**
-	 * <p>Translates touch events to {@link ActionBar.Tab} swipe gestures. 
+	 * <p>Translates touch events to {@link ActionBar} navigation swipes. 
 	 */
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {

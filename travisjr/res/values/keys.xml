@@ -30,6 +30,7 @@
     <string name="key_version">version</string>
     <string name="key_contributed">Contributed</string>
     <string name="key_created">Created</string>
+    <string name="key_repositories">Repositories</string>
     <string name="key_user_mode">user_mode</string>
     <string name="key_member">member</string>
     <string name="key_organization">organization</string>

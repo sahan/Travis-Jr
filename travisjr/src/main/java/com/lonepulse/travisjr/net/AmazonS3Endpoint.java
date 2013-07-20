@@ -35,7 +35,7 @@ import com.lonepulse.travisjr.model.BuildJob;
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
-@Endpoint(scheme = "https", value = "s3.amazonaws.com/archive.travis-ci.org/")
+@Endpoint("s3.amazonaws.com/archive.travis-ci.org")
 public interface AmazonS3Endpoint {
 	
 	/**
@@ -48,7 +48,7 @@ public interface AmazonS3Endpoint {
 	 * 
 	 * @since 1.1.0
 	 */
-	@Rest(path = "jobs/:job_id/log.txt")
+	@Rest(path = "/jobs/:job_id/log.txt")
 	@Parser(Parser.PARSER_TYPE.STRING)
 	String getJobLog(@PathParam("job_id") String jobId);
 }

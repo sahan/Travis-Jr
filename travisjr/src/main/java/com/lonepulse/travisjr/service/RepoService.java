@@ -25,7 +25,7 @@ import java.util.List;
 
 import com.lonepulse.icklebot.annotation.inject.Pojo;
 import com.lonepulse.travisjr.model.Repo;
-import com.lonepulse.travisjr.view.TabSwipeListenerException;
+import com.lonepulse.travisjr.view.NavigationSwipeListenerException;
 
 /**
  * <p>This contract specifies the service offered on the {@link Repo}s which 
@@ -43,7 +43,7 @@ public interface RepoService {
 	 * 
 	 * @return all associated {@link Repo}s
 	 * 
-	 * @throws TabSwipeListenerException
+	 * @throws NavigationSwipeListenerException
 	 * 			if the {@link Repo}(s) cannot be read via the remote endpoint.
 	 * 
 	 * @since 1.1.0
@@ -55,7 +55,7 @@ public interface RepoService {
 	 * 
 	 * @return all associated {@link Repo}s
 	 * 
-	 * @throws TabSwipeListenerException
+	 * @throws NavigationSwipeListenerException
 	 * 			if the {@link Repo}(s) cannot be read via the remote endpoint.
 	 * 
 	 * @since 1.1.2

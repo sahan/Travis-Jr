@@ -22,10 +22,7 @@ package com.lonepulse.travisjr.app;
 
 
 import android.app.ActionBar;
-import android.app.ActionBar.Tab;
-import android.app.ActionBar.TabListener;
 import android.app.Activity;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,20 +30,22 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.lonepulse.icklebot.activity.IckleActivity;
 import com.lonepulse.icklebot.network.NetworkManager;
 import com.lonepulse.icklebot.network.NetworkService;
 import com.lonepulse.travisjr.R;
+import com.lonepulse.travisjr.adapter.NavigationAdapter;
 import com.lonepulse.travisjr.pref.SettingsActivity;
-import com.lonepulse.travisjr.view.TabSwipeDetector;
+import com.lonepulse.travisjr.view.NavigationSwipeDetector;
 
 /**
- * <p>A custom {@link IckleActivity} which is tailored to setup the 
- * action bar and provide support for synchronization.
+ * <p>A custom {@link IckleActivity} which is tailored to setup the {@link ActionBar} 
+ * and provide support for syncing with Travis-CI.
  * 
- * @version 1.2.0
+ * @version 1.2.1
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
@@ -94,30 +93,11 @@ public class TravisJrActivity extends IckleActivity {
 	 */
 	private NetworkManager network;
 	
-	
 	/**
-	 * <p>The instance of {@link ActionBar.Tab} which handles navigation tabs.
+	 * <p>The IDs of the strings resources which make up the navigation list. 
 	 */
-	private TabListener tabListener = new TabListener() {
-		
-		@Override
-		public void onTabSelected(Tab tab, FragmentTransaction ft) {
-			
-			TravisJrActivity.this.onTabSelected((Integer)tab.getTag());
-		}
-		
-		@Override
-		public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-			
-			TravisJrActivity.this.onTabUnselected((Integer)tab.getTag());
-		}
-		
-		@Override
-		public void onTabReselected(Tab tab, FragmentTransaction ft) {
-			
-			TravisJrActivity.this.onTabReselected((Integer)tab.getTag());
-		}
-	};
+	private int[] navigationResourceIds;
+	
 	
 	protected MenuItem getMenuItemSync() {
 		return menuItemSync;
@@ -184,32 +164,49 @@ public class TravisJrActivity extends IckleActivity {
 	}
 	
 	/**
-	 * <p>Creates a set of {@link ActionBar.Tab}s per ID with the title 
-	 * and tag set to the String resource referred to be the ID.</p>
+	 * <p>Creates a set of {@link ActionBar} navigation items for the given string 
+	 * resource IDs.</p>
 	 * 
-	 * <p>This implementation employs {@link ActionBar#NAVIGATION_MODE_TABS}.</p> 
+	 * <p>This implementation employs {@link ActionBar#NAVIGATION_MODE_LIST}.</p> 
 	 *
-	 * @param stringResourceIds
-	 * 			the array of String resource IDs which reflect the 
-	 * 			{@link ActionBar.Tab}s to be created
+	 * @param navigationResourceIds
+	 * 			the array of String resource IDs for the navigation item titles  
 	 * 
-	 * @since 1.1.1
+	 * @since 1.2.1
 	 */
-	protected void addTabs(int... stringResourceIds) {
+	protected void addNavigationItems(final int... navigationResourceIds) {
 		
 		ActionBar actionBar = getActionBar();
 		
 		if(actionBar != null) {
 			
-			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		
-			for (int id : stringResourceIds)
-				actionBar.addTab(actionBar.newTab().setText(id).setTag(id).setTabListener(tabListener));
+			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+			
+			this.navigationResourceIds = navigationResourceIds;
+			String[] stringResources = new String[navigationResourceIds.length];
+			
+			for (int i = 0; i < navigationResourceIds.length; i++) {
+				
+				stringResources[i] = getString(navigationResourceIds[i]);
+			}
+			
+			ArrayAdapter<String> adapter = NavigationAdapter.newInstance(actionBar.getThemedContext(), 
+				R.layout.action_view_title_repo, android.R.id.text1, android.R.layout.simple_spinner_dropdown_item, stringResources);
+			
+		    actionBar.setListNavigationCallbacks(adapter, new ActionBar.OnNavigationListener() {
+				
+				@Override
+				public boolean onNavigationItemSelected(int itemPosition, long itemId) {
+					
+					onTabSelected(navigationResourceIds[itemPosition]);
+					return true;
+				}
+			});
 		}
 	}
 	
 	/**
-	 * <p>Enables lateral swiping between navigation tabs by detecting swipe 
+	 * <p>Enables lateral swiping for {@link ActionBar} navigation tabs by detecting swipe 
 	 * gestures on the given target {@link View}.
 	 *
 	 * @param targetViewId
@@ -218,11 +215,11 @@ public class TravisJrActivity extends IckleActivity {
 	 * @param moreTargetViewIds
 	 * 			additional IDs of the {@link View}s which can be swiped 
 	 * 
-	 * @since 1.1.2
+	 * @since 1.2.1
 	 */
-	protected void enableTabSwiping(int targetViewId, int... moreTargetViewIds) {
+	protected void enableNavigationSwiping(int targetViewId, int... moreTargetViewIds) {
 		
-		TabSwipeDetector tabSwipeListener = new TabSwipeDetector(this);
+		NavigationSwipeDetector tabSwipeListener = new NavigationSwipeDetector(this);
 		
 		View main = findViewById(targetViewId);
 		if(main != null) main.setOnTouchListener(tabSwipeListener);
@@ -284,7 +281,8 @@ public class TravisJrActivity extends IckleActivity {
 	protected int getSelectedTab() {
 		
 		ActionBar actionBar = getActionBar();
-		return (actionBar != null && actionBar.getTabCount() > 0)? (Integer)actionBar.getSelectedTab().getTag() :0;
+		return (actionBar != null && actionBar.getNavigationItemCount() > 0)? 
+				navigationResourceIds[(Integer)actionBar.getSelectedNavigationIndex()] :0;
 	}
 	
 	/**

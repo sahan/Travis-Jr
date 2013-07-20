@@ -111,16 +111,21 @@ public class ReposActivity extends TravisJrActivity {
 	
 	@Override
 	protected void onInitActionBar(ActionBar actionBar) {
-		
-		super.onInitActionBar(actionBar);
-		
-		if(!application.getAccountService().isUserModeOrganization()) {
+
+		if(application.getAccountService().isUserModeOrganization()) {
 			
-			addTabs(R.string.key_created, R.string.key_contributed);
+			super.onInitActionBar(actionBar);
+		}
+		else {
 			
-			enableTabSwiping(R.id.tab_content, android.R.id.list, R.id.root,
-							 R.id.alert_data, R.id.alert_empty,
-							 R.id.alert_error, R.id.alert_sync);
+			actionBar.setDisplayShowCustomEnabled(true);
+			actionBar.setDisplayShowTitleEnabled(false);
+			
+			addNavigationItems(R.string.key_repositories, R.string.key_created, R.string.key_contributed);
+			
+			enableNavigationSwiping(R.id.tab_content, android.R.id.list, R.id.root,
+									R.id.alert_data, R.id.alert_empty,
+									R.id.alert_error, R.id.alert_sync);
 		}
 	}
 	
@@ -263,7 +268,7 @@ public class ReposActivity extends TravisJrActivity {
 		
 		switch (getSelectedTab()) {
 		
-			case 0:
+			case 0: case R.string.key_repositories:
 				runUITask(UI_UPDATE_REPOS, repos);
 				break;
 				
@@ -330,7 +335,7 @@ public class ReposActivity extends TravisJrActivity {
 		
 		switch (getSelectedTab()) {
 		
-			case 0:
+			case 0: case R.string.key_repositories:
 				BuildsActivity.start(this, repos.get(position));
 				break;
 				

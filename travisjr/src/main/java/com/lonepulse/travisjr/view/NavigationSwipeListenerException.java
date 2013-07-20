@@ -26,14 +26,14 @@ import android.app.Activity;
 import com.lonepulse.travisjr.TravisJrRuntimeException;
 
 /**
- * <p>This exception is thrown when a {@link TabSwipeDetector} cannot be initialized 
+ * <p>This exception is thrown when a {@link NavigationSwipeDetector} cannot be initialized 
  * on an {@link Activity}.
  * 
  * @version 1.1.0
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
-public class TabSwipeListenerException extends TravisJrRuntimeException {
+public class NavigationSwipeListenerException extends TravisJrRuntimeException {
 
 
 	private static final long serialVersionUID = 2716924294460417858L;
@@ -44,38 +44,38 @@ public class TabSwipeListenerException extends TravisJrRuntimeException {
 	 * 
 	 * @since 1.1.0
 	 */
-	public TabSwipeListenerException() {}
+	public NavigationSwipeListenerException() {}
 
 	/**
 	 * <p>Prints a detailed message with the class name of {@link Activity} 
-	 * for which a {@link TabSwipeDetector} failed be initialized.
+	 * for which a {@link NavigationSwipeDetector} failed be initialized.
 	 * 
 	 * @param activityClassName
 	 * 			the {@link Class} name of the {@link Activity} on which a 
-	 * 			{@link TabSwipeDetector} failed to be initialized
+	 * 			{@link NavigationSwipeDetector} failed to be initialized
 	 * 
 	 * @since 1.1.0
 	 */
-	public TabSwipeListenerException(String activityClassName) {
-		super("Failed to initialize a TabSwipeDetector on " + activityClassName + ". ");
+	public NavigationSwipeListenerException(String activityClassName) {
+		super("Failed to initialize a NavigationSwipeDetector on " + activityClassName + ". ");
 	}
 	
 	/**
 	 * <p>Prints a detailed message with the class name of {@link Activity} 
-	 * for which a {@link TabSwipeDetector} failed be initialized along with 
+	 * for which a {@link NavigationSwipeDetector} failed be initialized along with 
 	 * the reason for failure.
 	 * 
 	 * @param activityClassName
 	 * 			the {@link Class} name of the {@link Activity} on which a 
-	 * 			{@link TabSwipeDetector} failed to be initialized
+	 * 			{@link NavigationSwipeDetector} failed to be initialized
 	 * 
 	 * @param reason
-	 * 			the reason the {@link TabSwipeDetector} initailization failed
+	 * 			the reason the {@link NavigationSwipeDetector} initailization failed
 	 * 
 	 * @since 1.1.0
 	 */
-	public TabSwipeListenerException(String activityClassName, String reason) {
-		super("Failed to initialize a TabSwipeDetector on " + activityClassName + ". " + reason);
+	public NavigationSwipeListenerException(String activityClassName, String reason) {
+		super("Failed to initialize a NavigationSwipeDetector on " + activityClassName + ". " + reason);
 	}
 
 	/**
@@ -83,25 +83,25 @@ public class TabSwipeListenerException extends TravisJrRuntimeException {
 	 * 
 	 * @since 1.1.0
 	 */
-	public TabSwipeListenerException(Throwable throwable) {
+	public NavigationSwipeListenerException(Throwable throwable) {
 		super(throwable);
 	}
 
 	/**
 	 * <p>Prints a detailed message with the class name of {@link Activity} 
-	 * for which a {@link TabSwipeDetector} failed be initialized along with 
+	 * for which a {@link NavigationSwipeDetector} failed be initialized along with 
 	 * the root cause.
 	 * 
 	 * @param activityClassName
 	 * 			the {@link Class} name of the {@link Activity} on which a 
-	 * 			{@link TabSwipeDetector} failed to be initialized
+	 * 			{@link NavigationSwipeDetector} failed to be initialized
 	 * 
 	 * @param throwable
 	 * 			the root cause
 	 * 
 	 * @since 1.1.0
 	 */
-	public TabSwipeListenerException(String activityClassName, Throwable throwable) {
-		super("Failed to initialize a TabSwipeDetector on " + activityClassName + ". ", throwable);
+	public NavigationSwipeListenerException(String activityClassName, Throwable throwable) {
+		super("Failed to initialize a NavigationSwipeDetector on " + activityClassName + ". ", throwable);
 	}
 }
