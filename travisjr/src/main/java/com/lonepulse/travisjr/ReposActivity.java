@@ -112,7 +112,7 @@ public class ReposActivity extends TravisJrActivity {
 	@Override
 	protected void onInitActionBar(ActionBar actionBar) {
 
-		if(application.getAccountService().isUserModeOrganization()) {
+		if(application.getAccountService().isTypeOrganization()) {
 			
 			super.onInitActionBar(actionBar);
 		}
@@ -199,7 +199,7 @@ public class ReposActivity extends TravisJrActivity {
 		
 		try {
 			
-			if(application.getAccountService().isUserModeOrganization()) {
+			if(application.getAccountService().isTypeOrganization()) {
 				
 				repos = repoService.getReposByOwner();
 			}

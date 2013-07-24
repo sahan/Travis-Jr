@@ -110,20 +110,29 @@ public class BasicAccountService implements AccountService {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean isUserModeOrganization() {
-		
-		String organization = Resources.key(R.string.key_organization);
-		String member = Resources.key(R.string.key_member);
-		
-		return prefs().getString(Resources.key(R.string.key_user_mode), member).equals(organization);
+	public void setUserMode(UserMode userMode) {
+	
+		UserMode.setCurrent(userMode);
 	}
 	
 	/**
-	 * <p>Retrieves the default {@link SharedPreferences} using the 
-	 * application context at {@link TravisJr.Application#CONTEXT}.
-	 * 
-	 * @return the default {@link SharedPreferences}
+	 * {@inheritDoc}
 	 */
+	@Override
+	public UserMode getUserMode() {
+		
+		return UserMode.getCurrent();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isTypeOrganization() {
+		
+		return UserMode.isCurrent(UserMode.ORGANIZATION);
+	}
+	
 	private static final SharedPreferences prefs() {
 
 		return PreferenceManager.getDefaultSharedPreferences(TravisJr.Application.getContext());

@@ -28,9 +28,11 @@ import com.lonepulse.travisjr.view.MissingViewException;
  * <p>This contract specifies the services offered for managing the 
  * user's account. 
  * 
+ * @since 1.1.0
+ * <br><br>
  * @version 1.1.1
  * <br><br>
- * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
+ * @author <a href="mailto:sahan@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
 @Pojo(BasicAccountService.class)
 public interface AccountService {
@@ -58,6 +60,38 @@ public interface AccountService {
 	void setGitHubUsername(String username);
 	
 	/**
+	 * <p>Indicates whether the user is to be treated as a member or an 
+	 * organization.
+	 * 
+	 * @return {@code true} if the user is to be treated as a member, 
+	 * 		   {@code false} if the user is to be treated as a organization
+	 * 
+	 * @since 1.1.0
+	 */
+	UserMode getUserMode();
+	
+	/**
+	 * <p>Update the current user's {@link UserMode} to the given instance.
+	 * 
+	 * @param userMode
+	 * 			the updates the user mode to the given instance of {@link UserMode} 
+	 * 
+	 * @since 1.1.0
+	 */
+	void setUserMode(UserMode userMode);
+	
+	/**
+	 * <p>Indicates whether the user is to be treated as a member or an 
+	 * organization.
+	 * 
+	 * @return {@code true} if the user is to be treated as a member, 
+	 * 		   {@code false} if the user is to be treated as a organization
+	 * 
+	 * @since 1.1.0
+	 */
+	boolean isTypeOrganization();
+	
+	/**
 	 * <p>Retrieves the GitHub username which was saved in the account 
 	 * created the official GitHub app.
 	 * 
@@ -78,18 +112,7 @@ public interface AccountService {
 	 * 
 	 * @return {@code true} if credentials are already saved
 	 * 
-	 * @since 1.1.1
+	 * @since 1.1.0
 	 */
 	boolean areCredentialsAvailable();
-	
-	/**
-	 * <p>Indicates whether the user is to be treated as a member or an 
-	 * organization.
-	 * 
-	 * @return {@code true} if the user is to be treated as a member, 
-	 * 		   {@code false} if the user is to be treated as a organization
-	 * 
-	 * @since 1.1.2
-	 */
-	boolean isUserModeOrganization();
 }
