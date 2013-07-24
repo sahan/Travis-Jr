@@ -32,8 +32,7 @@ import com.lonepulse.travisjr.model.BuildInfo;
 import com.lonepulse.travisjr.model.Repo;
 
 /**
- * <p>This endpoint contract defines the remote services which are used 
- * by Travis Jr.
+ * <p>This endpoint contract defines the remote services which are used by Travis Jr.
  * 
  * @version 1.1.4
  * <br><br>

@@ -35,7 +35,32 @@
             </intent-filter>
         </activity>
         <activity android:name=".ReposActivity"
-            	  android:icon="@drawable/ic_actionbar" />
+            	  android:icon="@drawable/ic_actionbar">
+            <intent-filter>
+                <action 
+                    android:name="android.intent.action.VIEW" />
+                <data
+                    android:host="travis-ci.org" 
+                    android:scheme="http"
+                    android:mimeType="text/url" />
+                <category 
+                    android:name="android.intent.category.DEFAULT" />
+                <category 
+                    android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+            <intent-filter>
+                <action 
+                    android:name="android.intent.action.VIEW" />
+                <data
+                    android:host="travis-ci.org" 
+                    android:scheme="https"
+                    android:mimeType="text/url" />
+                <category 
+                    android:name="android.intent.category.DEFAULT" />
+                <category 
+                    android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+        </activity>
         <activity android:name=".BuildsActivity"
             	  android:icon="@drawable/ic_actionbar"
             	  android:parentActivityName=".ReposActivity">
