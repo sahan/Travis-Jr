@@ -37,20 +37,22 @@ import android.net.Uri;
 public interface IntentFilterService {
 
 	/**
-	 * <p>Determines if the given {@link Uri} points to <b>user</b> on <b>travis-ci.org</b>. 
+	 * <p>Determines if the given {@link Uri} points to a <b>user</b> on <b>travis-ci.org</b>. 
 	 *
 	 * @param uri
 	 * 			the {@link Uri} to be checked if it points to a user
 	 * 
-	 * @return {@code true} if the given {@link Uri} points to a user, else {@code false} if 
-	 * 		   the {@link Uri} does not point to a user or if an error occurred during validation 
+	 * @return the username of the GitHub user in its proper case 
+	 * 
+	 * @throws UserAuthenticationFailedException
+	 * 			if a valid GitHub user failed to be resolved using the given {@link Uri}
 	 * 
 	 * @since 1.1.0
 	 */
-	boolean isValidUser(Uri uri);
+	String resolveUser(Uri uri) throws UserAuthenticationFailedException;
 	
 	/**
-	 * <p>Determines if the given {@link Uri} points to <b>repository</b> on <b>travis-ci.org</b>. 
+	 * <p>Determines if the given {@link Uri} points to a <b>repository</b> on <b>travis-ci.org</b>. 
 	 *
 	 * @param uri
 	 * 			the {@link Uri} to be checked if it points to a repository
@@ -58,7 +60,9 @@ public interface IntentFilterService {
 	 * @return {@code true} if the given {@link Uri} points to a repository, else {@code false} if 
 	 * 		   the {@link Uri} does not point to a repository or if an error occurred during validation
 	 * 
+	 * @return the GitHub repository it its proper case, in the format &lt;user&gt;/&lt;repo&gt;
+	 * 
 	 * @since 1.1.0
 	 */
-	boolean isValidRepository(Uri uri);
+	String resolveRepository(Uri uri) throws RepositoryAuthenticationFailedException;
 }

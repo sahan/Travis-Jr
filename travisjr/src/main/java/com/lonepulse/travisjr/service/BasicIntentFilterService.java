@@ -22,22 +22,22 @@ package com.lonepulse.travisjr.service;
 
 
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import android.content.IntentFilter;
 import android.net.Uri;
 
 import com.lonepulse.robozombie.core.annotation.Bite;
 import com.lonepulse.robozombie.core.inject.Zombie;
+import com.lonepulse.travisjr.R;
+import com.lonepulse.travisjr.model.GitHubRepository;
+import com.lonepulse.travisjr.model.GitHubUser;
 import com.lonepulse.travisjr.net.GitHubEndpoint;
+import com.lonepulse.travisjr.util.Resources;
 
 /**
  * <p>A concrete implementation of {@link IntentFilterService} which offers services for working 
- * with {@link Uri} data filtered through an {@link IntentFilter}. Only {@link Uri}s whose host is 
- * <b>travis-ci.org</b> will be processed.
+ * with {@link Uri} data filtered through an {@link IntentFilter}. Only {@link Uri}s whose host 
+ * is <b>travis-ci.org</b> will be processed.
  * 
  * @since 1.1.0
  * <br><br>
@@ -50,6 +50,8 @@ public class BasicIntentFilterService implements IntentFilterService {
 	
 	public static final String travisCIHost = "travis-ci.org";
 	
+	public static final String msgNotFound = Resources.error(R.string.err_github_msg_not_found);
+	
 	
 	@Bite
 	private GitHubEndpoint gitHubEndpoint;
@@ -59,97 +61,91 @@ public class BasicIntentFilterService implements IntentFilterService {
 	
 	
 	/**
-	 * <p>See {@link IntentFilterService#isValidUser(Uri)}.</p>
+	 * <p>See {@link IntentFilterService#resolveUser(Uri)}.</p>
 	 * 
 	 * <p><b>Note</b> that this service is a <b>blocking</b> operation which contacts the GitHub API 
-	 * at <b>api.github.com</b> to validate the user.
+	 * at <b>api.github.com</b> to validate the user. Execute this on a worker thread.</p>
 	 */
 	@Override
-	public boolean isValidUser(Uri uri) {
+	public String resolveUser(Uri uri) {
 		
-		ExecutorService executorService = Executors.newFixedThreadPool(1);
+		UserAuthenticationFailedException uafe = new UserAuthenticationFailedException(uri);
 		
 		try {
 			
 			if(!isValidContext(uri)) {
 				
-				return false;
+				throw uafe;
 			}
 			
 			List<String> pathSegments = uri.getPathSegments();
 			
 			if(pathSegments == null || pathSegments.size() != 1) {
 				
-				return false;
+				throw uafe;
 			}
 			
-			final String user = pathSegments.get(0);
+			GitHubUser gitHubUser = gitHubEndpoint.getUser(pathSegments.get(0));
 			
-			Future<Boolean> future = executorService.submit(new Callable<Boolean>() {
-	
-				public Boolean call() throws Exception {
-	
-					return gitHubEndpoint.isValidUser(user);
-				}
-			});
+			String message = gitHubUser.getMessage();
 			
-			return future.get();
+			if(message != null && message.equals(msgNotFound)) {
+				
+				throw uafe;
+			}
+			
+			return gitHubUser.getLogin();
 		} 
 		catch (Exception e) {
 		
-			return Boolean.FALSE;
-		}
-		finally {
-			
-			executorService.shutdownNow();
+			throw (e instanceof UserAuthenticationFailedException)? (UserAuthenticationFailedException)e 
+				   :new UserAuthenticationFailedException(uri, e);
 		}
 	}
 
 	/**
-	 * <p>See {@link IntentFilterService#isValidRepository(Uri)}.</p>
+	 * <p>See {@link IntentFilterService#resolveRepository(Uri)}.</p>
 	 * 
 	 * <p><b>Note</b> that this service is a <b>blocking</b> operation which contacts the GitHub API 
-	 * at <b>api.github.com</b> to validate the repository.
+	 * at <b>api.github.com</b> to validate the repository. Execute this on a worker thread.</p>
 	 */
 	@Override
-	public boolean isValidRepository(Uri uri) {
+	public String resolveRepository(Uri uri) {
 		
-		ExecutorService executorService = Executors.newFixedThreadPool(1);
+		RepositoryAuthenticationFailedException rafe = new RepositoryAuthenticationFailedException(uri);
 		
 		try {
 			
 			if(!isValidContext(uri)) {
 				
-				return false;
+				throw rafe;
 			}
 			
 			List<String> pathSegments = uri.getPathSegments();
 			
 			if(pathSegments == null || pathSegments.size() != 2) {
 				
-				return false;
+				throw rafe;
 			}
 			
 			final String user = pathSegments.get(0);
 			final String repo = pathSegments.get(1);
 			
-			Future<Boolean> future = executorService.submit(new Callable<Boolean>() {
+			GitHubRepository gitHubRepo = gitHubEndpoint.getRepository(user, repo);
+			
+			String message = gitHubRepo.getMessage();
+			
+			if(message != null && message.equals(msgNotFound)) {
 				
-				public Boolean call() throws Exception {
-					
-					return gitHubEndpoint.isValidRepository(user, repo);
-				}
-			});
-		
-			return future.get();
+				throw rafe;
+			}
+			
+			return gitHubRepo.getFull_name();
 		} 
 		catch (Exception e) {
 		
-			return Boolean.FALSE;
-		}
-		finally {
-			
-			executorService.shutdownNow();
+			throw (e instanceof RepositoryAuthenticationFailedException)? (RepositoryAuthenticationFailedException)e 
+				   :new RepositoryAuthenticationFailedException(uri, e);
 		}
 	}
 	

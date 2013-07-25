@@ -25,6 +25,8 @@ import com.lonepulse.robozombie.core.annotation.Endpoint;
 import com.lonepulse.robozombie.core.annotation.Parser;
 import com.lonepulse.robozombie.rest.annotation.PathParam;
 import com.lonepulse.robozombie.rest.annotation.Rest;
+import com.lonepulse.travisjr.model.GitHubRepository;
+import com.lonepulse.travisjr.model.GitHubUser;
 
 /**
 /**
@@ -36,6 +38,7 @@ import com.lonepulse.robozombie.rest.annotation.Rest;
  * <br><br>
  * @author <a href="mailto:sahan@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
+@Parser(Parser.PARSER_TYPE.JSON)
 @Endpoint(scheme = "https", value = "api.github.com")
 public interface GitHubEndpoint {
 	
@@ -51,8 +54,7 @@ public interface GitHubEndpoint {
 	 * @since 1.1.0
 	 */
 	@Rest(path = "/users/:user")
-	@Parser(type = GitHubValidationParser.class)
-	Boolean isValidUser(@PathParam("user") String user);
+	GitHubUser getUser(@PathParam("user") String user);
 	
 	/**
 	 * <p>A simple call to the <i>/users</i> service at <b>api.github.com</b> 
@@ -68,7 +70,6 @@ public interface GitHubEndpoint {
 	 * 
 	 * @since 1.1.0
 	 */
-	@Rest(path = "/users/:user")
-	@Parser(type = GitHubValidationParser.class)
-	Boolean isValidRepository(@PathParam("user") String user, @PathParam("repo") String repo);
+	@Rest(path = "/repos/:user/:repo")
+	GitHubRepository getRepository(@PathParam("user") String user, @PathParam("repo") String repo);
 }
