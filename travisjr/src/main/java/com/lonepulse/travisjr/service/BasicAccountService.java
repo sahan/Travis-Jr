@@ -29,6 +29,7 @@ import android.text.TextUtils;
 
 import com.lonepulse.travisjr.R;
 import com.lonepulse.travisjr.app.TravisJr;
+import com.lonepulse.travisjr.model.GitHubUser;
 import com.lonepulse.travisjr.util.Resources;
 
 /**
@@ -43,6 +44,8 @@ public class BasicAccountService implements AccountService {
 	
 	private static final String GITHUB_TOKEN = "com.github";
 	
+	private transient GitHubUser transientGitHubUser = null;
+	
 	
 	/**
 	 * {@inheritDoc}
@@ -50,12 +53,19 @@ public class BasicAccountService implements AccountService {
 	@Override
 	public String getGitHubUsername() throws MissingCredentialsException {
 	
-		String username = prefs().getString(Resources.key(R.string.key_username), "");
+		if(transientGitHubUser == null) {
 		
-		if(TextUtils.isEmpty(username))
-			throw new MissingCredentialsException();
-		
-		return username;
+			String username = prefs().getString(Resources.key(R.string.key_username), "");
+			
+			if(TextUtils.isEmpty(username))
+				throw new MissingCredentialsException();
+			
+			return username;
+		}
+		else {
+			
+			return transientGitHubUser.getLogin();
+		}
 	}
 
 	/**
@@ -121,16 +131,42 @@ public class BasicAccountService implements AccountService {
 	@Override
 	public UserMode getUserMode() {
 		
-		return UserMode.getCurrent();
+		if(transientGitHubUser == null) {
+		
+			return UserMode.getCurrent();
+		}
+		else {
+			
+			return transientGitHubUser.getType().equalsIgnoreCase("user")? 
+				UserMode.MEMBER :UserMode.ORGANIZATION;
+		}
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean isTypeOrganization() {
+	public void setTransientUser(GitHubUser transientGitHubUser) {
+
+		this.transientGitHubUser = transientGitHubUser;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public GitHubUser getTransientUser() {
 		
-		return UserMode.isCurrent(UserMode.ORGANIZATION);
+		return this.transientGitHubUser;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void clearTransientUser() {
+		
+		this.transientGitHubUser = null;
 	}
 	
 	private static final SharedPreferences prefs() {

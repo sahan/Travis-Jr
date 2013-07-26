@@ -21,9 +21,13 @@ package com.lonepulse.travisjr.app;
  */
 
 
+import java.util.List;
+
 import android.app.ActionBar;
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,9 +40,19 @@ import android.widget.TextView;
 import com.lonepulse.icklebot.activity.IckleActivity;
 import com.lonepulse.icklebot.network.NetworkManager;
 import com.lonepulse.icklebot.network.NetworkService;
+import com.lonepulse.travisjr.BuildsActivity;
 import com.lonepulse.travisjr.R;
+import com.lonepulse.travisjr.ReposActivity;
 import com.lonepulse.travisjr.adapter.NavigationAdapter;
+import com.lonepulse.travisjr.model.GitHubRepository;
+import com.lonepulse.travisjr.model.GitHubUser;
+import com.lonepulse.travisjr.model.Repo;
 import com.lonepulse.travisjr.pref.SettingsActivity;
+import com.lonepulse.travisjr.service.BasicIntentFilterService;
+import com.lonepulse.travisjr.service.BasicRepoService;
+import com.lonepulse.travisjr.service.IntentFilterService;
+import com.lonepulse.travisjr.service.RepoService;
+import com.lonepulse.travisjr.util.Resources;
 import com.lonepulse.travisjr.view.NavigationSwipeDetector;
 
 /**
@@ -111,6 +125,42 @@ public class TravisJrActivity extends IckleActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 	
 		super.onCreate(savedInstanceState);
+		
+		if(this instanceof ReposActivity || this instanceof BuildsActivity) {
+			
+			IntentFilterService intentFilterService = new BasicIntentFilterService();
+		
+			Uri uri = getIntent().getData();
+			
+			if(uri != null) {
+				
+				try {
+					
+					GitHubUser user = intentFilterService.resolveUser(uri);
+					TravisJr.Application.getInstance().getAccountService().setTransientUser(user);
+
+					if(this instanceof BuildsActivity && 
+						getIntent().getSerializableExtra(Resources.key(R.string.key_repo)) == null) {
+						
+						RepoService repoService = new BasicRepoService();
+						List<Repo> repos = repoService.getReposByMember(user.getLogin());
+						
+						GitHubRepository gitHubRepository = intentFilterService.resolveRepository(uri);
+						Repo repo = repoService.findRepoByName(gitHubRepository.getName(), repos);
+						
+						getIntent().putExtra(Resources.key(R.string.key_repo), repo);
+					}
+				}
+				catch(Exception e) {
+	
+					Log.e(getClass().getName(), "Failed to resolve a user from the given Uri", e);
+				}
+			}
+			else {
+				
+				TravisJr.Application.getInstance().getAccountService().clearTransientUser();
+			}
+		}
 		
 		network = new NetworkService(this);
 		

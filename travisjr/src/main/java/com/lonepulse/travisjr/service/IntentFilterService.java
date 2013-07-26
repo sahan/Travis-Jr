@@ -24,6 +24,10 @@ package com.lonepulse.travisjr.service;
 import android.content.IntentFilter;
 import android.net.Uri;
 
+import com.lonepulse.icklebot.annotation.inject.Pojo;
+import com.lonepulse.travisjr.model.GitHubRepository;
+import com.lonepulse.travisjr.model.GitHubUser;
+
 /**
  * <p>This contract offers services for working with {@link Uri} data filtered through an 
  * {@link IntentFilter}. Only {@link Uri}s whose host is <b>travis-ci.org</b> will be processed.
@@ -34,6 +38,7 @@ import android.net.Uri;
  * <br><br>
  * @author <a href="mailto:sahan@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
+@Pojo(BasicIntentFilterService.class)
 public interface IntentFilterService {
 
 	/**
@@ -42,14 +47,14 @@ public interface IntentFilterService {
 	 * @param uri
 	 * 			the {@link Uri} to be checked if it points to a user
 	 * 
-	 * @return the username of the GitHub user in its proper case 
+	 * @return the resolved {@link GitHubUser} 
 	 * 
 	 * @throws UserAuthenticationFailedException
 	 * 			if a valid GitHub user failed to be resolved using the given {@link Uri}
 	 * 
 	 * @since 1.1.0
 	 */
-	String resolveUser(Uri uri) throws UserAuthenticationFailedException;
+	GitHubUser resolveUser(Uri uri) throws UserAuthenticationFailedException;
 	
 	/**
 	 * <p>Determines if the given {@link Uri} points to a <b>repository</b> on <b>travis-ci.org</b>. 
@@ -57,12 +62,12 @@ public interface IntentFilterService {
 	 * @param uri
 	 * 			the {@link Uri} to be checked if it points to a repository
 	 * 
-	 * @return {@code true} if the given {@link Uri} points to a repository, else {@code false} if 
-	 * 		   the {@link Uri} does not point to a repository or if an error occurred during validation
+	 * @return the resolved {@link GitHubRepository}
 	 * 
-	 * @return the GitHub repository it its proper case, in the format &lt;user&gt;/&lt;repo&gt;
+	 * @throws RepositoryAuthenticationFailedException
+	 * 			if a valid GitHub user failed to be resolved using the given {@link Uri}
 	 * 
 	 * @since 1.1.0
 	 */
-	String resolveRepository(Uri uri) throws RepositoryAuthenticationFailedException;
+	GitHubRepository resolveRepository(Uri uri) throws RepositoryAuthenticationFailedException;
 }

@@ -52,6 +52,11 @@ public class GitHubUser implements Serializable {
 	private String login;
 	
 	/**
+	 * <p>The type of account; this can be either "User" or "Organization".
+	 */
+	private String type;
+	
+	/**
 	 * <p>A message which describes an API request failure.
 	 */
 	private String message;
@@ -65,6 +70,7 @@ public class GitHubUser implements Serializable {
 	public String getId() {
 		return id;
 	}
+	
 	/**
 	 * <p>Mutator for id.
 	 *
@@ -74,6 +80,7 @@ public class GitHubUser implements Serializable {
 	public void setId(String id) {
 		this.id = id;
 	}
+	
 	/**
 	 * <p>Accessor for login.
 	 *
@@ -82,6 +89,7 @@ public class GitHubUser implements Serializable {
 	public String getLogin() {
 		return login;
 	}
+	
 	/**
 	 * <p>Mutator for login.
 	 *
@@ -91,6 +99,26 @@ public class GitHubUser implements Serializable {
 	public void setLogin(String login) {
 		this.login = login;
 	}
+	
+	/**
+	 * <p>Accessor for type.
+	 *
+	 * @return the type
+	 */
+	public String getType() {
+		return type;
+	}
+	
+	/**
+	 * <p>Mutator for type.
+	 *
+	 * @param type 
+	 *			the type to set
+	 */
+	public void setType(String type) {
+		this.type = type;
+	}
+	
 	/**
 	 * <p>Accessor for message.
 	 *
@@ -99,6 +127,7 @@ public class GitHubUser implements Serializable {
 	public String getMessage() {
 		return message;
 	}
+	
 	/**
 	 * <p>Mutator for message.
 	 *
@@ -133,7 +162,10 @@ public class GitHubUser implements Serializable {
 			return false;
 		return true;
 	}
-	
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -141,6 +173,8 @@ public class GitHubUser implements Serializable {
 		builder.append(id);
 		builder.append(", login=");
 		builder.append(login);
+		builder.append(", type=");
+		builder.append(type);
 		builder.append(", message=");
 		builder.append(message);
 		builder.append("]");

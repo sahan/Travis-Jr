@@ -25,8 +25,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import android.util.Log;
+
 import com.lonepulse.robozombie.core.annotation.Bite;
 import com.lonepulse.robozombie.core.inject.Zombie;
+import com.lonepulse.travisjr.app.TravisJr;
 import com.lonepulse.travisjr.model.Build;
 import com.lonepulse.travisjr.model.Repo;
 import com.lonepulse.travisjr.net.TravisCIEndpoint;
@@ -55,7 +58,7 @@ public class BasicRepoService implements RepoService {
 	 */
 	public BasicRepoService() {
 	
-		this.accountService = new BasicAccountService();
+		this.accountService = TravisJr.Application.getInstance().getAccountService();
 	}
 	
 	/**
@@ -64,27 +67,11 @@ public class BasicRepoService implements RepoService {
 	@Override
 	public List<Repo> getReposByMember() {
 		
-		String username = "<n/a>";
+		String username = "<null>";
 		
 		try {
 			
-			username = accountService.getGitHubUsername();
-			
-			Repo[] repos = travisCIEndpoint.getReposByMember(username);
-			Build[] builds;
-			
-			for (Repo repo : repos) {
-				
-				if(repo.getLast_build_status() == null) {
-					
-					builds = travisCIEndpoint.getRecentBuilds(String.valueOf(repo.getId()));
-						
-					if(builds != null && builds.length != 0)
-						repo.setBuilds(Arrays.asList(builds));
-				}
-			}
-			
-			return Arrays.asList(repos);
+			return getReposByMember(username = accountService.getGitHubUsername());
 		} 
 		catch (Exception e) {
 			
@@ -98,23 +85,35 @@ public class BasicRepoService implements RepoService {
 	@Override
 	public List<Repo> getReposByOwner() {
 		
-		String username = "<n/a>";
+		String username = "<null>";
 		
 		try {
 			
-			username = accountService.getGitHubUsername();
+			return getReposByOwner(username = accountService.getGitHubUsername());
+		} 
+		catch (Exception e) {
 			
-			Repo[] repos = travisCIEndpoint.getReposByOwner(username);
+			throw new RepoAccessException(username, e);
+		}
+	}
+	
+	/**
+	 * {@inheritDoc} 
+	 */
+	@Override
+	public List<Repo> getReposByMember(String username) {
+		
+		try {
+			
+			Repo[] repos = travisCIEndpoint.getReposByMember(username);
 			Build[] builds;
 			
 			for (Repo repo : repos) {
 				
-				repo.setSlug(repo.getSlug().replaceFirst(username + "/", ""));
-				
 				if(repo.getLast_build_status() == null) {
 					
 					builds = travisCIEndpoint.getRecentBuilds(String.valueOf(repo.getId()));
-						
+					
 					if(builds != null && builds.length != 0)
 						repo.setBuilds(Arrays.asList(builds));
 				}
@@ -132,26 +131,45 @@ public class BasicRepoService implements RepoService {
 	 * {@inheritDoc}
 	 */
 	@Override
+	public List<Repo> getReposByOwner(String username) {
+		
+		try {
+			
+			Repo[] repos = travisCIEndpoint.getReposByOwner(username);
+			Build[] builds;
+			
+			for (Repo repo : repos) {
+				
+				repo.setSlug(repo.getSlug().replaceFirst(username + "/", ""));
+				
+				if(repo.getLast_build_status() == null) {
+					
+					builds = travisCIEndpoint.getRecentBuilds(String.valueOf(repo.getId()));
+					
+					if(builds != null && builds.length != 0)
+						repo.setBuilds(Arrays.asList(builds));
+				}
+			}
+			
+			return Arrays.asList(repos);
+		} 
+		catch (Exception e) {
+			
+			throw new RepoAccessException(username, e);
+		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public List<Repo> filterCreatedRepos(List<Repo> repos) {
 		
 		String username = "<n/a>";
 		
 		try {
-		
-			username = accountService.getGitHubUsername();
-			List<Repo> ownedRepos = new ArrayList<Repo>();
 			
-			for (Repo repo : repos) {
-				
-				if(repo.getSlug().startsWith(username)) {
-				
-					Repo clone = (Repo)repo.clone();
-					clone.setSlug(repo.getSlug().replaceFirst(username + "/", ""));
-					ownedRepos.add(clone);
-				}
-			}
-			
-			return ownedRepos;
+			return filterCreatedRepos(username = accountService.getGitHubUsername(), repos);
 		}
 		catch(Exception e) {
 			
@@ -168,8 +186,51 @@ public class BasicRepoService implements RepoService {
 		String username = "<n/a>";
 		
 		try {
+			
+			return filterContributedRepos(username = accountService.getGitHubUsername(), repos);
+		}
+		catch(Exception e) {
+			
+			throw new RepoFilterException(username);
+		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<Repo> filterCreatedRepos(String username, List<Repo> repos) {
 		
-			username = accountService.getGitHubUsername();
+		try {
+			
+			List<Repo> ownedRepos = new ArrayList<Repo>();
+			
+			for (Repo repo : repos) {
+				
+				if(repo.getSlug().startsWith(username)) {
+					
+					Repo clone = (Repo)repo.clone();
+					clone.setSlug(repo.getSlug().replaceFirst(username + "/", ""));
+					ownedRepos.add(clone);
+				}
+			}
+			
+			return ownedRepos;
+		}
+		catch(Exception e) {
+			
+			throw new RepoFilterException(username);
+		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<Repo> filterContributedRepos(String username, List<Repo> repos) {
+		
+		try {
+			
 			List<Repo> contributedRepos = new ArrayList<Repo>();
 			
 			for (Repo repo : repos) {
@@ -186,5 +247,35 @@ public class BasicRepoService implements RepoService {
 			
 			throw new RepoFilterException(username);
 		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Repo findRepoByName(String repoName, List<Repo> repos) {
+		
+		Repo matchingRepo = null;
+		
+		try {
+		
+			if(repos != null && !repos.isEmpty()) {
+				
+				for (Repo repo : repos) {
+					
+					if(repo.getSlug().contains(repoName)) {
+						
+						matchingRepo = repo;
+						break;
+					}
+				}
+			}
+		}
+		catch(Exception e) {
+			
+			Log.e(getClass().getName(), "Failed to find a matching repo for " + repoName, e);
+		}
+		
+		return matchingRepo;
 	}
 }

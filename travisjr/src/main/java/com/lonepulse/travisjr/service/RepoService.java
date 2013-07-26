@@ -31,6 +31,8 @@ import com.lonepulse.travisjr.view.NavigationSwipeListenerException;
  * <p>This contract specifies the service offered on the {@link Repo}s which 
  * the user is a member of.
  * 
+ * @since 1.1.0
+ * <br><br>
  * @version 1.1.2
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
@@ -58,9 +60,38 @@ public interface RepoService {
 	 * @throws NavigationSwipeListenerException
 	 * 			if the {@link Repo}(s) cannot be read via the remote endpoint.
 	 * 
-	 * @since 1.1.2
+	 * @since 1.1.0
 	 */
 	List<Repo> getReposByOwner();
+	
+	/**
+	 * <p>Retrieves the set of {@link Repo}s which the <i>given user</i> is a <b>member</b> of.
+	 * 
+	 * @param user
+	 * 			the user whose repositories are to be retrieved
+	 * 
+	 * @return all associated {@link Repo}s
+	 * 
+	 * @throws NavigationSwipeListenerException
+	 * 			if the {@link Repo}(s) cannot be read via the remote endpoint.
+	 * 
+	 * @since 1.1.0
+	 */
+	List<Repo> getReposByMember(String user);
+	
+	/**
+	 * <p>Retrieves the set of {@link Repo}s which the <i>given user</i> is an <b>owner</b> of.
+	 * 
+	 * @param user
+	 * 			the user whose repositories are to be retrieved
+	 * @return all associated {@link Repo}s
+	 * 
+	 * @throws NavigationSwipeListenerException
+	 * 			if the {@link Repo}(s) cannot be read via the remote endpoint.
+	 * 
+	 * @since 1.1.0
+	 */
+	List<Repo> getReposByOwner(String user);
 	
 	/**
 	 * <p>Filters the given list of {@link Repo}s into a sublist containing the 
@@ -74,7 +105,7 @@ public interface RepoService {
 	 * @throws RepoFilterException
 	 * 			if the list of {@link Repo}s cannot be filtered by owner name
 	 * 
-	 * @since 1.1.1
+	 * @since 1.1.0
 	 */
 	List<Repo> filterCreatedRepos(List<Repo> repos);
 	
@@ -90,7 +121,62 @@ public interface RepoService {
 	 * @throws RepoFilterException
 	 * 			if the list of {@link Repo}s cannot be filtered by owner name
 	 * 
-	 * @since 1.1.1
+	 * @since 1.1.0
 	 */
 	List<Repo> filterContributedRepos(List<Repo> repos);
+	
+	/**
+	 * <p>Filters the given list of {@link Repo}s for the given user into a sublist 
+	 * containing the repositories owned by the user.
+	 * 
+	 * @param user
+	 * 			the user whose repos are to be filtered
+	 * 
+	 * @param repos
+	 * 			the list of {@link Repo}s to be filtered
+	 * 
+	 * @return a sublist of the {@link Repo}s owned by the user
+	 * 
+	 * @throws RepoFilterException
+	 * 			if the list of {@link Repo}s cannot be filtered by owner name
+	 * 
+	 * @since 1.1.0
+	 */
+	List<Repo> filterCreatedRepos(String user, List<Repo> repos);
+	
+	/**
+	 * <p>Filters the given list of {@link Repo}s for the given user into a sublist 
+	 * containing the repositories contributed to (but not owned) by the user.
+	 * 
+	 * @param user
+	 * 			the user whose repos are to be filtered
+	 * 
+	 * @param repos
+	 * 			the list of {@link Repo}s to be filtered
+	 * 
+	 * @return a sublist of the {@link Repo}s contributed to by the user
+	 * 
+	 * @throws RepoFilterException
+	 * 			if the list of {@link Repo}s cannot be filtered by owner name
+	 * 
+	 * @since 1.1.0
+	 */
+	List<Repo> filterContributedRepos(String user, List<Repo> repos);
+	
+	/**
+	 * <p>Searches the given list of {@link Repo}s for the one whose name matches 
+	 * the given repo name.
+	 * 
+	 * @param repoName
+	 * 			the name of the {@link Repo} to find
+	 * 
+	 * @param repos
+	 * 			the list of {@link Repo}s in which to search
+	 * 
+	 * @return the {@link Repo} whose name matches the given name, else {@code null} 
+	 * 		   if the repo cannot be found
+	 * 
+	 * @since 1.1.0
+	 */
+	Repo findRepoByName(String repoName, List<Repo> repos);
 }

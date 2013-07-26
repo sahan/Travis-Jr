@@ -48,8 +48,10 @@ import com.lonepulse.travisjr.adapter.RepoAdapter;
 import com.lonepulse.travisjr.app.TravisJr;
 import com.lonepulse.travisjr.app.TravisJrActivity;
 import com.lonepulse.travisjr.model.Repo;
+import com.lonepulse.travisjr.service.IntentFilterService;
 import com.lonepulse.travisjr.service.RepoAccessException;
 import com.lonepulse.travisjr.service.RepoService;
+import com.lonepulse.travisjr.service.UserMode;
 
 /**
  * <p>Provides a statistical overview of the repositories under continuous 
@@ -93,6 +95,9 @@ public class ReposActivity extends TravisJrActivity {
 	@InjectPojo
 	private RepoService repoService;
 	
+	@InjectPojo
+	private IntentFilterService intentFilterService;
+	
 	@Stateful
 	private List<Repo> repos;
 	
@@ -112,7 +117,7 @@ public class ReposActivity extends TravisJrActivity {
 	@Override
 	protected void onInitActionBar(ActionBar actionBar) {
 
-		if(application.getAccountService().isTypeOrganization()) {
+		if(application.getAccountService().getUserMode().equals(UserMode.ORGANIZATION)) {
 			
 			super.onInitActionBar(actionBar);
 		}
@@ -134,7 +139,7 @@ public class ReposActivity extends TravisJrActivity {
 	
 		if(repos != null) filterRepos(repos);
 	}
-	
+
 	@Override
 	protected void onResume() {
 		
@@ -158,8 +163,8 @@ public class ReposActivity extends TravisJrActivity {
 	}
 	
 	/**
-	 * <p>Updates the activity depending on the availability of data and the 
-	 * existence of a connected data network.
+	 * <p>Updates the activity depending on the availability of data and the existence of a connected 
+	 * data network.
 	 */
 	@Click(R.id.alert_error)
 	private void refresh() {
@@ -191,15 +196,14 @@ public class ReposActivity extends TravisJrActivity {
 	}
 	
 	/**
-	 * <p>Retrieves a list of repositories which the user is a member of and 
-	 * updates the display.
+	 * <p>Retrieves a list of repositories which the user is a member of and updates the display.
 	 */
 	@Async(ASYNC_FETCH_REPOS)
 	private void fetchRepos() {
 		
 		try {
 			
-			if(application.getAccountService().isTypeOrganization()) {
+			if(application.getAccountService().getUserMode().equals(UserMode.ORGANIZATION)) {
 				
 				repos = repoService.getReposByOwner();
 			}
@@ -220,8 +224,8 @@ public class ReposActivity extends TravisJrActivity {
 	}
 	
 	/**
-	 * <p>Alerts the user of an <b>unrecoverable</b> error which has occurred 
-	 * while retrieving the list of repositories.
+	 * <p>Alerts the user of an <b>unrecoverable</b> error which has occurred while retrieving the 
+	 * list of repositories.
 	 */
 	@UI(UI_ALERT_ERROR)
 	private void alertError() {
@@ -258,8 +262,8 @@ public class ReposActivity extends TravisJrActivity {
 	}
 	
 	/**
-	 * <p>Filters the displayed {@link Repo}s based on selected navigation 
-	 * tab and invokes {@link #updateRepos(List)} for display.
+	 * <p>Filters the displayed {@link Repo}s based on selected navigation tab and invokes 
+	 * {@link #updateRepos(List)} for display.
 	 * 
 	 * @param repos
 	 * 			the displayed {@link Repo}s to be filtered
@@ -283,8 +287,7 @@ public class ReposActivity extends TravisJrActivity {
 	}
 	
 	/**
-	 * <p>Navigates to the <b>device settings</b> screen to allow the user to 
-	 * switch-on a data connection.  
+	 * <p>Navigates to the <b>device settings</b> screen to allow the user to switch-on a data connection.  
 	 */
 	@Click(R.id.alert_data)
 	private void enableData() {
@@ -293,8 +296,8 @@ public class ReposActivity extends TravisJrActivity {
 	}
 	
 	/**
-	 * <p>Purges the user account and reverts to the authentication screen so that 
-	 * the user may retry repository retrieval with an alternate GitHub username. 
+	 * <p>Purges the user account and reverts to the authentication screen so that the user may 
+	 * retry repository retrieval with an alternate GitHub username. 
 	 */
 	@Click(R.id.alert_empty)
 	private void retryFetchRepos() {
@@ -350,8 +353,7 @@ public class ReposActivity extends TravisJrActivity {
 	}
 	
 	/**
-	 * <p>Starts {@link ReposActivity} with the action bar and the default 
-	 * set of action items.
+	 * <p>Starts {@link ReposActivity} with the action bar and the default set of action items.
 	 *
 	 * @param context
 	 * 			the {@link Context} of initiation

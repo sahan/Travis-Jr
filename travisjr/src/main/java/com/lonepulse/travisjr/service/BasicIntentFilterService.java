@@ -22,6 +22,10 @@ package com.lonepulse.travisjr.service;
 
 
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import android.content.IntentFilter;
 import android.net.Uri;
@@ -48,7 +52,7 @@ import com.lonepulse.travisjr.util.Resources;
 public class BasicIntentFilterService implements IntentFilterService {
 
 	
-	public static final String travisCIHost = "travis-ci.org";
+	public static final String[] acceptedHosts = {"travis-ci.org", "www.travis-ci.org"};
 	
 	public static final String msgNotFound = Resources.error(R.string.err_github_msg_not_found);
 	
@@ -64,12 +68,14 @@ public class BasicIntentFilterService implements IntentFilterService {
 	 * <p>See {@link IntentFilterService#resolveUser(Uri)}.</p>
 	 * 
 	 * <p><b>Note</b> that this service is a <b>blocking</b> operation which contacts the GitHub API 
-	 * at <b>api.github.com</b> to validate the user. Execute this on a worker thread.</p>
+	 * at <b>api.github.com</b> to validate the user. <b>The network call is already executed on a 
+	 * worker thread</b>.</p>
 	 */
 	@Override
-	public String resolveUser(Uri uri) {
+	public GitHubUser resolveUser(Uri uri) {
 		
 		UserAuthenticationFailedException uafe = new UserAuthenticationFailedException(uri);
+		ExecutorService executorService = Executors.newSingleThreadExecutor();
 		
 		try {
 			
@@ -78,14 +84,23 @@ public class BasicIntentFilterService implements IntentFilterService {
 				throw uafe;
 			}
 			
-			List<String> pathSegments = uri.getPathSegments();
+			final List<String> pathSegments = uri.getPathSegments();
 			
-			if(pathSegments == null || pathSegments.size() != 1) {
+			if(pathSegments == null || pathSegments.size() < 1) {
 				
 				throw uafe;
 			}
 			
-			GitHubUser gitHubUser = gitHubEndpoint.getUser(pathSegments.get(0));
+			Future<GitHubUser> future = executorService.submit(new Callable<GitHubUser>() {
+				
+				@Override
+				public GitHubUser call() throws Exception {
+					
+					return gitHubEndpoint.getUser(pathSegments.get(0));
+				}
+			});
+			
+			GitHubUser gitHubUser = future.get();
 			
 			String message = gitHubUser.getMessage();
 			
@@ -94,12 +109,16 @@ public class BasicIntentFilterService implements IntentFilterService {
 				throw uafe;
 			}
 			
-			return gitHubUser.getLogin();
+			return gitHubUser;
 		} 
 		catch (Exception e) {
 		
 			throw (e instanceof UserAuthenticationFailedException)? (UserAuthenticationFailedException)e 
 				   :new UserAuthenticationFailedException(uri, e);
+		}
+		finally {
+			
+			executorService.shutdownNow();
 		}
 	}
 
@@ -107,12 +126,14 @@ public class BasicIntentFilterService implements IntentFilterService {
 	 * <p>See {@link IntentFilterService#resolveRepository(Uri)}.</p>
 	 * 
 	 * <p><b>Note</b> that this service is a <b>blocking</b> operation which contacts the GitHub API 
-	 * at <b>api.github.com</b> to validate the repository. Execute this on a worker thread.</p>
+	 * at <b>api.github.com</b> to validate the repository. <b>The network call is already executed 
+	 * on a worker thread</b>.</p>
 	 */
 	@Override
-	public String resolveRepository(Uri uri) {
+	public GitHubRepository resolveRepository(Uri uri) {
 		
 		RepositoryAuthenticationFailedException rafe = new RepositoryAuthenticationFailedException(uri);
+		ExecutorService executorService = Executors.newSingleThreadExecutor();
 		
 		try {
 			
@@ -131,7 +152,16 @@ public class BasicIntentFilterService implements IntentFilterService {
 			final String user = pathSegments.get(0);
 			final String repo = pathSegments.get(1);
 			
-			GitHubRepository gitHubRepo = gitHubEndpoint.getRepository(user, repo);
+			Future<GitHubRepository> future = executorService.submit(new Callable<GitHubRepository>() {
+				
+				@Override
+				public GitHubRepository call() throws Exception {
+					
+					return gitHubEndpoint.getRepository(user, repo);
+				}
+			});
+			
+			GitHubRepository gitHubRepo = future.get();
 			
 			String message = gitHubRepo.getMessage();
 			
@@ -140,12 +170,16 @@ public class BasicIntentFilterService implements IntentFilterService {
 				throw rafe;
 			}
 			
-			return gitHubRepo.getFull_name();
+			return gitHubRepo;
 		} 
 		catch (Exception e) {
 		
 			throw (e instanceof RepositoryAuthenticationFailedException)? (RepositoryAuthenticationFailedException)e 
 				   :new RepositoryAuthenticationFailedException(uri, e);
+		}
+		finally {
+			
+			executorService.shutdownNow();
 		}
 	}
 	
@@ -156,7 +190,23 @@ public class BasicIntentFilterService implements IntentFilterService {
 			return false;
 		}
 		
-		if(uri.getHost() == null || !uri.getHost().equals(travisCIHost)) {
+		if(uri.getHost() == null) {
+			
+			return false;
+		}
+		
+		boolean hasNoAcceptedHost = true;
+		
+		for (String acceptedHost : acceptedHosts) {
+			
+			if(uri.getHost().equalsIgnoreCase(acceptedHost)) {
+				
+				hasNoAcceptedHost = false;
+				break;
+			}
+		}
+		
+		if(hasNoAcceptedHost) {
 			
 			return false;
 		}

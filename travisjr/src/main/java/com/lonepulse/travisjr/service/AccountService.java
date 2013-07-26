@@ -22,6 +22,7 @@ package com.lonepulse.travisjr.service;
 
 
 import com.lonepulse.icklebot.annotation.inject.Pojo;
+import com.lonepulse.travisjr.model.GitHubUser;
 import com.lonepulse.travisjr.view.MissingViewException;
 
 /**
@@ -60,6 +61,38 @@ public interface AccountService {
 	void setGitHubUsername(String username);
 	
 	/**
+	 * <p>Temporarily stores the given GitHub user for the current session. 
+	 * All successive queries for username and {@link UserMode} will refer 
+	 * to this {@link GitHubUser}. 
+	 * 
+	 * @param username
+	 * 			the username to save in credentials
+	 * 
+	 * @since 1.1.0
+	 */
+	void setTransientUser(GitHubUser gitHubUser);
+	
+	/**
+	 * <p>Retrieves the temporarily stored GitHub user for the current session.</p>
+	 * 
+	 * @see #setTransientUser(GitHubUser)
+	 * 
+	 * @return the transient {@link GitHubUser}, else {@code null} is the no transient 
+	 * 		   user exists or if the transient user has been cleared
+	 * @since 1.1.0
+	 */
+	GitHubUser getTransientUser();
+	
+	/**
+	 * <p>Clears the temporarily stored GitHub user for the current session.</p>
+	 * 
+	 * @see #setTransientUser(GitHubUser)
+	 * 
+	 * @since 1.1.0
+	 */
+	void clearTransientUser();
+	
+	/**
 	 * <p>Indicates whether the user is to be treated as a member or an 
 	 * organization.
 	 * 
@@ -79,17 +112,6 @@ public interface AccountService {
 	 * @since 1.1.0
 	 */
 	void setUserMode(UserMode userMode);
-	
-	/**
-	 * <p>Indicates whether the user is to be treated as a member or an 
-	 * organization.
-	 * 
-	 * @return {@code true} if the user is to be treated as a member, 
-	 * 		   {@code false} if the user is to be treated as a organization
-	 * 
-	 * @since 1.1.0
-	 */
-	boolean isTypeOrganization();
 	
 	/**
 	 * <p>Retrieves the GitHub username which was saved in the account 
