@@ -3,7 +3,7 @@
 </a>
 <br>
 
-> **Travis Jr.** /'travis'jC<n-yIr/ <em>prop. noun.</em> **1** A mobile client for [Travis-CI](http://travis-ci.org). 
+> **Travis Jr.** /travis'jün-yər/ <em>prop. noun.</em> **1** A mobile client for [Travis-CI](http://travis-ci.org). 
 [![Build Status](https://travis-ci.org/sahan/Travis-Jr.png?branch=master)](https://travis-ci.org/sahan/Travis-Jr) 
 [![Stories in Ready](https://badge.waffle.io/sahan/Packrat.png)](http://waffle.io/sahan/Packrat)
 
