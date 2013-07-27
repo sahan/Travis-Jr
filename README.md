@@ -1,11 +1,10 @@
-[![Stories in Ready](https://badge.waffle.io/sahan/Travis-Jr.png)](http://waffle.io/sahan/Travis-Jr)  
 <a href="https://play.google.com/store/apps/details?id=com.lonepulse.travisjr">
   <img alt="Travis Jr. Device Art" src="https://raw.github.com/sahan/Travis-Jr/master/device_art.png" />
 </a>
 <br>
 
 > **Travis Jr.** /'travis'jC<n-yIr/ <em>prop. noun.</em> **1** A mobile client for [Travis-CI](http://travis-ci.org). 
-[![Build Status](https://travis-ci.org/sahan/Travis-Jr.png?branch=master)](https://travis-ci.org/sahan/Travis-Jr)
+[![Build Status](https://travis-ci.org/sahan/Travis-Jr.png?branch=master)](https://travis-ci.org/sahan/Travis-Jr) [![Stories in Ready](https://badge.waffle.io/sahan/Travis-Jr.png)](http://waffle.io/sahan/Travis-Jr)
 
 <br/>
 ##About
