@@ -27,8 +27,9 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceFragment;
 
 import com.lonepulse.travisjr.R;
-import com.lonepulse.travisjr.app.TravisJr;
 import com.lonepulse.travisjr.dialog.LicensesActivity;
+import com.lonepulse.travisjr.service.AccountService;
+import com.lonepulse.travisjr.service.BasicAccountService;
 import com.lonepulse.travisjr.util.Resources;
 
 /**
@@ -42,11 +43,19 @@ import com.lonepulse.travisjr.util.Resources;
 public class SettingsFragment extends PreferenceFragment implements OnPreferenceClickListener {
 
 	
+	/**
+	 * <p>See {@link AccountService}.
+	 */
+	private AccountService accountService;
+	
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.prefs);
+		
+		accountService = new BasicAccountService();
 		
 		findPreference(Resources.key(R.string.key_sign_out)).setOnPreferenceClickListener(this);
 		findPreference(Resources.key(R.string.key_oss_licenses)).setOnPreferenceClickListener(this);
@@ -57,7 +66,7 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 		
 		if(preference.getKey().equals(Resources.key(R.string.key_sign_out))) {
 			
-			((TravisJr)getActivity().getApplication()).purgeAccount(getActivity());
+			accountService.purgeAccount(getActivity());
 		}
 		else if(preference.getKey().equals(Resources.key(R.string.key_oss_licenses))) {
 			

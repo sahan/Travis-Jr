@@ -23,9 +23,12 @@ package com.lonepulse.travisjr.service;
 
 import java.util.List;
 
+import android.app.Activity;
+import android.content.Context;
+
 import com.lonepulse.icklebot.annotation.inject.Pojo;
+import com.lonepulse.travisjr.model.GitHubUser;
 import com.lonepulse.travisjr.model.Repo;
-import com.lonepulse.travisjr.view.NavigationSwipeListenerException;
 
 /**
  * <p>This contract specifies the service offered on the {@link Repo}s which 
@@ -33,7 +36,7 @@ import com.lonepulse.travisjr.view.NavigationSwipeListenerException;
  * 
  * @since 1.1.0
  * <br><br>
- * @version 1.1.2
+ * @version 1.1.3
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
@@ -41,11 +44,41 @@ import com.lonepulse.travisjr.view.NavigationSwipeListenerException;
 public interface RepoService {
 
 	/**
+	 * <p>Retrieves the set of {@link Repo}s under CI which the saved user is associated with.
+	 * 
+	 * @return all associated {@link Repo}s
+	 * 
+	 * @throws RepoAccessException
+	 * 			if the {@link Repo}(s) cannot be read via the remote endpoint.
+	 * 
+	 * @since 1.1.0
+	 */
+	List<Repo> getRepos();
+	
+	/**
+	 * <p>Retrieves the set of {@link Repo}s under CI which the current user in context is 
+	 * associated with.
+	 * 
+	 * @param activity
+	 * 			the {@link Activity} {@link Context} which is used to discover any transient 
+	 * 			{@link GitHubUser} which is in the current session
+	 * 
+	 * @return all associated {@link Repo}s for the transient user; if no transient user is 
+	 * 		   discovered {@link #getRepos()} is used instead
+	 * 
+	 * @throws RepoAccessException
+	 * 			if the {@link Repo}(s) cannot be read via the remote endpoint.
+	 * 
+	 * @since 1.1.0
+	 */
+	List<Repo> getRepos(Activity activity);
+	
+	/**
 	 * <p>Retrieves the set of {@link Repo}s which the user is a <b>member</b> of.
 	 * 
 	 * @return all associated {@link Repo}s
 	 * 
-	 * @throws NavigationSwipeListenerException
+	 * @throws RepoAccessException
 	 * 			if the {@link Repo}(s) cannot be read via the remote endpoint.
 	 * 
 	 * @since 1.1.0
@@ -57,7 +90,7 @@ public interface RepoService {
 	 * 
 	 * @return all associated {@link Repo}s
 	 * 
-	 * @throws NavigationSwipeListenerException
+	 * @throws RepoAccessException
 	 * 			if the {@link Repo}(s) cannot be read via the remote endpoint.
 	 * 
 	 * @since 1.1.0
@@ -72,7 +105,7 @@ public interface RepoService {
 	 * 
 	 * @return all associated {@link Repo}s
 	 * 
-	 * @throws NavigationSwipeListenerException
+	 * @throws RepoAccessException
 	 * 			if the {@link Repo}(s) cannot be read via the remote endpoint.
 	 * 
 	 * @since 1.1.0
@@ -86,7 +119,7 @@ public interface RepoService {
 	 * 			the user whose repositories are to be retrieved
 	 * @return all associated {@link Repo}s
 	 * 
-	 * @throws NavigationSwipeListenerException
+	 * @throws RepoAccessException
 	 * 			if the {@link Repo}(s) cannot be read via the remote endpoint.
 	 * 
 	 * @since 1.1.0

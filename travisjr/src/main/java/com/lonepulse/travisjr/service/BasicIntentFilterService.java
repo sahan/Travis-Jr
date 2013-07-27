@@ -54,7 +54,7 @@ public class BasicIntentFilterService implements IntentFilterService {
 	
 	public static final String[] acceptedHosts = {"travis-ci.org", "www.travis-ci.org"};
 	
-	public static final String msgNotFound = Resources.error(R.string.err_github_msg_not_found);
+	public static final String msgNotFound = Resources.error(R.string.err_github_not_found);
 	
 	
 	@Bite
@@ -85,8 +85,8 @@ public class BasicIntentFilterService implements IntentFilterService {
 			}
 			
 			final List<String> pathSegments = uri.getPathSegments();
-			
 			if(pathSegments == null || pathSegments.size() < 1) {
+			
 				
 				throw uafe;
 			}

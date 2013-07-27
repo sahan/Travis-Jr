@@ -21,14 +21,24 @@ package com.lonepulse.travisjr.service;
  */
 
 
+import java.util.concurrent.locks.ReentrantLock;
+
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.util.Log;
 
+import com.lonepulse.travisjr.AuthenticationActivity;
 import com.lonepulse.travisjr.R;
 import com.lonepulse.travisjr.app.TravisJr;
+import com.lonepulse.travisjr.app.TravisJr.Application;
 import com.lonepulse.travisjr.model.GitHubUser;
 import com.lonepulse.travisjr.util.Resources;
 
@@ -44,8 +54,11 @@ public class BasicAccountService implements AccountService {
 	
 	private static final String GITHUB_TOKEN = "com.github";
 	
-	private transient GitHubUser transientGitHubUser = null;
-	
+	/**
+	 * <p>An {@link Application} level {@link ReentrantLock} to manage global race conditions.
+	 */
+	private static final ReentrantLock PURGE_LOCK = new ReentrantLock();
+
 	
 	/**
 	 * {@inheritDoc}
@@ -53,19 +66,26 @@ public class BasicAccountService implements AccountService {
 	@Override
 	public String getGitHubUsername() throws MissingCredentialsException {
 	
-		if(transientGitHubUser == null) {
+		String username = prefs().getString(Resources.key(R.string.key_username), "");
 		
-			String username = prefs().getString(Resources.key(R.string.key_username), "");
+		if(TextUtils.isEmpty(username)) {
 			
-			if(TextUtils.isEmpty(username))
-				throw new MissingCredentialsException();
-			
-			return username;
+			throw new MissingCredentialsException();
 		}
-		else {
+		
+		return username;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String getGitHubUsername(Activity activity) throws MissingCredentialsException {
+		
+		GitHubUser user = (GitHubUser) activity.getIntent()
+			.getSerializableExtra(Resources.key(R.string.key_transient_user));
 			
-			return transientGitHubUser.getLogin();
-		}
+		return user == null? getGitHubUsername() :user.getLogin();
 	}
 
 	/**
@@ -78,7 +98,57 @@ public class BasicAccountService implements AccountService {
 		editor.putString(Resources.key(R.string.key_username), username);
 		editor.commit();
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public UserMode getUserMode() {
+		
+		return UserMode.getCurrent();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public UserMode getUserMode(Activity activity) {
+		
+		try {
+			
+			GitHubUser user = (GitHubUser) activity.getIntent()
+					.getSerializableExtra(Resources.key(R.string.key_transient_user));
+			
+			if(user == null) {
+				
+				return getUserMode();
+			}
+			else {
+				
+				return user.getType().equalsIgnoreCase(
+					UserMode.ORGANIZATION.getKey())? UserMode.ORGANIZATION :UserMode.MEMBER;
+			}
+		}
+		catch(Exception e) {
+			
+			StringBuilder errorContext = new StringBuilder("Failed to resolve a user mode ")
+			.append("from the current user in context. Defaulting to UserMode.ORGANIZATION. ");
+			
+			Log.e(getClass().getSimpleName(), errorContext.toString(), e);
+			
+			return UserMode.ORGANIZATION;
+		}
+	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setUserMode(UserMode userMode) {
+		
+		UserMode.setCurrent(userMode);
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -120,53 +190,39 @@ public class BasicAccountService implements AccountService {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void setUserMode(UserMode userMode) {
-	
-		UserMode.setCurrent(userMode);
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public UserMode getUserMode() {
+	public void purgeAccount(final Context context) {
 		
-		if(transientGitHubUser == null) {
+		if(PURGE_LOCK.tryLock()) {
 		
-			return UserMode.getCurrent();
-		}
-		else {
+			StringBuilder builder = new StringBuilder()
+			.append(context instanceof Activity? getGitHubUsername((Activity)context) :"User ")
+			.append(", ")
+			.append(context.getString(R.string.conf_clear_account));
 			
-			return transientGitHubUser.getType().equalsIgnoreCase("user")? 
-				UserMode.MEMBER :UserMode.ORGANIZATION;
+			new AlertDialog.Builder(context)
+			.setTitle(context.getString(R.string.ttl_dialog_account))
+			.setMessage(builder.toString())
+			.setPositiveButton(context.getString(R.string.lbl_yes_uc), new OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					
+					setGitHubUsername("");
+					AuthenticationActivity.start(context);
+					
+					PURGE_LOCK.unlock();
+				}
+			})
+			.setNegativeButton(context.getString(R.string.lbl_no_uc), new OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					
+					PURGE_LOCK.unlock();
+				}
+			})
+			.show();
 		}
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void setTransientUser(GitHubUser transientGitHubUser) {
-
-		this.transientGitHubUser = transientGitHubUser;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public GitHubUser getTransientUser() {
-		
-		return this.transientGitHubUser;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void clearTransientUser() {
-		
-		this.transientGitHubUser = null;
 	}
 	
 	private static final SharedPreferences prefs() {

@@ -27,6 +27,7 @@
     <string name="err_no_repos_found">No Repositories Found</string>
     <string name="err_fetching_repos">Failed to fetch repositories.</string>
     <string name="err_fetching_build_info">Failed to fetch info...</string>
-    <string name="err_github_msg_not_found">Not Found</string>
+    <string name="err_github_not_found">Not Found</string>
+    <string name="err_settings_unavailable_transient">Transient users cannot configure settings</string>
 
 </resources>

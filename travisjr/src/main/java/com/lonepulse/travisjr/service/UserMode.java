@@ -103,9 +103,9 @@ public enum UserMode {
 	public static UserMode getCurrent() {
 		
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(TravisJr.Application.getContext());
-		String currentKey = prefs.getString(Resources.key(R.string.key_user_mode), MEMBER.key);
+		String currentKey = prefs.getString(Resources.key(R.string.key_user_mode), ORGANIZATION.key);
 		
-		return currentKey.equals(MEMBER.key)? MEMBER :ORGANIZATION;
+		return currentKey.equals(ORGANIZATION.key)? ORGANIZATION :MEMBER;
 	}
 	
 	/**

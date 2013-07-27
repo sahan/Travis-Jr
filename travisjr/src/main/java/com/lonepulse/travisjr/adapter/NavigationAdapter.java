@@ -29,7 +29,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.lonepulse.travisjr.R;
-import com.lonepulse.travisjr.app.TravisJr;
 import com.lonepulse.travisjr.model.Repo;
 
 /**
@@ -44,11 +43,19 @@ public class NavigationAdapter extends ArrayAdapter<String> {
 
 
 	/**
+	 * <p>The subtitle to set below each navigation item.
+	 */
+	private String subtitle;
+	
+	
+	/**
 	 * <p>Use {@link RepoNavigationAdapter#newInstance(Context, int, int, String...)} instead.
 	 */
-	private NavigationAdapter(Context context, int resourceId, int textViewResourceId, String... navigationItems) {
+	private NavigationAdapter(Context context, int resourceId, int textViewResourceId, String subtitle, String... navigationItems) {
 		
 		super(context, resourceId, textViewResourceId, navigationItems);
+		
+		this.subtitle = subtitle;
 	}
 	
 	/**
@@ -60,11 +67,11 @@ public class NavigationAdapter extends ArrayAdapter<String> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 	
 		View view = super.getView(position, convertView, parent);
-		TextView subtitle = (TextView) view.findViewById(R.id.subtitle);
+		TextView textViewSubtitle = (TextView) view.findViewById(R.id.subtitle);
 		
-		if(subtitle != null) {
+		if(textViewSubtitle != null) {
 			
-			subtitle.setText(TravisJr.Application.getInstance().getAccountService().getGitHubUsername());
+			textViewSubtitle.setText(subtitle);
 		}
 		
 		return view;
@@ -86,6 +93,9 @@ public class NavigationAdapter extends ArrayAdapter<String> {
 	 * @param dropDownViewResource
 	 * 			the ID of the view resource to be used for displaying the drop down navigation items
 	 * 
+	 * @param subtitile
+	 * 			the subtitle to set below the navigation items
+	 * 
 	 * @param navigationItems
 	 * 			the array of titles for the navigation items
 	 * 
@@ -94,11 +104,12 @@ public class NavigationAdapter extends ArrayAdapter<String> {
 	 * @since 1.1.0
 	 */
 	public static ArrayAdapter<String> newInstance(Context context, int resourceId, int textViewResourceId, 
-												   int dropDownViewResource, String... navigationItems) {
+			int dropDownViewResource, String subtitile, String... navigationItems) {
 		
-		ArrayAdapter<String> adapter = new NavigationAdapter(context, resourceId, textViewResourceId, navigationItems);
+		ArrayAdapter<String> adapter 
+			= new NavigationAdapter(context, resourceId, textViewResourceId, subtitile, navigationItems);
+		
 		adapter.setDropDownViewResource(dropDownViewResource);
-		
 		return adapter;
 	}
 }

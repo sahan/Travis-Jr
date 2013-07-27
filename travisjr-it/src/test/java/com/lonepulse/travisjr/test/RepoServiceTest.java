@@ -175,7 +175,7 @@ public class RepoServiceTest {
 		List<Repo> allRepos = future.get();
 		assertTrue(allRepos.size() > 0);
 		
-		List<Repo> createdRepos = repoService.filterCreatedRepos(allRepos);
+		List<Repo> createdRepos = repoService.filterCreatedRepos(username, allRepos);
 		assertTrue(createdRepos.size() > 0);
 		assertTrue(allRepos.containsAll(createdRepos));
 		
@@ -214,7 +214,7 @@ public class RepoServiceTest {
 		List<Repo> allRepos = future.get();
 		assertTrue(allRepos.size() > 0);
 		
-		List<Repo> contributedRepos = repoService.filterContributedRepos(allRepos);
+		List<Repo> contributedRepos = repoService.filterContributedRepos(username, allRepos);
 		assertTrue(contributedRepos.size() > 0);
 		assertTrue(allRepos.containsAll(contributedRepos));
 		

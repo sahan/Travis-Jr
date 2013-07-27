@@ -48,6 +48,7 @@ import com.lonepulse.travisjr.adapter.RepoAdapter;
 import com.lonepulse.travisjr.app.TravisJr;
 import com.lonepulse.travisjr.app.TravisJrActivity;
 import com.lonepulse.travisjr.model.Repo;
+import com.lonepulse.travisjr.service.AccountService;
 import com.lonepulse.travisjr.service.IntentFilterService;
 import com.lonepulse.travisjr.service.RepoAccessException;
 import com.lonepulse.travisjr.service.RepoService;
@@ -96,6 +97,9 @@ public class ReposActivity extends TravisJrActivity {
 	private RepoService repoService;
 	
 	@InjectPojo
+	private AccountService accountService;
+	
+	@InjectPojo
 	private IntentFilterService intentFilterService;
 	
 	@Stateful
@@ -117,7 +121,7 @@ public class ReposActivity extends TravisJrActivity {
 	@Override
 	protected void onInitActionBar(ActionBar actionBar) {
 
-		if(application.getAccountService().getUserMode().equals(UserMode.ORGANIZATION)) {
+		if(accountService.getUserMode(this).equals(UserMode.ORGANIZATION)) {
 			
 			super.onInitActionBar(actionBar);
 		}
@@ -203,15 +207,17 @@ public class ReposActivity extends TravisJrActivity {
 		
 		try {
 			
-			if(application.getAccountService().getUserMode().equals(UserMode.ORGANIZATION)) {
+			String username = accountService.getGitHubUsername(this);
+			
+			if(accountService.getUserMode(this).equals(UserMode.ORGANIZATION)) {
 				
-				repos = repoService.getReposByOwner();
+				repos = repoService.getReposByOwner(username);
 			}
 			else {
 				
-				repos = repoService.getReposByMember();
-				createdRepos = repoService.filterCreatedRepos(repos);
-				contributedRepos = repoService.filterContributedRepos(repos);
+				repos = repoService.getReposByMember(username);
+				createdRepos = repoService.filterCreatedRepos(username, repos);
+				contributedRepos = repoService.filterContributedRepos(username, repos);
 			}
 			 
 			filterRepos(repos);
@@ -302,7 +308,7 @@ public class ReposActivity extends TravisJrActivity {
 	@Click(R.id.alert_empty)
 	private void retryFetchRepos() {
 		
-		application.purgeAccount(this);
+		accountService.purgeAccount(this);
 	}
 
 	@Override

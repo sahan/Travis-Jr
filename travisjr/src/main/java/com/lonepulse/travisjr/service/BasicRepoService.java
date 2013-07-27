@@ -25,11 +25,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import android.app.Activity;
 import android.util.Log;
 
 import com.lonepulse.robozombie.core.annotation.Bite;
 import com.lonepulse.robozombie.core.inject.Zombie;
-import com.lonepulse.travisjr.app.TravisJr;
 import com.lonepulse.travisjr.model.Build;
 import com.lonepulse.travisjr.model.Repo;
 import com.lonepulse.travisjr.net.TravisCIEndpoint;
@@ -58,7 +58,44 @@ public class BasicRepoService implements RepoService {
 	 */
 	public BasicRepoService() {
 	
-		this.accountService = TravisJr.Application.getInstance().getAccountService();
+		this.accountService = new BasicAccountService();
+	}
+	
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<Repo> getRepos() {
+
+		try {
+		
+			return accountService.getUserMode()
+				.equals(UserMode.ORGANIZATION)? getReposByOwner() :getReposByMember();
+		}
+		catch (Exception e) {
+			
+			throw (e instanceof RepoAccessException)? (RepoAccessException)e :new RepoAccessException(e);
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<Repo> getRepos(Activity activity) {
+
+		try {
+			
+			String username = accountService.getGitHubUsername(activity);
+			UserMode userMode = accountService.getUserMode(activity);
+			
+			return userMode.equals(UserMode.ORGANIZATION)? getReposByOwner(username) :getReposByMember(username);
+		}
+		catch (Exception e) {
+			
+			throw (e instanceof RepoAccessException)? (RepoAccessException)e :new RepoAccessException(e);
+		}
 	}
 	
 	/**

@@ -116,7 +116,7 @@ public class AuthenticationActivity extends IckleActivity {
 		
 		try {
 			
-			updateUsername(accountService.getGitHubUsername());
+			updateUsername(accountService.getGitHubUsername(this));
 			ReposActivity.start(this);
 		}
 		catch(MissingCredentialsException mce) {

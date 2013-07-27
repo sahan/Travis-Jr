@@ -21,6 +21,9 @@ package com.lonepulse.travisjr.service;
  */
 
 
+import android.app.Activity;
+import android.content.Context;
+
 import com.lonepulse.icklebot.annotation.inject.Pojo;
 import com.lonepulse.travisjr.model.GitHubUser;
 import com.lonepulse.travisjr.view.MissingViewException;
@@ -61,43 +64,27 @@ public interface AccountService {
 	void setGitHubUsername(String username);
 	
 	/**
-	 * <p>Temporarily stores the given GitHub user for the current session. 
-	 * All successive queries for username and {@link UserMode} will refer 
-	 * to this {@link GitHubUser}. 
+	 * <p>If there is a transient {@link GitHubUser} in the given context, the associated 
+	 * username is retrieved; else retrieves the username from the user credentials.
 	 * 
-	 * @param username
-	 * 			the username to save in credentials
+	 * @param activity
+	 * 			the {@link Activity} {@link Context} to look for a transient {@link GitHubUser}
+	 * 			in the current session context
 	 * 
-	 * @since 1.1.0
-	 */
-	void setTransientUser(GitHubUser gitHubUser);
-	
-	/**
-	 * <p>Retrieves the temporarily stored GitHub user for the current session.</p>
+	 * @return the saved GitHub username
 	 * 
-	 * @see #setTransientUser(GitHubUser)
-	 * 
-	 * @return the transient {@link GitHubUser}, else {@code null} is the no transient 
-	 * 		   user exists or if the transient user has been cleared
-	 * @since 1.1.0
-	 */
-	GitHubUser getTransientUser();
-	
-	/**
-	 * <p>Clears the temporarily stored GitHub user for the current session.</p>
-	 * 
-	 * @see #setTransientUser(GitHubUser)
+	 * @throws MissingViewException
+	 * 			if no GitHUb username was previously saved   
 	 * 
 	 * @since 1.1.0
 	 */
-	void clearTransientUser();
+	String getGitHubUsername(Activity activity) throws MissingCredentialsException;
 	
 	/**
-	 * <p>Indicates whether the user is to be treated as a member or an 
-	 * organization.
+	 * <p>Indicates whether the user is to be treated as a member or an organization.
 	 * 
-	 * @return {@code true} if the user is to be treated as a member, 
-	 * 		   {@code false} if the user is to be treated as a organization
+	 * @return the {@link UserMode} associated with the current user; else 
+	 * 		   {@link UserMode#ORGANIZATION} if the user mode failed to be determined
 	 * 
 	 * @since 1.1.0
 	 */
@@ -114,8 +101,22 @@ public interface AccountService {
 	void setUserMode(UserMode userMode);
 	
 	/**
-	 * <p>Retrieves the GitHub username which was saved in the account 
-	 * created the official GitHub app.
+	 * <p>If there is a {@link GitHubUser} in the given context, the associated {@link UserMode} 
+	 * is retrieved; else retrieves the {@link UserMode} in the saved credentials.
+	 * 
+	 * @param activity
+	 * 			the {@link Activity} {@link Context} to look for a transient {@link GitHubUser}
+	 * 			in the current session context
+	 * 
+	 * @return the {@link UserMode} associated with the current user; else {@link UserMode#ORGANIZATION} 
+	 * 		   if the user mode for the current user in context failed to be determined
+	 * 
+	 * @since 1.1.0
+	 */
+	UserMode getUserMode(Activity activity);
+	
+	/**
+	 * <p>Retrieves the GitHub username which was saved in the account created by the official GitHub app.
 	 * 
 	 * @return the username linked to the official GitHub application
 	 * 
@@ -128,13 +129,24 @@ public interface AccountService {
 	String queryGitHubAccount() throws MissingCredentialsException;
 	
 	/**
-	 * <p>Indicates whether the user had already setup account credentials. 
-	 * This can be used before {@link #getGitHubUsername()} to circumvent a 
-	 * {@link MissingViewException}.
+	 * <p>Indicates whether the user had already setup account credentials. This can be used before 
+	 * {@link #getGitHubUsername()} to circumvent a {@link MissingViewException}.
 	 * 
 	 * @return {@code true} if credentials are already saved
 	 * 
 	 * @since 1.1.0
 	 */
 	boolean areCredentialsAvailable();
+	
+	/**
+	 * <p>Clears all saved credentials and account details; navigates 
+	 * to the {@link AuthenticationActivity}.
+	 * 
+	 * @param context
+	 * 			the {@link Context} from which the user's 
+	 * 			account is purged
+	 *
+	 * @since 1.1.0
+	 */
+	void purgeAccount(Context context);
 }

@@ -32,6 +32,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -69,6 +70,7 @@ import com.lonepulse.travisjr.util.BuildState;
 import com.lonepulse.travisjr.util.BuildUtils;
 import com.lonepulse.travisjr.util.DateUtils;
 import com.lonepulse.travisjr.util.IntentUtils;
+import com.lonepulse.travisjr.util.Resources;
 
 /**
  * <p>Displays detailed information about a single build.
@@ -423,6 +425,12 @@ public class BuildInfoActivity extends TravisJrActivity {
 		intent.putExtra(EXTRA_OWNER_NAME, ownerName);
 		intent.putExtra(EXTRA_REPO_NAME, repoName);
 		intent.putExtra(EXTRA_BUILD_ID, buildId);
+		
+		if(context instanceof Activity) {
+			
+			intent.putExtra(Resources.key(R.string.key_transient_user), 
+				((Activity)context).getIntent().getSerializableExtra(Resources.key(R.string.key_transient_user)));
+		}
 		
 		context.startActivity(intent);
 	}

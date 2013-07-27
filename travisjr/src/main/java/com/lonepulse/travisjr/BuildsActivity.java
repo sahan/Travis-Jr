@@ -23,6 +23,7 @@ package com.lonepulse.travisjr;
 
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,7 +35,6 @@ import android.widget.TextView;
 
 import com.lonepulse.icklebot.annotation.event.Click;
 import com.lonepulse.icklebot.annotation.event.ItemClick;
-import com.lonepulse.icklebot.annotation.inject.InjectApplication;
 import com.lonepulse.icklebot.annotation.inject.InjectIckleService;
 import com.lonepulse.icklebot.annotation.inject.InjectPojo;
 import com.lonepulse.icklebot.annotation.inject.InjectView;
@@ -45,10 +45,10 @@ import com.lonepulse.icklebot.annotation.thread.Async;
 import com.lonepulse.icklebot.annotation.thread.UI;
 import com.lonepulse.icklebot.network.NetworkManager;
 import com.lonepulse.travisjr.adapter.BuildAdapter;
-import com.lonepulse.travisjr.app.TravisJr;
 import com.lonepulse.travisjr.app.TravisJrActivity;
 import com.lonepulse.travisjr.model.Build;
 import com.lonepulse.travisjr.model.Repo;
+import com.lonepulse.travisjr.service.AccountService;
 import com.lonepulse.travisjr.service.BuildService;
 import com.lonepulse.travisjr.util.IntentUtils;
 import com.lonepulse.travisjr.util.Resources;
@@ -69,9 +69,7 @@ public class BuildsActivity extends TravisJrActivity {
 	private static final int ASYNC_FETCH_BUILDS = 0;
 	private static final int UI_UPDATE_BUILDS = 0;
 
-	@InjectApplication
-	private TravisJr application;
-	
+
 	@Layout(R.layout.header_repo)
 	private View headerRepo;
 	
@@ -86,6 +84,9 @@ public class BuildsActivity extends TravisJrActivity {
 	
 	@InjectPojo
 	private BuildService buildService;
+	
+	@InjectPojo
+	private AccountService accountService;
 	
 	@Stateful
 	private List<Build> builds;
@@ -207,7 +208,7 @@ public class BuildsActivity extends TravisJrActivity {
 		else {
 			
 			IntentUtils.viewRepo(
-				BuildsActivity.this, application.getAccountService().getGitHubUsername(), slug);
+				BuildsActivity.this, accountService.getGitHubUsername(this), slug);
 		}
 	}
 	
@@ -267,7 +268,7 @@ public class BuildsActivity extends TravisJrActivity {
 		else {
 			
 			repoName = slugTokens[0];
-			ownerName = application.getAccountService().getGitHubUsername();
+			ownerName = accountService.getGitHubUsername(this);
 		}
 		
 		Build build = ((Build)listView.getItemAtPosition(position));
@@ -290,6 +291,12 @@ public class BuildsActivity extends TravisJrActivity {
 		
 		Intent intent = new Intent(context, BuildsActivity.class);
 		intent.putExtra(Resources.key(R.string.key_repo), repo);
+		
+		if(context instanceof Activity) {
+		
+			intent.putExtra(Resources.key(R.string.key_transient_user), 
+				((Activity)context).getIntent().getSerializableExtra(Resources.key(R.string.key_transient_user)));
+		}
 		
 		context.startActivity(intent);
 	}

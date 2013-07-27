@@ -20,7 +20,10 @@ package com.lonepulse.travisjr.pref;
  * #L%
  */
 
+import java.io.Serializable;
+
 import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,9 +31,12 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lonepulse.travisjr.R;
-import com.lonepulse.travisjr.app.TravisJr;
+import com.lonepulse.travisjr.service.AccountService;
+import com.lonepulse.travisjr.service.BasicAccountService;
+import com.lonepulse.travisjr.util.Resources;
 
 /**
  * <p>This {@link PreferenceActivity} displays all settings and configurations 
@@ -48,13 +54,21 @@ import com.lonepulse.travisjr.app.TravisJr;
 public class SettingsActivity extends PreferenceActivity {
 	
 	
+	/**
+	 * <p>See {@link AccountService}.
+	 */
+	private AccountService accountService;
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
 		
+		accountService = new BasicAccountService();
+		
 		String title = getString(R.string.ttl_act_settings);
-		String subtitle = ((TravisJr)getApplication()).getAccountService().getGitHubUsername();
+		String subtitle = accountService.getGitHubUsername(this);
 		
 		View header = getLayoutInflater().inflate(R.layout.action_view_title, null);
 		((TextView)header.findViewById(R.id.title)).setText(title);
@@ -80,6 +94,20 @@ public class SettingsActivity extends PreferenceActivity {
 	 * @since 1.1.0
 	 */
 	public static final void start(Context context) {
+		
+		if(context instanceof Activity) {
+			
+			Serializable user = ((Activity)context).getIntent()
+				.getSerializableExtra(Resources.key(R.string.key_transient_user));
+			
+			if(user != null) {
+				
+				Toast.makeText(context, 
+					Resources.error(R.string.err_settings_unavailable_transient), Toast.LENGTH_SHORT).show();
+				
+				return;
+			}
+		}
 		
 		context.startActivity(new Intent(context, SettingsActivity.class));
 	}
