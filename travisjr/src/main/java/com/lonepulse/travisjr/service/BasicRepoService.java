@@ -24,7 +24,9 @@ package com.lonepulse.travisjr.service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.util.Log;
 
@@ -292,6 +294,7 @@ public class BasicRepoService implements RepoService {
 	@Override
 	public Repo findRepoByName(String repoName, List<Repo> repos) {
 		
+		String repoNameLC = repoName.toLowerCase(Locale.ENGLISH);
 		Repo matchingRepo = null;
 		
 		try {
@@ -300,7 +303,7 @@ public class BasicRepoService implements RepoService {
 				
 				for (Repo repo : repos) {
 					
-					if(repo.getSlug().contains(repoName)) {
+					if(repo.getSlug().toLowerCase(Locale.ENGLISH).contains(repoNameLC)) {
 						
 						matchingRepo = repo;
 						break;

@@ -225,6 +225,94 @@ public class RepoServiceTest {
 	}
 	
 	/**
+	 * <p>Test for {@link RepoService#findRepoByName(String, List)}.
+	 * 
+	 * @throws Exception
+	 * 			if test terminated with an error
+	 * 
+	 * @since 1.1.0
+	 */
+	@Test
+	public final void testFindingRepoById() throws Exception {
+		
+		final String username = "sahan";
+		
+		Robolectric.getFakeHttpLayer().interceptHttpRequests(false);
+		
+		Future<List<Repo>> future = executorService.submit(new Callable<List<Repo>>() {
+			
+			public List<Repo> call() throws Exception {
+				
+				return repoService.getReposByMember(username);
+			}
+		});
+		
+		List<Repo> allRepos = future.get();
+		assertTrue(allRepos.size() > 0);
+		
+		Repo repo = repoService.findRepoByName("ickle", allRepos);
+		assertTrue(repo.getSlug().equals("sahan/IckleBot"));
+	}
+	
+	/**
+	 * <p>Test for {@link RepoService#getReposByMember(String)}.
+	 * 
+	 * @throws Exception
+	 * 			if test terminated with an error
+	 * 
+	 * @since 1.1.0
+	 */
+	@Test
+	public final void testMemberRepoSyncWithUsername() throws Exception {
+	
+		final String username = "sahan";
+		
+		Robolectric.getFakeHttpLayer().interceptHttpRequests(false);
+		
+		Future<List<Repo>> future = executorService.submit(new Callable<List<Repo>>() {
+
+			public List<Repo> call() throws Exception {
+				
+				return repoService.getReposByMember(username);
+			}
+		});
+		
+		List<Repo> repos = future.get();
+		
+		assertNotNull(repos);
+		assertTrue(repos.size() > 0);
+	}
+	
+	/**
+	 * <p>Test for {@link RepoService#getReposByOwner(String)}.
+	 * 
+	 * @throws Exception
+	 * 			if test terminated with an error
+	 * 
+	 * @since 1.1.0
+	 */
+	@Test
+	public final void testOrganizationRepoSyncWithUsername() throws Exception {
+		
+		final String username = "mozilla";
+		
+		Robolectric.getFakeHttpLayer().interceptHttpRequests(false);
+		
+		Future<List<Repo>> future = executorService.submit(new Callable<List<Repo>>() {
+			
+			public List<Repo> call() throws Exception {
+				
+				return repoService.getReposByOwner(username);
+			}
+		});
+		
+		List<Repo> repos = future.get();
+		
+		assertNotNull(repos);
+		assertTrue(repos.size() > 0);
+	}
+	
+	/**
 	 * <p>Tears down the test case by shutting down the {@link #executorService}.
 	 * 
 	 * @throws java.lang.Exception

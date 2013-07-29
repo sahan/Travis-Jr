@@ -32,20 +32,27 @@ import org.robolectric.RobolectricTestRunner;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.lonepulse.travisjr.AuthenticationActivity;
+import com.lonepulse.travisjr.BuildsActivity;
 import com.lonepulse.travisjr.R;
+import com.lonepulse.travisjr.model.GitHubUser;
 import com.lonepulse.travisjr.service.AccountService;
 import com.lonepulse.travisjr.service.BasicAccountService;
+import com.lonepulse.travisjr.service.UserMode;
+import com.lonepulse.travisjr.util.Resources;
 
 /**
  * <p>Unit test for {@link BasicAccountService}.
  * 
  * @category test
  * <br><br>
- * @version 1.1.0
+ * @version 1.1.1
+ * <br><br>
+ * @since 1.1.0
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
@@ -57,6 +64,7 @@ public class AccountServiceTest {
 	 * <p>The GitHub username for which the unit tests are performed.
 	 */
 	private static final String USERNAME = "sahan";
+	private static final String TRANSIENT_USERNAME = "twitter";
 	
 	/**
 	 * <p>The instance of {@link BasicAccountService} on which the 
@@ -81,8 +89,19 @@ public class AccountServiceTest {
 
 		activity = Robolectric.buildActivity(AuthenticationActivity.class).get();
 		
+		GitHubUser user = new GitHubUser();
+		user.setId("1111");
+		user.setLogin(TRANSIENT_USERNAME);
+		user.setType("Organization");
+		
+		Intent intent = new Intent(activity, BuildsActivity.class);
+		intent.putExtra(Resources.key(R.string.key_transient_user), user);
+		
+		activity.setIntent(intent);
+		
 		accountService = new BasicAccountService();
 		accountService.setGitHubUsername(USERNAME);
+		accountService.setUserMode(UserMode.MEMBER);
 	}
 	
 	/**
@@ -127,6 +146,48 @@ public class AccountServiceTest {
 	public final void testAccountAvailability() throws Exception {
 		
 		assertTrue(accountService.areCredentialsAvailable());
+	}
+	
+	/**
+	 * <p>Test for {@link AccountService#getGitHubUsername(Activity)}.
+	 * 
+	 * @throws Exception
+	 * 			if test terminated with an error
+	 * 
+	 * @since 1.1.0
+	 */
+	@Test
+	public final void testTransientAccountRetrieval() throws Exception {
+		
+		assertEquals(TRANSIENT_USERNAME, accountService.getGitHubUsername(activity));
+	}
+	
+	/**
+	 * <p>Test for {@link AccountService#getUserMode()}.
+	 * 
+	 * @throws Exception
+	 * 			if test terminated with an error
+	 * 
+	 * @since 1.1.0
+	 */
+	@Test
+	public final void testUserModeRetrieval() throws Exception {
+		
+		assertEquals(UserMode.MEMBER, accountService.getUserMode());
+	}
+	
+	/**
+	 * <p>Test for {@link AccountService#getUserMode(Activity)}.
+	 * 
+	 * @throws Exception
+	 * 			if test terminated with an error
+	 * 
+	 * @since 1.1.0
+	 */
+	@Test
+	public final void testTransientUserModeRetrieval() throws Exception {
+		
+		assertEquals(UserMode.ORGANIZATION, accountService.getUserMode(activity));
 	}
 	
 	/**
