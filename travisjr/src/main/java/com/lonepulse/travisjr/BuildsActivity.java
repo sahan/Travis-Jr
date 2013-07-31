@@ -30,11 +30,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.lonepulse.icklebot.annotation.event.Click;
 import com.lonepulse.icklebot.annotation.event.ItemClick;
+import com.lonepulse.icklebot.annotation.inject.InjectAnimation;
 import com.lonepulse.icklebot.annotation.inject.InjectIckleService;
 import com.lonepulse.icklebot.annotation.inject.InjectPojo;
 import com.lonepulse.icklebot.annotation.inject.InjectView;
@@ -50,6 +52,7 @@ import com.lonepulse.travisjr.model.Build;
 import com.lonepulse.travisjr.model.Repo;
 import com.lonepulse.travisjr.service.AccountService;
 import com.lonepulse.travisjr.service.BuildService;
+import com.lonepulse.travisjr.util.BuildUtils;
 import com.lonepulse.travisjr.util.IntentUtils;
 import com.lonepulse.travisjr.util.Resources;
 
@@ -81,6 +84,9 @@ public class BuildsActivity extends TravisJrActivity {
 	
 	@InjectView(R.id.alert_data)
 	private View alertData;
+	
+	@InjectAnimation(R.anim.shake_sideways_once)
+	private Animation shakeSidewaysOnce;
 	
 	@InjectPojo
 	private BuildService buildService;
@@ -246,33 +252,41 @@ public class BuildsActivity extends TravisJrActivity {
 	@ItemClick(android.R.id.list)
 	private void navigateToBuildInfo(final View parent, int position) {
 		
-		parent.setAlpha(0.60f);
-		parent.postDelayed(new Runnable() {
-			
-			@Override
-			public void run() {
-
-				parent.setAlpha(1.00f);
-			}
-		}, 100);
-
-		String[] slugTokens = repo.getSlug().split("/");
-		String ownerName; 
-		String repoName; 
+		Build build = ((Build)listView.getItemAtPosition(position));
 		
-		if(slugTokens.length > 1) {
+		if(!BuildUtils.isOngoing(build)) {
 			
-			ownerName = slugTokens[0];
-			repoName = slugTokens[1];
+			parent.setAlpha(0.60f);
+			parent.postDelayed(new Runnable() {
+				
+				@Override
+				public void run() {
+	
+					parent.setAlpha(1.00f);
+				}
+			}, 100);
+			
+			String[] slugTokens = repo.getSlug().split("/");
+			String ownerName; 
+			String repoName; 
+			
+			if(slugTokens.length > 1) {
+				
+				ownerName = slugTokens[0];
+				repoName = slugTokens[1];
+			}
+			else {
+				
+				repoName = slugTokens[0];
+				ownerName = accountService.getGitHubUsername(this);
+			}
+			
+			BuildInfoActivity.start(this, ownerName, repoName, build.getId());
 		}
 		else {
 			
-			repoName = slugTokens[0];
-			ownerName = accountService.getGitHubUsername(this);
+			parent.startAnimation(shakeSidewaysOnce);
 		}
-		
-		Build build = ((Build)listView.getItemAtPosition(position));
-		BuildInfoActivity.start(this, ownerName, repoName, build.getId());
 	}
 	
 	/**

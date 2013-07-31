@@ -17,6 +17,7 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" /> <!-- to read GitHub credentials -->
     <uses-permission android:name="android.permission.INTERNET" /> <!-- to access the Travis-CI endpoint -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- to query data connection information -->
+    <uses-permission android:name="android.permission.VIBRATE" /> <!-- to alert action unavailability -->
 
     <application
         android:name=".app.TravisJr$Application"
