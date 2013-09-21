@@ -269,6 +269,12 @@
 			    android:textColor="@color/txt_dark"
 			    android:textSize="@dimen/txt_s"
 			    android:textStyle="bold" />
+			
+			<View
+		    	android:id="@id/divider"
+		        android:layout_width="match_parent"
+		        android:layout_height="1dp"
+		        android:background="@color/txt_blue" />
 		</LinearLayout>
 	</RelativeLayout>
 	<WebView

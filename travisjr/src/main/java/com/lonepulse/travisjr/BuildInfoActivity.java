@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.NavigableMap;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -61,6 +62,7 @@ import com.lonepulse.icklebot.annotation.inject.Stateful;
 import com.lonepulse.icklebot.annotation.thread.Async;
 import com.lonepulse.icklebot.annotation.thread.UI;
 import com.lonepulse.icklebot.bind.BindManager;
+import com.lonepulse.travisjr.app.TravisJr;
 import com.lonepulse.travisjr.app.TravisJrActivity;
 import com.lonepulse.travisjr.model.BuildInfo;
 import com.lonepulse.travisjr.model.BuildJob;
@@ -73,7 +75,7 @@ import com.lonepulse.travisjr.util.IntentUtils;
 import com.lonepulse.travisjr.util.Resources;
 
 /**
- * <p>Displays detailed information about a single build.
+ * <p>Displays detailed information about a single build.</p>
  * 
  * @version 1.1.0
  * <br><br>
@@ -92,6 +94,37 @@ public class BuildInfoActivity extends TravisJrActivity {
 	private static final int UI_SYNC = 1;
 	private static final int UI_ERROR = 2;
 	private static final int UI_CONTENT = 3;
+	
+	private static final StringBuilder ASCII_ART;
+	
+	static {
+		
+		ASCII_ART = new StringBuilder();
+		Scanner scanner = null;
+		
+		try {
+			
+			scanner = new Scanner(TravisJr.Application.getContext().getAssets().open("ascii_art"));
+			ASCII_ART.append("<p style='text-align:center; font-size:1.2em'><code>");
+			
+			while(scanner.hasNextLine()) {
+				
+				ASCII_ART.append(scanner.nextLine()).append("<br>");
+			}
+			
+			ASCII_ART.append("</code></p>");
+			ASCII_ART.append(ASCII_ART.toString());
+			ASCII_ART.append(ASCII_ART.toString());
+		} 
+		catch (Exception e) {
+			
+			ASCII_ART.replace(0, ASCII_ART.length(), "Build Log.");
+		}
+		finally {
+			
+			scanner.close();
+		}
+	}
 	
 	@InjectString(R.string.ttl_act_log)
 	private String ttlActLog;
@@ -183,6 +216,8 @@ public class BuildInfoActivity extends TravisJrActivity {
 		settings.setDisplayZoomControls(false);
 		settings.setRenderPriority(RenderPriority.HIGH);
 		settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+		
+		loadLogData(ASCII_ART.toString());
 	}
 	
 	@Override
@@ -261,30 +296,29 @@ public class BuildInfoActivity extends TravisJrActivity {
 				@Override
 				public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 					
-					final StringBuilder html = new StringBuilder()
-					.append("<html><body style=\"background-color:black; color:white;") 
-					.append(" white-space:nowrap;\"><code>")
-					.append(logs.get(logIds.get(position)).toString().replaceAll("(\r\n|\n)", "<br/>"))
-					.append("</code></body></html>");
-					
-					log.loadData(html.toString(), "text/html", "utf-8");
+					loadLogData(logs.get(logIds.get(position)).toString());
 				}
 
 				@Override
 				public void onNothingSelected(AdapterView<?> parent) {
 					
-					final StringBuilder html = new StringBuilder()
-					.append("<html><body style=\"background-color:black; color:white;") 
-					.append(" white-space:nowrap;\"><code>")
-					.append(logs.get(logs.firstKey()).toString().replaceAll("(\r\n|\n)", "<br/>"))
-					.append("</code></body></html>");
-					
-					log.loadData(html.toString(), "text/html", "utf-8");
+					loadLogData(logs.get(logs.firstKey()).toString());
 				}
 			});
 			
 			logChooser.setVisibility(View.VISIBLE);
 		}
+	}
+	
+	private void loadLogData(String logData) {
+		
+		final StringBuilder html = new StringBuilder()
+		.append("<html><body style=\"background-color:black; color:white;") 
+		.append(" white-space:nowrap;\"><code>")
+		.append(logData.replaceAll("(\r\n|\n)", "<br/>"))
+		.append("</code></body></html>");
+		
+		log.loadData(html.toString(), "text/html", "utf-8");
 	}
 	
 	@UI(UI_SYNC)

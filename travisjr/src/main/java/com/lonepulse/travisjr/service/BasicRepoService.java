@@ -26,7 +26,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.util.Log;
 

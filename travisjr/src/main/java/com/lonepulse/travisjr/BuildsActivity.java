@@ -254,14 +254,18 @@ public class BuildsActivity extends TravisJrActivity {
 		
 		Build build = ((Build)listView.getItemAtPosition(position));
 		
-		if(!BuildUtils.isOngoing(build)) {
+		if(BuildUtils.isOngoing(build)) {
+			
+			parent.startAnimation(shakeSidewaysOnce);
+		}
+		else {
 			
 			parent.setAlpha(0.60f);
 			parent.postDelayed(new Runnable() {
 				
 				@Override
 				public void run() {
-	
+					
 					parent.setAlpha(1.00f);
 				}
 			}, 100);
@@ -282,10 +286,6 @@ public class BuildsActivity extends TravisJrActivity {
 			}
 			
 			BuildInfoActivity.start(this, ownerName, repoName, build.getId());
-		}
-		else {
-			
-			parent.startAnimation(shakeSidewaysOnce);
 		}
 	}
 	
