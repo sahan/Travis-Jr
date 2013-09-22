@@ -23,9 +23,10 @@ package com.lonepulse.travisjr.app;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -127,25 +128,6 @@ public class TravisJrActivity extends IckleActivity {
 		super.onCreate(savedInstanceState);
 		
 		accountService = new BasicAccountService();
-		
-		if(this instanceof ReposActivity) {
-			
-			Uri uri = getIntent().getData();
-			
-			if(uri != null) {
-				
-				try {
-					
-					GitHubUser user = new BasicIntentFilterService().resolveUser(uri);
-					getIntent().putExtra(Resources.key(R.string.key_transient_user), user);
-				}
-				catch(Exception e) {
-	
-					Log.e(getClass().getName(), "Failed to resolve a user from the given Uri", e);
-				}
-			}
-		}
-		
 		network = new NetworkService(this);
 		
 		actionViewSync = getLayoutInflater().inflate(R.layout.action_view_sync, null);
@@ -174,6 +156,45 @@ public class TravisJrActivity extends IckleActivity {
 		onInitActionBar(getActionBar());
 	}
 	
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		
+		super.onPostCreate(savedInstanceState);
+		
+		if(this instanceof ReposActivity) {
+			
+			Uri uri = getIntent().getData();
+			
+			if(uri != null) {
+				
+				try {
+					
+					GitHubUser user = new BasicIntentFilterService().resolveUser(uri);
+					((TextView)getActionBar().getCustomView().findViewById(R.id.subtitle)).setText(user.getLogin());
+					
+					getIntent().putExtra(Resources.key(R.string.key_transient_user), user);
+				}
+				catch(Exception e) {
+					
+					new AlertDialog.Builder(this)
+					.setTitle(getResources().getString(R.string.lbl_oops))
+					.setMessage(new StringBuilder(getResources().getString(
+						R.string.err_uri_resolution_failure)).append(uri.getPath()))
+					.setPositiveButton(getResources().getString(R.string.lbl_return_uc), 
+						new DialogInterface.OnClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+							
+								finish();
+							}
+						})
+					.create().show();
+				}
+			}
+		}
+	}
+
 	/**
 	 * <p>Override this callback to initialize the {@link ActionBar} associated 
 	 * with this {@link Activity}.

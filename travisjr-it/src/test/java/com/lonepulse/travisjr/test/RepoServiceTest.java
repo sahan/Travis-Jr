@@ -38,18 +38,28 @@ import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 
+import android.app.Activity;
+import android.content.Intent;
+
+import com.lonepulse.travisjr.BuildsActivity;
+import com.lonepulse.travisjr.R;
+import com.lonepulse.travisjr.ReposActivity;
+import com.lonepulse.travisjr.model.GitHubUser;
 import com.lonepulse.travisjr.model.Repo;
 import com.lonepulse.travisjr.service.AccountService;
 import com.lonepulse.travisjr.service.BasicAccountService;
 import com.lonepulse.travisjr.service.BasicRepoService;
 import com.lonepulse.travisjr.service.RepoService;
+import com.lonepulse.travisjr.util.Resources;
 
 /**
  * <p>Unit test for {@link BasicRepoService}.
  * 
  * @category test
  * <br><br>
- * @version 1.1.0
+ * @version 1.2.0
+ * <br><br>
+ * @since 1.1.0
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
@@ -58,8 +68,7 @@ public class RepoServiceTest {
 
 	
 	/**
-	 * <p>The instance of {@link BasicRepoService} on which the 
-	 * unit tests are exercised.
+	 * <p>The instance of {@link BasicRepoService} on which the unit tests are exercised.</p>
 	 */
 	private RepoService repoService;
 	
@@ -83,7 +92,7 @@ public class RepoServiceTest {
 	}
 	
 	/**
-	 * <p>Test for {@link RepoService#getReposByMember()}.
+	 * <p>Test for {@link RepoService#getReposByMember()}.</p>
 	 * 
 	 * @throws Exception
 	 * 			if test terminated with an error
@@ -115,7 +124,7 @@ public class RepoServiceTest {
 	}
 	
 	/**
-	 * <p>Test for {@link RepoService#getReposByOwner()}.
+	 * <p>Test for {@link RepoService#getReposByOwner()}.</p>
 	 * 
 	 * @throws Exception
 	 * 			if test terminated with an error
@@ -147,7 +156,7 @@ public class RepoServiceTest {
 	}
 	
 	/**
-	 * <p>Test for {@link RepoService#filterCreatedRepos(List)}.
+	 * <p>Test for {@link RepoService#filterCreatedRepos(List)}.</p>
 	 * 
 	 * @throws Exception
 	 * 			if test terminated with an error
@@ -186,7 +195,7 @@ public class RepoServiceTest {
 	}
 	
 	/**
-	 * <p>Test for {@link RepoService#filterContributedRepos(List)}.
+	 * <p>Test for {@link RepoService#filterContributedRepos(List)}.</p>
 	 * 
 	 * @throws Exception
 	 * 			if test terminated with an error
@@ -225,7 +234,7 @@ public class RepoServiceTest {
 	}
 	
 	/**
-	 * <p>Test for {@link RepoService#findRepoByName(String, List)}.
+	 * <p>Test for {@link RepoService#findRepoByName(String, List)}.</p>
 	 * 
 	 * @throws Exception
 	 * 			if test terminated with an error
@@ -255,7 +264,7 @@ public class RepoServiceTest {
 	}
 	
 	/**
-	 * <p>Test for {@link RepoService#getReposByMember(String)}.
+	 * <p>Test for {@link RepoService#getReposByMember(String)}.</p>
 	 * 
 	 * @throws Exception
 	 * 			if test terminated with an error
@@ -284,7 +293,7 @@ public class RepoServiceTest {
 	}
 	
 	/**
-	 * <p>Test for {@link RepoService#getReposByOwner(String)}.
+	 * <p>Test for {@link RepoService#getReposByOwner(String)}.</p>
 	 * 
 	 * @throws Exception
 	 * 			if test terminated with an error
@@ -313,7 +322,46 @@ public class RepoServiceTest {
 	}
 	
 	/**
-	 * <p>Tears down the test case by shutting down the {@link #executorService}.
+	 * <p>Test for {@link RepoService#getRepos(android.app.Activity)}.</p>
+	 * 
+	 * @throws Exception
+	 * 			if test terminated with an error
+	 * 
+	 * @since 1.1.0
+	 */
+	@Test
+	public final void testTransientRepoSync() throws Exception {
+	
+		Robolectric.getFakeHttpLayer().interceptHttpRequests(false);
+		
+		final Activity activity = Robolectric.buildActivity(ReposActivity.class).get();
+		
+		GitHubUser user = new GitHubUser();
+		user.setId("1111");
+		user.setLogin("mozilla");
+		user.setType("Organization");
+		
+		Intent intent = new Intent(activity, BuildsActivity.class);
+		intent.putExtra(Resources.key(R.string.key_transient_user), user);
+		
+		activity.setIntent(intent);
+		
+		Future<List<Repo>> future = executorService.submit(new Callable<List<Repo>>() {
+			
+			public List<Repo> call() throws Exception {
+				
+				return repoService.getRepos(activity);
+			}
+		});
+		
+		List<Repo> repos = future.get();
+		
+		assertNotNull(repos);
+		assertTrue(repos.size() > 0);
+	}
+	
+	/**
+	 * <p>Tears down the test case by shutting down the {@link #executorService}.</p>
 	 * 
 	 * @throws java.lang.Exception
 	 * 			if the tear-down failed

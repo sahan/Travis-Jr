@@ -25,16 +25,17 @@ import android.app.Activity;
 import android.content.Context;
 
 import com.lonepulse.icklebot.annotation.inject.Pojo;
+import com.lonepulse.travisjr.AuthenticationActivity;
 import com.lonepulse.travisjr.model.GitHubUser;
 import com.lonepulse.travisjr.view.MissingViewException;
 
 /**
  * <p>This contract specifies the services offered for managing the 
- * user's account. 
+ * user's account.</p>
  * 
- * @since 1.1.0
- * <br><br>
  * @version 1.1.1
+ * <br><br>
+ * @since 1.1.0
  * <br><br>
  * @author <a href="mailto:sahan@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
@@ -42,7 +43,7 @@ import com.lonepulse.travisjr.view.MissingViewException;
 public interface AccountService {
 
 	/**
-	 * <p>Retrieves the saved GitHub username from the user credentials.
+	 * <p>Retrieves the saved GitHub username from the user credentials.</p>
 	 * 
 	 * @return the saved GitHub username
 	 * 
@@ -54,7 +55,7 @@ public interface AccountService {
 	String getGitHubUsername() throws MissingCredentialsException;
 	
 	/**
-	 * <p>Saves the given GitHub username in the user credentials.
+	 * <p>Saves the given GitHub username in the user credentials.</p>
 	 * 
 	 * @param username
 	 * 			the username to save in credentials
@@ -65,7 +66,7 @@ public interface AccountService {
 	
 	/**
 	 * <p>If there is a transient {@link GitHubUser} in the given context, the associated 
-	 * username is retrieved; else retrieves the username from the user credentials.
+	 * username is retrieved; else retrieves the username from the user credentials.</p>
 	 * 
 	 * @param activity
 	 * 			the {@link Activity} {@link Context} to look for a transient {@link GitHubUser}
@@ -81,7 +82,7 @@ public interface AccountService {
 	String getGitHubUsername(Activity activity) throws MissingCredentialsException;
 	
 	/**
-	 * <p>Indicates whether the user is to be treated as a member or an organization.
+	 * <p>Indicates whether the user is to be treated as a member or an organization.</p>
 	 * 
 	 * @return the {@link UserMode} associated with the current user; else 
 	 * 		   {@link UserMode#ORGANIZATION} if the user mode failed to be determined
@@ -102,7 +103,7 @@ public interface AccountService {
 	
 	/**
 	 * <p>If there is a {@link GitHubUser} in the given context, the associated {@link UserMode} 
-	 * is retrieved; else retrieves the {@link UserMode} in the saved credentials.
+	 * is retrieved; else retrieves the {@link UserMode} in the saved credentials.</p>
 	 * 
 	 * @param activity
 	 * 			the {@link Activity} {@link Context} to look for a transient {@link GitHubUser}
@@ -116,7 +117,7 @@ public interface AccountService {
 	UserMode getUserMode(Activity activity);
 	
 	/**
-	 * <p>Retrieves the GitHub username which was saved in the account created by the official GitHub app.
+	 * <p>Retrieves the GitHub username which was saved in the account created by the official GitHub app.</p>
 	 * 
 	 * @return the username linked to the official GitHub application
 	 * 
@@ -130,7 +131,7 @@ public interface AccountService {
 	
 	/**
 	 * <p>Indicates whether the user had already setup account credentials. This can be used before 
-	 * {@link #getGitHubUsername()} to circumvent a {@link MissingViewException}.
+	 * {@link #getGitHubUsername()} to circumvent a {@link MissingViewException}.</p>
 	 * 
 	 * @return {@code true} if credentials are already saved
 	 * 

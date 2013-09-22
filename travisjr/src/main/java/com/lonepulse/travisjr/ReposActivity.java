@@ -49,7 +49,6 @@ import com.lonepulse.travisjr.app.TravisJr;
 import com.lonepulse.travisjr.app.TravisJrActivity;
 import com.lonepulse.travisjr.model.Repo;
 import com.lonepulse.travisjr.service.AccountService;
-import com.lonepulse.travisjr.service.IntentFilterService;
 import com.lonepulse.travisjr.service.RepoAccessException;
 import com.lonepulse.travisjr.service.RepoService;
 import com.lonepulse.travisjr.service.UserMode;
@@ -98,9 +97,6 @@ public class ReposActivity extends TravisJrActivity {
 	
 	@InjectPojo
 	private AccountService accountService;
-	
-	@InjectPojo
-	private IntentFilterService intentFilterService;
 	
 	@Stateful
 	private List<Repo> repos;

@@ -155,7 +155,7 @@ public class BuildInfoActivity extends TravisJrActivity {
 	private BuildInfo buildInfo;
 	
 	@Stateful
-	NavigableMap<String, StringBuilder> logs;
+	private NavigableMap<String, StringBuilder> logs;
 	
 	@InjectView(R.id.root)
 	private View root;
@@ -200,6 +200,8 @@ public class BuildInfoActivity extends TravisJrActivity {
 		super.onCreate(savedInstanceState);
 		
 		runUITask(UI_SYNC);
+		
+		logs = new TreeMap<String, StringBuilder>();
 		
 		ownerName = getIntent().getStringExtra(EXTRA_OWNER_NAME);
 		repoName = getIntent().getStringExtra(EXTRA_REPO_NAME);
@@ -250,8 +252,6 @@ public class BuildInfoActivity extends TravisJrActivity {
 			buildInfo = buildService.getBuildInfo(ownerName, repoName, buildId);
 			Set<Entry<BuildJob, StringBuilder>> logEntries = buildService.getJobLogs(buildInfo).entrySet();
 
-			logs = new TreeMap<String, StringBuilder>();
-			
 			for (Entry<BuildJob, StringBuilder> entry : logEntries) {
 				
 				logs.put(String.valueOf(entry.getKey().getNumber()), entry.getValue());
