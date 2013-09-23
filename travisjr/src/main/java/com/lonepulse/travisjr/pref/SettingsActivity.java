@@ -36,7 +36,7 @@ import android.widget.Toast;
 import com.lonepulse.travisjr.R;
 import com.lonepulse.travisjr.service.AccountService;
 import com.lonepulse.travisjr.service.BasicAccountService;
-import com.lonepulse.travisjr.util.Resources;
+import com.lonepulse.travisjr.util.Res;
 
 /**
  * <p>This {@link PreferenceActivity} displays all settings and configurations 
@@ -98,12 +98,12 @@ public class SettingsActivity extends PreferenceActivity {
 		if(context instanceof Activity) {
 			
 			Serializable user = ((Activity)context).getIntent()
-				.getSerializableExtra(Resources.key(R.string.key_transient_user));
+				.getSerializableExtra(Res.string(R.string.key_transient_user));
 			
 			if(user != null) {
 				
 				Toast.makeText(context, 
-					Resources.error(R.string.err_settings_unavailable_transient), Toast.LENGTH_SHORT).show();
+					Res.string(R.string.err_settings_unavailable_transient), Toast.LENGTH_SHORT).show();
 				
 				return;
 			}

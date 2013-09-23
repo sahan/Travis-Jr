@@ -24,8 +24,11 @@ package com.lonepulse.travisjr;
 import java.util.List;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -47,11 +50,14 @@ import com.lonepulse.icklebot.network.NetworkManager;
 import com.lonepulse.travisjr.adapter.RepoAdapter;
 import com.lonepulse.travisjr.app.TravisJr;
 import com.lonepulse.travisjr.app.TravisJrActivity;
+import com.lonepulse.travisjr.model.GitHubUser;
 import com.lonepulse.travisjr.model.Repo;
 import com.lonepulse.travisjr.service.AccountService;
+import com.lonepulse.travisjr.service.BasicIntentFilterService;
 import com.lonepulse.travisjr.service.RepoAccessException;
 import com.lonepulse.travisjr.service.RepoService;
 import com.lonepulse.travisjr.service.UserMode;
+import com.lonepulse.travisjr.util.Res;
 
 /**
  * <p>Provides a statistical overview of the repositories under continuous 
@@ -113,6 +119,34 @@ public class ReposActivity extends TravisJrActivity {
 	@InjectIckleService
 	private NetworkManager network;
 	
+	
+	@Override
+	protected void onHandleUri(Uri uri) {
+	
+		super.onHandleUri(uri);
+		
+		try {
+			
+			GitHubUser user = new BasicIntentFilterService().resolveUser(uri);
+			getIntent().putExtra(Res.string(R.string.key_transient_user), user);
+		}
+		catch(Exception e) {
+			
+			new AlertDialog.Builder(this)
+			.setTitle(Res.string(R.string.lbl_oops))
+			.setMessage(new StringBuilder(Res.string(R.string.err_uri_resolution_failure)).append(uri.getPath()))
+			.setPositiveButton(Res.string(R.string.lbl_return_uc), 
+				new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+					
+						finish();
+					}
+				})
+			.create().show();
+		}
+	}
 	
 	@Override
 	protected void onInitActionBar(ActionBar actionBar) {

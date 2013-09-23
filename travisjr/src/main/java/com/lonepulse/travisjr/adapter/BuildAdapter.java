@@ -38,7 +38,7 @@ import android.widget.TextView;
 
 import com.lonepulse.travisjr.R;
 import com.lonepulse.travisjr.model.Build;
-import com.lonepulse.travisjr.util.Resources;
+import com.lonepulse.travisjr.util.Res;
 import com.lonepulse.travisjr.util.TextUtils;
 
 /**
@@ -299,7 +299,7 @@ public class BuildAdapter extends ArrayAdapter<Build> {
 	 */
 	private boolean isFinished(Build build) {
 	
-		String stateFinished = Resources.key(R.string.key_state_finished);
+		String stateFinished = Res.string(R.string.key_state_finished);
 		return (build.getResult() != null)? true :build.getState().equals(stateFinished)? true :false;
 	}
 	

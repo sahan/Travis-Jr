@@ -72,7 +72,7 @@ import com.lonepulse.travisjr.util.BuildState;
 import com.lonepulse.travisjr.util.BuildUtils;
 import com.lonepulse.travisjr.util.DateUtils;
 import com.lonepulse.travisjr.util.IntentUtils;
-import com.lonepulse.travisjr.util.Resources;
+import com.lonepulse.travisjr.util.Res;
 
 /**
  * <p>Displays detailed information about a single build.</p>
@@ -462,8 +462,8 @@ public class BuildInfoActivity extends TravisJrActivity {
 		
 		if(context instanceof Activity) {
 			
-			intent.putExtra(Resources.key(R.string.key_transient_user), 
-				((Activity)context).getIntent().getSerializableExtra(Resources.key(R.string.key_transient_user)));
+			intent.putExtra(Res.string(R.string.key_transient_user), 
+				((Activity)context).getIntent().getSerializableExtra(Res.string(R.string.key_transient_user)));
 		}
 		
 		context.startActivity(intent);

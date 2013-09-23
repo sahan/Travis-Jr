@@ -41,7 +41,7 @@ import com.lonepulse.travisjr.R;
 import com.lonepulse.travisjr.model.Build;
 import com.lonepulse.travisjr.model.Repo;
 import com.lonepulse.travisjr.util.DateUtils;
-import com.lonepulse.travisjr.util.Resources;
+import com.lonepulse.travisjr.util.Res;
 import com.lonepulse.travisjr.util.TextUtils;
 
 /**
@@ -334,7 +334,7 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 	private boolean isFinished(Repo repo) {
 		
 		Short buildStatus = repo.getLast_build_status();
-		String stateFinished = Resources.key(R.string.key_state_finished);
+		String stateFinished = Res.string(R.string.key_state_finished);
 		
 		return (buildStatus != null)? 
 			true :repo.getBuilds().get(0).getState().equals(stateFinished)? true :false;

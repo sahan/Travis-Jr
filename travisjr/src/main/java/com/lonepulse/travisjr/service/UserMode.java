@@ -28,7 +28,7 @@ import android.preference.PreferenceManager;
 
 import com.lonepulse.travisjr.R;
 import com.lonepulse.travisjr.app.TravisJr;
-import com.lonepulse.travisjr.util.Resources;
+import com.lonepulse.travisjr.util.Res;
 
 /**
  * <p>This enum declares the modes by which an individual can use the application. 
@@ -103,7 +103,7 @@ public enum UserMode {
 	public static UserMode getCurrent() {
 		
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(TravisJr.Application.getContext());
-		String currentKey = prefs.getString(Resources.key(R.string.key_user_mode), ORGANIZATION.key);
+		String currentKey = prefs.getString(Res.string(R.string.key_user_mode), ORGANIZATION.key);
 		
 		return currentKey.equals(ORGANIZATION.key)? ORGANIZATION :MEMBER;
 	}

@@ -55,7 +55,7 @@ public final class BuildUtils {
 	 */
 	public static boolean isTerminated(Build build) {
 		
-		String stateFinished = Resources.key(R.string.key_state_finished);
+		String stateFinished = Res.string(R.string.key_state_finished);
 		return (build.getResult() != null)? true :build.getState().equals(stateFinished)? true :false;
 	}
 	
@@ -110,7 +110,7 @@ public final class BuildUtils {
 	 */
 	public static boolean isTerminated(BuildInfo buildInfo) {
 		
-		String stateFinished = Resources.key(R.string.key_state_finished);
+		String stateFinished = Res.string(R.string.key_state_finished);
 		return (buildInfo.getResult() != null)? true :buildInfo.getState().equals(stateFinished)? true :false;
 	}
 	

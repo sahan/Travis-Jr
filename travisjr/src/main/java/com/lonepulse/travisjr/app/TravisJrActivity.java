@@ -23,8 +23,7 @@ package com.lonepulse.travisjr.app;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
@@ -40,21 +39,19 @@ import com.lonepulse.icklebot.activity.IckleActivity;
 import com.lonepulse.icklebot.network.NetworkManager;
 import com.lonepulse.icklebot.network.NetworkService;
 import com.lonepulse.travisjr.R;
-import com.lonepulse.travisjr.ReposActivity;
 import com.lonepulse.travisjr.adapter.NavigationAdapter;
-import com.lonepulse.travisjr.model.GitHubUser;
 import com.lonepulse.travisjr.pref.SettingsActivity;
 import com.lonepulse.travisjr.service.AccountService;
 import com.lonepulse.travisjr.service.BasicAccountService;
-import com.lonepulse.travisjr.service.BasicIntentFilterService;
-import com.lonepulse.travisjr.util.Resources;
 import com.lonepulse.travisjr.view.NavigationSwipeDetector;
 
 /**
- * <p>A custom {@link IckleActivity} which is tailored to setup the {@link ActionBar} 
- * and provide support for syncing with Travis-CI.
+ * <p>A custom {@link IckleActivity} which is tailored to setup the {@link ActionBar} and provide support 
+ * for syncing with Travis-CI.</p>
  * 
- * @version 1.2.1
+ * @version 1.3.0
+ * <br><br>
+ * @since 1.1.0
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
@@ -153,51 +150,18 @@ public class TravisJrActivity extends IckleActivity {
 			}
 		});
 		
+		Uri uri = getIntent().getData();
+		
+		if(uri != null) {
+			
+			onHandleUri(uri);
+		}
+		
 		onInitActionBar(getActionBar());
 	}
 	
-	@Override
-	protected void onPostCreate(Bundle savedInstanceState) {
-		
-		super.onPostCreate(savedInstanceState);
-		
-		if(this instanceof ReposActivity) {
-			
-			Uri uri = getIntent().getData();
-			
-			if(uri != null) {
-				
-				try {
-					
-					GitHubUser user = new BasicIntentFilterService().resolveUser(uri);
-					((TextView)getActionBar().getCustomView().findViewById(R.id.subtitle)).setText(user.getLogin());
-					
-					getIntent().putExtra(Resources.key(R.string.key_transient_user), user);
-				}
-				catch(Exception e) {
-					
-					new AlertDialog.Builder(this)
-					.setTitle(getResources().getString(R.string.lbl_oops))
-					.setMessage(new StringBuilder(getResources().getString(
-						R.string.err_uri_resolution_failure)).append(uri.getPath()))
-					.setPositiveButton(getResources().getString(R.string.lbl_return_uc), 
-						new DialogInterface.OnClickListener() {
-							
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-							
-								finish();
-							}
-						})
-					.create().show();
-				}
-			}
-		}
-	}
-
 	/**
-	 * <p>Override this callback to initialize the {@link ActionBar} associated 
-	 * with this {@link Activity}.
+	 * <p>Override this callback to initialize the {@link ActionBar} associated with this {@link Activity}.</p>
 	 *
 	 * @param actionBar
 	 * 			the {@link ActionBar} intance to be initialized
@@ -219,15 +183,14 @@ public class TravisJrActivity extends IckleActivity {
 	}
 	
 	/**
-	 * <p>Creates a set of {@link ActionBar} navigation items for the given string 
-	 * resource IDs.</p>
+	 * <p>Creates a set of {@link ActionBar} navigation items for the given string resource IDs.</p>
 	 * 
 	 * <p>This implementation employs {@link ActionBar#NAVIGATION_MODE_LIST}.</p> 
 	 *
 	 * @param navigationResourceIds
 	 * 			the array of String resource IDs for the navigation item titles  
 	 * 
-	 * @since 1.2.1
+	 * @since 1.1.0
 	 */
 	protected void addNavigationItems(final int... navigationResourceIds) {
 		
@@ -262,8 +225,8 @@ public class TravisJrActivity extends IckleActivity {
 	}
 	
 	/**
-	 * <p>Enables lateral swiping for {@link ActionBar} navigation tabs by detecting swipe 
-	 * gestures on the given target {@link View}.
+	 * <p>Enables lateral swiping for {@link ActionBar} navigation tabs by detecting swipe gestures on the 
+	 * given target {@link View}.</p>
 	 *
 	 * @param targetViewId
 	 * 			the compulsory target {@link View} which is to be swiped 
@@ -271,7 +234,7 @@ public class TravisJrActivity extends IckleActivity {
 	 * @param moreTargetViewIds
 	 * 			additional IDs of the {@link View}s which can be swiped 
 	 * 
-	 * @since 1.2.1
+	 * @since 1.1.0
 	 */
 	protected void enableNavigationSwiping(int targetViewId, int... moreTargetViewIds) {
 		
@@ -290,49 +253,61 @@ public class TravisJrActivity extends IckleActivity {
 	}
 	
 	/**
-	 * <p>Override this callback to take action upon <b>selecting</b> 
-	 * an {@link ActionBar.Tab} tab created with the String resource ID. 
+	 * <p>Override this callback to take action for a {@link Intent} which was fired in response to a <i>VIEW</i> 
+	 * action on a URL from the host <i>travis-ci.org</i></p>
+	 * 
+	 * <p><b>Note</b> that this callback will be only be invoked if a {@link Uri} is present in the {@link Intent} 
+	 * which started this {@link Activity} (see {@link Activity#getIntent()}) and <b>before</b> the {@link ActionBar} 
+	 * is initialized using {@link #onInitActionBar(ActionBar)}.</p> 
+	 *
+	 * @param uri
+	 * 			the {@link Uri} which was received in the {@link Intent} which started this {@link Activity} 
+	 * 
+	 * @since 1.1.0
+	 */
+	protected void onHandleUri(Uri uri) {}
+	
+	/**
+	 * <p>Override this callback to take action upon <b>selecting</b> an {@link ActionBar.Tab} tab created with 
+	 * the String resource ID. 
 	 *
 	 * @param stringResourceId
 	 * 			the String resource ID which was used to created the 
 	 * 			selected {@link ActionBar.Tab}
 	 * 
-	 * @since 1.1.1
+	 * @since 1.1.0
 	 */
 	protected void onTabSelected(int stringResourceId) {}
 	
 	/**
-	 * <p>Override this callback to take action upon <b>unselecting</b> 
-	 * an {@link ActionBar.Tab} tab created with the String resource ID. 
+	 * <p>Override this callback to take action upon <b>unselecting</b> an {@link ActionBar.Tab} tab created with 
+	 * the String resource ID.</p> 
 	 *
 	 * @param stringResourceId
-	 * 			the String resource ID which was used to created the 
-	 * 			unreselected {@link ActionBar.Tab}
+	 * 			the String resource ID which was used to created the unselected {@link ActionBar.Tab}
 	 * 
-	 * @since 1.1.1
+	 * @since 1.1.0
 	 */
 	protected void onTabUnselected(int stringResourceId) {}
 	
 	/**
-	 * <p>Override this callback to take action upon <b>reselecting</b> 
-	 * an {@link ActionBar.Tab} tab created with the String resource ID. 
+	 * <p>Override this callback to take action upon <b>reselecting</b> an {@link ActionBar.Tab} tab created with 
+	 * the String resource ID.</p>
 	 *
 	 * @param stringResourceId
-	 * 			the String resource ID which was used to created the 
-	 * 			reselected {@link ActionBar.Tab}
+	 * 			the String resource ID which was used to created the reselected {@link ActionBar.Tab}
 	 * 
-	 * @since 1.1.1
+	 * @since 1.1.0
 	 */
 	protected void onTabReselected(int stringResourceId) {}
 	
 	/**
-	 * <p>Retrieves the String resource ID of the currently selected 
-	 * navigation tab.
+	 * <p>Retrieves the String resource ID of the currently selected navigation tab.</p>
 	 *
-	 * @return the String resource ID of the selected {@link ActionBar.Tab}, 
-	 * 		   else {@code 0} if no navigation tabs are available
+	 * @return the String resource ID of the selected {@link ActionBar.Tab}, else {@code 0} if no navigation tabs 
+	 * 		   are available
 	 * 
-	 * @since 1.1.1
+	 * @since 1.1.0
 	 */
 	protected int getSelectedTab() {
 		
@@ -342,11 +317,9 @@ public class TravisJrActivity extends IckleActivity {
 	}
 	
 	/**
-	 * <p>Override this callback to initialize the activity with 
-	 * a custom title.
+	 * <p>Override this callback to initialize the activity with a custom title.</p>
 	 *
-	 * @return the title to be set for this activity; defaults to 
-	 * 		   {@link Activity#getTitle()}
+	 * @return the title to be set for this activity; defaults to {@link Activity#getTitle()}
 	 * 
 	 * @since 1.1.0
 	 */
@@ -356,11 +329,9 @@ public class TravisJrActivity extends IckleActivity {
 	}
 	
 	/**
-	 * <p>Override this callback to initialize the activity with 
-	 * a custom subtitle. 
+	 * <p>Override this callback to initialize the activity with a custom subtitle.</p> 
 	 *
-	 * @return the subtitle to be set for this activity; defaults 
-	 * 		   to the user's GitHub username
+	 * @return the subtitle to be set for this activity; defaults to the user's GitHub username
 	 * 
 	 * @since 1.1.0
 	 */
@@ -416,7 +387,7 @@ public class TravisJrActivity extends IckleActivity {
 	}
 	
 	/**
-	 * <p>Override this callback to perform synchronization.  
+	 * <p>Override this callback to perform synchronization.</p>
 	 * 
 	 * @since 1.1.0
 	 */
@@ -426,8 +397,7 @@ public class TravisJrActivity extends IckleActivity {
 	}
 	
 	/**
-	 * <p>Invoke this service to set the sync lock and start the default 
-	 * sync animation on the action bar.
+	 * <p>Invoke this service to set the sync lock and start the default sync animation on the action bar.</p>
 	 * 
 	 * @since 1.1.0
 	 */
@@ -453,8 +423,7 @@ public class TravisJrActivity extends IckleActivity {
 	}
 	
 	/**
-	 * <p>Invoke this service to clear the sync lock and stop the default 
-	 * sync animation on the action bar.
+	 * <p>Invoke this service to clear the sync lock and stop the default sync animation on the action bar.</p>
 	 * 
 	 * @since 1.1.0
 	 */
@@ -481,7 +450,7 @@ public class TravisJrActivity extends IckleActivity {
 	}
 	
 	/**
-	 * <p>Specifies whether a sync operation is currently underway. 
+	 * <p>Specifies whether a sync operation is currently underway.</p>
 	 *
 	 * @return {@code true} if there is an ongoing sync
 	 * 
@@ -515,7 +484,7 @@ public class TravisJrActivity extends IckleActivity {
 	}
 	
 	/**
-	 * <p>Returns the instance of {@link TravisJr} contract implementation.
+	 * <p>Returns the instance of {@link TravisJr} contract implementation.</p>
 	 *
 	 * @return the single instance of {@link TravisJr}
 	 * 

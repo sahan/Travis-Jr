@@ -48,7 +48,7 @@ import com.lonepulse.icklebot.annotation.thread.Async;
 import com.lonepulse.icklebot.annotation.thread.UI;
 import com.lonepulse.travisjr.service.AccountService;
 import com.lonepulse.travisjr.service.MissingCredentialsException;
-import com.lonepulse.travisjr.util.Resources;
+import com.lonepulse.travisjr.util.Res;
 
 /**
  * <p>Authenticates the user via <b>GitHub</b> and takes him to to the 
@@ -169,7 +169,7 @@ public class AuthenticationActivity extends IckleActivity {
 		} 
 		catch (MissingCredentialsException mce) {
 		
-			Log.w(getClass().getSimpleName(), Resources.error(R.string.err_querying_github_account));
+			Log.w(getClass().getSimpleName(), Res.string(R.string.err_querying_github_account));
 		}
 	}
 	

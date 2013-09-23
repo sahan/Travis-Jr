@@ -36,7 +36,7 @@ import com.lonepulse.travisjr.R;
 import com.lonepulse.travisjr.model.GitHubRepository;
 import com.lonepulse.travisjr.model.GitHubUser;
 import com.lonepulse.travisjr.net.GitHubEndpoint;
-import com.lonepulse.travisjr.util.Resources;
+import com.lonepulse.travisjr.util.Res;
 
 /**
  * <p>A concrete implementation of {@link IntentFilterService} which offers services for working 
@@ -54,7 +54,7 @@ public class BasicIntentFilterService implements IntentFilterService {
 	
 	public static final String[] acceptedHosts = {"travis-ci.org", "www.travis-ci.org"};
 	
-	public static final String msgNotFound = Resources.error(R.string.err_github_not_found);
+	public static final String msgNotFound = Res.string(R.string.err_github_not_found);
 	
 	
 	@Bite

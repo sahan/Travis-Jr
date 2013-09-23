@@ -30,7 +30,7 @@ import com.lonepulse.travisjr.R;
 import com.lonepulse.travisjr.dialog.LicensesActivity;
 import com.lonepulse.travisjr.service.AccountService;
 import com.lonepulse.travisjr.service.BasicAccountService;
-import com.lonepulse.travisjr.util.Resources;
+import com.lonepulse.travisjr.util.Res;
 
 /**
  * <p>This {@link PreferenceFragment} aggregates all individual preference 
@@ -57,18 +57,18 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 		
 		accountService = new BasicAccountService();
 		
-		findPreference(Resources.key(R.string.key_sign_out)).setOnPreferenceClickListener(this);
-		findPreference(Resources.key(R.string.key_oss_licenses)).setOnPreferenceClickListener(this);
+		findPreference(Res.string(R.string.key_sign_out)).setOnPreferenceClickListener(this);
+		findPreference(Res.string(R.string.key_oss_licenses)).setOnPreferenceClickListener(this);
 	}
 
 	@Override
 	public boolean onPreferenceClick(Preference preference) {
 		
-		if(preference.getKey().equals(Resources.key(R.string.key_sign_out))) {
+		if(preference.getKey().equals(Res.string(R.string.key_sign_out))) {
 			
 			accountService.purgeAccount(getActivity());
 		}
-		else if(preference.getKey().equals(Resources.key(R.string.key_oss_licenses))) {
+		else if(preference.getKey().equals(Res.string(R.string.key_oss_licenses))) {
 			
 			LicensesActivity.start(getActivity());
 		}

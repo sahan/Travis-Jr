@@ -54,7 +54,7 @@ import com.lonepulse.travisjr.service.AccountService;
 import com.lonepulse.travisjr.service.BuildService;
 import com.lonepulse.travisjr.util.BuildUtils;
 import com.lonepulse.travisjr.util.IntentUtils;
-import com.lonepulse.travisjr.util.Resources;
+import com.lonepulse.travisjr.util.Res;
 
 /**
  * <p>Displays all recent {@link Build}s for the selected {@link Repo} 
@@ -114,7 +114,7 @@ public class BuildsActivity extends TravisJrActivity {
 		
 		super.onCreate(savedInstanceState);
 		
-		repo = (Repo)getIntent().getSerializableExtra(Resources.key(R.string.key_repo));
+		repo = (Repo)getIntent().getSerializableExtra(Res.string(R.string.key_repo));
 		
 		((TextView)headerRepo.findViewById(R.id.repo_name))
 		.setText(repo.getSlug());
@@ -304,12 +304,12 @@ public class BuildsActivity extends TravisJrActivity {
 	public static final void start(Context context, Repo repo) {
 		
 		Intent intent = new Intent(context, BuildsActivity.class);
-		intent.putExtra(Resources.key(R.string.key_repo), repo);
+		intent.putExtra(Res.string(R.string.key_repo), repo);
 		
 		if(context instanceof Activity) {
 		
-			intent.putExtra(Resources.key(R.string.key_transient_user), 
-				((Activity)context).getIntent().getSerializableExtra(Resources.key(R.string.key_transient_user)));
+			intent.putExtra(Res.string(R.string.key_transient_user), 
+				((Activity)context).getIntent().getSerializableExtra(Res.string(R.string.key_transient_user)));
 		}
 		
 		context.startActivity(intent);

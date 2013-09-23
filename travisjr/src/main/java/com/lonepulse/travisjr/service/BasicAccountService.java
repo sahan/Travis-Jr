@@ -40,7 +40,7 @@ import com.lonepulse.travisjr.R;
 import com.lonepulse.travisjr.app.TravisJr;
 import com.lonepulse.travisjr.app.TravisJr.Application;
 import com.lonepulse.travisjr.model.GitHubUser;
-import com.lonepulse.travisjr.util.Resources;
+import com.lonepulse.travisjr.util.Res;
 
 /**
  * <p>A basic implementation of {@link AccountService}.
@@ -66,7 +66,7 @@ public class BasicAccountService implements AccountService {
 	@Override
 	public String getGitHubUsername() throws MissingCredentialsException {
 	
-		String username = prefs().getString(Resources.key(R.string.key_username), "");
+		String username = prefs().getString(Res.string(R.string.key_username), "");
 		
 		if(TextUtils.isEmpty(username)) {
 			
@@ -83,7 +83,7 @@ public class BasicAccountService implements AccountService {
 	public String getGitHubUsername(Activity activity) throws MissingCredentialsException {
 		
 		GitHubUser user = (GitHubUser) activity.getIntent()
-			.getSerializableExtra(Resources.key(R.string.key_transient_user));
+			.getSerializableExtra(Res.string(R.string.key_transient_user));
 			
 		return user == null? getGitHubUsername() :user.getLogin();
 	}
@@ -95,7 +95,7 @@ public class BasicAccountService implements AccountService {
 	public void setGitHubUsername(String username) {
 		
 		SharedPreferences.Editor editor = prefs().edit();
-		editor.putString(Resources.key(R.string.key_username), username);
+		editor.putString(Res.string(R.string.key_username), username);
 		editor.commit();
 	}
 	
@@ -117,7 +117,7 @@ public class BasicAccountService implements AccountService {
 		try {
 			
 			GitHubUser user = (GitHubUser) activity.getIntent()
-					.getSerializableExtra(Resources.key(R.string.key_transient_user));
+					.getSerializableExtra(Res.string(R.string.key_transient_user));
 			
 			if(user == null) {
 				

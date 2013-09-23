@@ -21,50 +21,40 @@ package com.lonepulse.travisjr.util;
  */
 
 
+import android.content.res.Resources;
+
 import com.lonepulse.travisjr.app.TravisJr;
 
 /**
- * <p>This utility wraps the resource of the application for access via 
- * fluent facade.  
+ * <p>This utility provides a concise contract for accessing application resources by wrapping 
+ * an instance of {@link Resources}.</p>   
  * 
- * @version 1.1.0
+ * <br><br>
+ * @since 1.1.0
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
-public final class Resources {
+public final class Res {
 	
+	
+	private static final Resources resources = TravisJr.Application.getContext().getResources();
 	
 	/**
-	 * <p>Constructor visibility restricted. Instantiation 
-	 * is non-sensical.
+	 * <p>Constructor visibility restricted. Instantiation is nonsensical.</p>
 	 */
-	private Resources() {}
+	private Res() {}
 	
 	/**
-	 * <p>Retrieves the {@link String} value for a <b>key</b> 
-	 * given the resource id.
+	 * <p>Retrieves the {@link String} resource value for the given {@code int} ID. This is a 
+	 * convinence method for {@link Context#getResources()#string(int)}.</p>
 	 * 
 	 * @param id
-	 * 			the string resource id of the key
+	 * 			the {@code int} ID of the String resource
 	 * 
 	 * @since 1.1.0
 	 */
-	public static String key(int id) {
+	public static String string(int id) {
 		
-		return TravisJr.Application.getContext().getString(id);
-	}
-	
-	/**
-	 * <p>Retrieves the {@link String} value for an <b>error</b> 
-	 * given the resource id.
-	 * 
-	 * @param id
-	 * 			the string resource id of the error
-	 * 
-	 * @since 1.1.0
-	 */
-	public static String error(int id) {
-		
-		return TravisJr.Application.getContext().getString(id);
+		return resources.getString(id);
 	}
 }
