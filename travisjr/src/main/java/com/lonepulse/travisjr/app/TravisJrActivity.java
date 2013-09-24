@@ -269,7 +269,7 @@ public class TravisJrActivity extends IckleActivity {
 	
 	/**
 	 * <p>Override this callback to take action upon <b>selecting</b> an {@link ActionBar.Tab} tab created with 
-	 * the String resource ID. 
+	 * the String resource ID.</p>
 	 *
 	 * @param stringResourceId
 	 * 			the String resource ID which was used to created the 

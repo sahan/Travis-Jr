@@ -29,6 +29,5 @@
     <string name="err_fetching_build_info">Failed to fetch info...</string>
     <string name="err_github_not_found">Not Found</string>
     <string name="err_settings_unavailable_transient">Transient users cannot configure settings</string>
-    <string name="err_uri_resolution_failure">I can\'t seem to get any information from travis-ci.org</string>
 
 </resources>

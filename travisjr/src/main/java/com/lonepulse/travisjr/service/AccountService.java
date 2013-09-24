@@ -33,7 +33,7 @@ import com.lonepulse.travisjr.view.MissingViewException;
  * <p>This contract specifies the services offered for managing the 
  * user's account.</p>
  * 
- * @version 1.1.1
+ * @version 1.2.1
  * <br><br>
  * @since 1.1.0
  * <br><br>
@@ -42,6 +42,48 @@ import com.lonepulse.travisjr.view.MissingViewException;
 @Pojo(BasicAccountService.class)
 public interface AccountService {
 
+	
+	/**
+	 * <p>Determines if the given {@link Activity} context has a <b>transient user</b> 
+	 * as a result of an external invocation via a URI.
+	 *
+	 * @param activity
+	 * 			the {@link Activity} {@link Context} to look for a transient {@link GitHubUser}
+	 * 			in the current session context
+	 * 
+	 * @return {@code true} if the given {@link Activity} has a transient user 
+	 * 
+	 * @since 1.1.0
+	 */
+	boolean hasTransientUser(Activity activity);
+	
+	/**
+	 * <p>Attaches the given {@link GitHubUser} to the specified given {@link Activity}.</p>
+	 * 
+	 * <p>User {@link #getTransientUser(Activity)} to retrieve this {@link GitHubUser}.</p>
+	 *
+	 * @param username
+	 * 			the {@link GitHubUser} to attach
+	 * 
+	 * @param activity
+	 * 			the {@link Activity} to which the given {@link GitHubUser} is attached 
+	 * 
+	 * @since 1.1.0
+	 */
+	void setTransientUser(GitHubUser gitHubUser, Activity activity);
+	
+	/**
+	 * <p>Retrieves the transient {@link GitHubUser} which is attached to the given {@link Activity}.</p>
+	 *
+	 * @param activity
+	 * 			the {@link Activity} whose transient {@link GitHubUser} is retrieved
+	 * 
+	 * @return the attached {@link GitHubUser}; else {@code null} if no transient user was found 
+	 * 
+	 * @since 1.1.0
+	 */
+	GitHubUser getTransientUser(Activity activity);
+	
 	/**
 	 * <p>Retrieves the saved GitHub username from the user credentials.</p>
 	 * 
@@ -115,6 +157,23 @@ public interface AccountService {
 	 * @since 1.1.0
 	 */
 	UserMode getUserMode(Activity activity);
+	
+	/**
+	 * <p>If there is a {@link GitHubUser} in the given context, with a <b>missing or invalid</b> 
+	 * {@link UserMode}, the user is fetched from the GitHub API and the {@link GitHubUser#getType()} is 
+	 * resolved to a instance of {@link UserMode} which is subsequently returned.</p>
+	 * 
+	 * @param activity
+	 * 			the {@link Activity} {@link Context} to look for a transient {@link GitHubUser}
+	 * 			in the current session context
+	 * 
+	 * @return the {@link UserMode} associated with the current user - fetched from the GitHub API if 
+	 * 		   missing or invalid; else {@link UserMode#ORGANIZATION} if the transient user is missing 
+	 * 		   altogether in the given context or if no such user is found
+	 * 
+	 * @since 1.1.0
+	 */
+	UserMode fetchUserMode(Activity activity);
 	
 	/**
 	 * <p>Retrieves the GitHub username which was saved in the account created by the official GitHub app.</p>

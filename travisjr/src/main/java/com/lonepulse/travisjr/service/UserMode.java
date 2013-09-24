@@ -21,6 +21,8 @@ package com.lonepulse.travisjr.service;
  */
 
 
+import java.util.Locale;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -137,6 +139,46 @@ public enum UserMode {
 	public static boolean isCurrent(UserMode userMode) {
 		
 		return UserMode.getCurrent().equals(userMode);
+	}
+	
+	/**
+	 * <p>Retrieves the {@link UserMode} which best matches the given phrase.</p>
+	 * 
+	 * <p>Phrases containing keywords are matched as follows:</p>
+	 * <ul>
+	 * 	<li>{@link UserMode#ORGANIZATION} for <b>"organization"</b> and <b>"owner"</b>.</li>
+	 * 	<li>{@link UserMode#MEMBER} for <b>"member"</b> and <b>"user"</b>.</li>
+	 * </ul>
+	 *
+	 * @param stringToMatch
+	 * 			the phrase for which a matching {@link UserMode} is to be found
+	 *  
+	 * @return the matching {@link UserMode}; else {@code null} if no match can be found
+	 * 
+	 * @since 1.1.0
+	 */
+	public static UserMode matchFor(String stringToMatch) {
+		
+		if(stringToMatch == null || stringToMatch.equals("")) {
+			
+			return null;
+		}
+		
+		String phrase = stringToMatch.toLowerCase(Locale.ENGLISH);
+		
+		if(phrase.contains(UserMode.ORGANIZATION.getKey())
+		   || phrase.contains("owner")) {
+			
+			return UserMode.ORGANIZATION;
+		}
+		
+		if(phrase.contains(UserMode.MEMBER.getKey()) 
+		   || phrase.contains("user")) {
+			
+			return UserMode.MEMBER;
+		}
+		
+		return null;
 	}
 
 	/**

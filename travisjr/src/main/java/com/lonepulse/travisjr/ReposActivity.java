@@ -24,9 +24,7 @@ package com.lonepulse.travisjr;
 import java.util.List;
 
 import android.app.ActionBar;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
@@ -57,7 +55,6 @@ import com.lonepulse.travisjr.service.BasicIntentFilterService;
 import com.lonepulse.travisjr.service.RepoAccessException;
 import com.lonepulse.travisjr.service.RepoService;
 import com.lonepulse.travisjr.service.UserMode;
-import com.lonepulse.travisjr.util.Res;
 
 /**
  * <p>Provides a statistical overview of the repositories under continuous 
@@ -125,26 +122,18 @@ public class ReposActivity extends TravisJrActivity {
 	
 		super.onHandleUri(uri);
 		
+		GitHubUser user;
+		
 		try {
 			
-			GitHubUser user = new BasicIntentFilterService().resolveUser(uri);
-			getIntent().putExtra(Res.string(R.string.key_transient_user), user);
+			user = new BasicIntentFilterService().resolveUser(uri);
+			accountService.setTransientUser(user, this);
 		}
 		catch(Exception e) {
 			
-			new AlertDialog.Builder(this)
-			.setTitle(Res.string(R.string.lbl_oops))
-			.setMessage(new StringBuilder(Res.string(R.string.err_uri_resolution_failure)).append(uri.getPath()))
-			.setPositiveButton(Res.string(R.string.lbl_return_uc), 
-				new DialogInterface.OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-					
-						finish();
-					}
-				})
-			.create().show();
+			user = new GitHubUser();
+			user.setLogin(uri.getPathSegments().get(0));
+			accountService.setTransientUser(user, this);
 		}
 	}
 	
@@ -239,7 +228,10 @@ public class ReposActivity extends TravisJrActivity {
 			
 			String username = accountService.getGitHubUsername(this);
 			
-			if(accountService.getUserMode(this).equals(UserMode.ORGANIZATION)) {
+			UserMode userMode = accountService.hasTransientUser(this)? 
+				accountService.fetchUserMode(this) :accountService.getUserMode();
+			
+			if(userMode.equals(UserMode.ORGANIZATION)) {
 				
 				repos = repoService.getReposByOwner(username);
 			}

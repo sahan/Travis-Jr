@@ -43,9 +43,9 @@ import com.lonepulse.travisjr.model.GitHubUser;
 import com.lonepulse.travisjr.util.Res;
 
 /**
- * <p>A basic implementation of {@link AccountService}.
+ * <p>A basic implementation of {@link AccountService}.</p>
  * 
- * @version 1.1.0
+ * @version 1.2.0
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
@@ -55,11 +55,44 @@ public class BasicAccountService implements AccountService {
 	private static final String GITHUB_TOKEN = "com.github";
 	
 	/**
-	 * <p>An {@link Application} level {@link ReentrantLock} to manage global race conditions.
+	 * <p>An {@link Application} level {@link ReentrantLock} to manage global race conditions.</p>
 	 */
 	private static final ReentrantLock PURGE_LOCK = new ReentrantLock();
-
 	
+	/**
+	 * <p>The instance of {@link IntentFilterService} which is used to disover the {@link GitHubUser} 
+	 * information if required.</p>
+	 */
+	private static final IntentFilterService intentFilterService = new BasicIntentFilterService();
+
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean hasTransientUser(Activity activity) {
+	
+		return activity.getIntent().getSerializableExtra(Res.string(R.string.key_transient_user)) != null;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setTransientUser(GitHubUser gitHubUser, Activity activity) {
+		
+		activity.getIntent().putExtra(Res.string(R.string.key_transient_user), gitHubUser);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public GitHubUser getTransientUser(Activity activity) {
+		
+		return (GitHubUser)activity.getIntent().getSerializableExtra(Res.string(R.string.key_transient_user));
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -82,8 +115,7 @@ public class BasicAccountService implements AccountService {
 	@Override
 	public String getGitHubUsername(Activity activity) throws MissingCredentialsException {
 		
-		GitHubUser user = (GitHubUser) activity.getIntent()
-			.getSerializableExtra(Res.string(R.string.key_transient_user));
+		GitHubUser user = getTransientUser(activity);
 			
 		return user == null? getGitHubUsername() :user.getLogin();
 	}
@@ -116,8 +148,36 @@ public class BasicAccountService implements AccountService {
 		
 		try {
 			
-			GitHubUser user = (GitHubUser) activity.getIntent()
-					.getSerializableExtra(Res.string(R.string.key_transient_user));
+			GitHubUser user = getTransientUser(activity);
+			
+			if(user == null || user.getType() == null) {
+				
+				return UserMode.ORGANIZATION;
+			}
+			
+			UserMode userMode = UserMode.matchFor(user.getType());
+			return userMode == null? UserMode.ORGANIZATION :userMode;
+		}
+		catch(Exception e) {
+			
+			StringBuilder errorContext = new StringBuilder("Failed to resolve a user mode ")
+			.append("from the current user in context. Defaulting to UserMode.ORGANIZATION. ");
+			
+			Log.e(getClass().getSimpleName(), errorContext.toString(), e);
+			
+			return UserMode.ORGANIZATION;
+		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public UserMode fetchUserMode(Activity activity) {
+		
+		try {
+			
+			GitHubUser user = getTransientUser(activity);
 			
 			if(user == null) {
 				
@@ -125,8 +185,15 @@ public class BasicAccountService implements AccountService {
 			}
 			else {
 				
-				return user.getType().equalsIgnoreCase(
-					UserMode.ORGANIZATION.getKey())? UserMode.ORGANIZATION :UserMode.MEMBER;
+				UserMode userMode = UserMode.matchFor(user.getType());
+				
+				if(userMode == null) {
+					
+					user = intentFilterService.resolveUser(activity.getIntent().getData());
+					userMode = UserMode.matchFor(user.getType());
+				}
+				
+				return userMode == null? UserMode.ORGANIZATION :userMode;
 			}
 		}
 		catch(Exception e) {
