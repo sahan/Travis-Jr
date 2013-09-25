@@ -95,7 +95,8 @@ public class BuildAdapter extends ArrayAdapter<Build> {
 		public ImageView status;
 		public ImageView statusStarted;
 		public TextView buildNumber;
-		public TextView duration;
+		public TextView minutes;
+		public TextView seconds;
 		public TextView branch;
 		public TextView event;
 		public TextView message;
@@ -115,7 +116,8 @@ public class BuildAdapter extends ArrayAdapter<Build> {
 			status = (ImageView) convertView.findViewById(R.id.status);
 			statusStarted = (ImageView) convertView.findViewById(R.id.status_started);
 			buildNumber = (TextView) convertView.findViewById(R.id.build_number);
-			duration = (TextView) convertView.findViewById(R.id.duration);
+			minutes = (TextView) convertView.findViewById(R.id.minutes);
+			seconds = (TextView) convertView.findViewById(R.id.seconds);
 			branch = (TextView) convertView.findViewById(R.id.branch);
 			event = (TextView) convertView.findViewById(R.id.event);
 			message = (TextView) convertView.findViewById(R.id.message);
@@ -189,8 +191,10 @@ public class BuildAdapter extends ArrayAdapter<Build> {
 			ViewHolder viewHolder = new ViewHolder(convertView);
 			convertView.setTag(viewHolder);
 			
-			if(type == ViewTypes.ONGOING.id)
+			if(type == ViewTypes.ONGOING.id) {
+				
 				viewHolder.statusStarted.setAnimation(rotate);
+			}
 		}
 		
 		Build build = data.get(position);
@@ -217,11 +221,14 @@ public class BuildAdapter extends ArrayAdapter<Build> {
 	 */
 	private View processTheme(int position, ViewHolder viewHolder) {
 
-		if(position % 2 == 0)
+		if(position % 2 == 0) {
+			
 			viewHolder.root.setBackgroundColor(context.getResources().getColor(R.color.bg_list_item_generic));
-		
-		else
+		}
+		else {
+			
 			viewHolder.root.setBackgroundColor(context.getResources().getColor(R.color.bg_list_item_alt));
+		}
 		
 		return viewHolder.root;
 	}
@@ -254,14 +261,18 @@ public class BuildAdapter extends ArrayAdapter<Build> {
 			
 			ImageView status = viewHolder.status;
 			
-			if(buildStatus == null && finished)
+			if(buildStatus == null && finished) {
+				
 				status.setImageResource(position % 2 == 0? R.drawable.gear_errored :R.drawable.gear_errored_alt);
-			
-			else if(buildStatus.shortValue() == 0)
+			}
+			else if(buildStatus.shortValue() == 0) {
+				
 				status.setImageResource(position % 2 == 0? R.drawable.gear_passed :R.drawable.gear_passed_alt);
-			
-			else
+			}
+			else {
+				
 				status.setImageResource(position % 2 == 0? R.drawable.gear_failed :R.drawable.gear_failed_alt);
+			}
 		}
 		
 		return viewHolder.root;
@@ -281,10 +292,15 @@ public class BuildAdapter extends ArrayAdapter<Build> {
 	private View processInfo(Build build, ViewHolder viewHolder) {
 
 		viewHolder.buildNumber.setText(String.valueOf(build.getNumber()));
-		viewHolder.duration.setText(String.valueOf(TextUtils.isAvailable(build.getDuration())));
 		viewHolder.branch.setText(String.valueOf(TextUtils.isAvailable(build.getBranch())));
 		viewHolder.event.setText(String.valueOf(TextUtils.isAvailable(build.getEvent_type())));
 		viewHolder.message.setText(String.valueOf(TextUtils.isAvailable(build.getMessage())));
+		
+		Integer duration = build.getDuration();
+		String na = Res.string(R.string.not_available);
+
+		viewHolder.minutes.setText(String.valueOf(duration != null? duration / 60 : na));
+		viewHolder.seconds.setText(String.valueOf(duration != null? duration % 60 : na));
 		
 		return viewHolder.root;
 	}

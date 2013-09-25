@@ -41,6 +41,8 @@
     <item name="repo_name" type="id">repo_name</item>
     <item name="build_number" type="id">build_number</item>
     <item name="duration" type="id">duration</item>
+    <item name="minutes" type="id">minutes</item>
+    <item name="seconds" type="id">seconds</item>
     <item name="description" type="id">description</item>
     <item name="start_date" type="id">start_date</item>
     <item name="start_time" type="id">start_time</item>
@@ -65,6 +67,7 @@
     <item name="panel_temporal" type="id">panel_temporal</item>
     <item name="panel_event" type="id">panel_event</item>
     <item name="sec" type="id">sec</item>
+    <item name="min" type="id">min</item>
     <item name="organization" type="id">organization</item>
     <item name="tab_content" type="id">tab_content</item>
     <item name="content" type="id">content</item>

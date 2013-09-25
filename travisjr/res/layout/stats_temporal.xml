@@ -72,9 +72,29 @@
             android:layout_gravity="center_vertical"
             android:layout_marginRight="5dp"
             android:background="@drawable/dv_timeline_left" />
+        
+		<TextView
+            android:id="@id/minutes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:singleLine="true"
+            android:text="@string/not_available"
+            android:textColor="@color/txt_blue"
+            android:textSize="@dimen/txt_l" />
 
         <TextView
-            android:id="@id/duration"
+            android:id="@id/min"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:singleLine="true"
+            android:text="@string/lbl_minutes"
+            android:textColor="@color/txt_dark"
+            android:textSize="@dimen/txt_s" />
+         
+        <TextView
+            android:id="@id/seconds"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -88,6 +108,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:singleLine="true"
             android:text="@string/lbl_seconds"
             android:textColor="@color/txt_dark"
             android:textSize="@dimen/txt_s" />

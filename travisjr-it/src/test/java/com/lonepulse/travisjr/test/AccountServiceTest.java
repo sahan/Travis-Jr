@@ -43,7 +43,7 @@ import com.lonepulse.travisjr.model.GitHubUser;
 import com.lonepulse.travisjr.service.AccountService;
 import com.lonepulse.travisjr.service.BasicAccountService;
 import com.lonepulse.travisjr.service.UserMode;
-import com.lonepulse.travisjr.util.Resources;
+import com.lonepulse.travisjr.util.Res;
 
 /**
  * <p>Unit test for {@link BasicAccountService}.
@@ -95,7 +95,7 @@ public class AccountServiceTest {
 		user.setType("Organization");
 		
 		Intent intent = new Intent(activity, BuildsActivity.class);
-		intent.putExtra(Resources.key(R.string.key_transient_user), user);
+		intent.putExtra(Res.string(R.string.key_transient_user), user);
 		
 		activity.setIntent(intent);
 		

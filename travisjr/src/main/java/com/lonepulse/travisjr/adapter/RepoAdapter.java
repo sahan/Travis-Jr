@@ -48,9 +48,11 @@ import com.lonepulse.travisjr.util.TextUtils;
  * <p>An extension of {@link ArrayAdapter} which populates a {@link ListView} 
  * with {@link Repo} entities.
  * 
- * @version 1.1.0
+ * @version 1.2.0
  * <br><br>
- * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
+ * @since 1.1.0
+ * <br><br>
+ * @author <a href="mailto:sahan@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
 public class RepoAdapter extends ArrayAdapter<Repo> {
 
@@ -101,7 +103,8 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 		public TextView buildNumber;
 		public TextView startTime;
 		public TextView startDate;
-		public TextView duration;
+		public TextView minutes;
+		public TextView seconds;
 		public TextView endTime;
 		public TextView endDate;
 		
@@ -109,8 +112,7 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 		 * <p>Creates a new {@link ViewHolder} for the given view.
 		 * 
 		 * @param convertView
-		 * 			the root view of the list item whose child views are 
-		 * 			to be referenced
+		 * 			the root view of the list item whose child views are to be referenced
 		 *
 		 * @since 1.1.0
 		 */
@@ -123,7 +125,8 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 			buildNumber = (TextView) convertView.findViewById(R.id.build_number);
 			startTime = (TextView) convertView.findViewById(R.id.start_time);
 			startDate = (TextView) convertView.findViewById(R.id.start_date);
-			duration = (TextView) convertView.findViewById(R.id.duration);
+			minutes = (TextView) convertView.findViewById(R.id.minutes);
+			seconds = (TextView) convertView.findViewById(R.id.seconds);
 			endTime = (TextView) convertView.findViewById(R.id.end_time);
 			endDate = (TextView) convertView.findViewById(R.id.end_date);
 		}
@@ -198,8 +201,10 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 			ViewHolder viewHolder = new ViewHolder(convertView);
 			convertView.setTag(viewHolder);
 			
-			if(type == ViewTypes.ONGOING.id)
+			if(type == ViewTypes.ONGOING.id) {
+				
 				viewHolder.statusStarted.setAnimation(rotate);
+			}
 		}
 		
 		Repo repo = data.get(position);
@@ -226,11 +231,14 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 	 */
 	private View processTheme(int position, ViewHolder viewHolder) {
 
-		if(position % 2 == 0)
+		if(position % 2 == 0) {
+			
 			viewHolder.root.setBackgroundColor(context.getResources().getColor(R.color.bg_list_item_generic));
-		
-		else
+		}
+		else {
+			
 			viewHolder.root.setBackgroundColor(context.getResources().getColor(R.color.bg_list_item_alt));
+		}
 		
 		return viewHolder.root;
 	}
@@ -263,14 +271,18 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 			
 			ImageView status = viewHolder.status;
 			
-			if(buildStatus == null && finished)
+			if(buildStatus == null && finished) {
+				
 				status.setImageResource(position % 2 == 0? R.drawable.gear_errored :R.drawable.gear_errored_alt);
-			
-			else if(buildStatus.shortValue() == 0)
+			}
+			else if(buildStatus.shortValue() == 0) {
+				
 				status.setImageResource(position % 2 == 0? R.drawable.gear_passed :R.drawable.gear_passed_alt);
-			
-			else
+			}
+			else {
+				
 				status.setImageResource(position % 2 == 0? R.drawable.gear_failed :R.drawable.gear_failed_alt);
+			}
 		}
 		
 		return viewHolder.root;
@@ -293,32 +305,36 @@ public class RepoAdapter extends ArrayAdapter<Repo> {
 		
 		viewHolder.buildNumber.setText(String.valueOf(repo.getLast_build_number()));
 		
-		viewHolder.startTime
-		.setText(TextUtils.isAvailable(DateUtils.formatTimeForDisplay(repo.getLast_build_started_at())));
+		viewHolder.startTime.setText(TextUtils.isAvailable(DateUtils.formatTimeForDisplay(repo.getLast_build_started_at())));
 		
 		if(context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
 		
-			viewHolder.startDate
-			.setText(TextUtils.isAvailable(DateUtils.formatDateForDisplay(repo.getLast_build_started_at())));
+			viewHolder.startDate.setText(TextUtils.isAvailable(DateUtils.formatDateForDisplay(repo.getLast_build_started_at())));
 		}
 		else {
 			
-			viewHolder.startDate
-			.setText(TextUtils.isAvailable(DateUtils.formatMonthDayForDisplay(repo.getLast_build_started_at())));
+			viewHolder.startDate.setText(TextUtils.isAvailable(DateUtils.formatMonthDayForDisplay(repo.getLast_build_started_at())));
 		}
 		
-		viewHolder.duration
-		.setText(String.valueOf(TextUtils.isAvailable(repo.getLast_build_duration())));
+		Integer duration = repo.getLast_build_duration();
+		String na = Res.string(R.string.not_available);
+
+		viewHolder.minutes.setText(String.valueOf(duration != null? duration / 60 : na));
+		viewHolder.seconds.setText(String.valueOf(duration != null? duration % 60 : na));
 		
 		TextView endTime = viewHolder.endTime;
 		
-		if(endTime != null)
+		if(endTime != null) {
+			
 			endTime.setText(TextUtils.isAvailable(DateUtils.formatTimeForDisplay(repo.getLast_build_finished_at())));
+		}
 		
 		TextView endDate = viewHolder.endDate;
 		
-		if(endDate != null)
+		if(endDate != null) {
+			
 			endDate.setText(TextUtils.isAvailable(DateUtils.formatYearForDisplay(repo.getLast_build_started_at())));
+		}
 		
 		return viewHolder.root;
 	}

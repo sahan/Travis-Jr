@@ -26,6 +26,7 @@
     <string name="lbl_yes_uc">YES</string>
     <string name="lbl_no_uc">NO</string>
     <string name="lbl_sign_in">Sign in with GitHub.</string>
+    <string name="lbl_minutes">&#160;min&#160;&#160;</string>
     <string name="lbl_seconds">&#160;sec</string>
     <string name="lbl_tap_to_configure">(Tap To Configure)</string>
     <string name="lbl_tap_to_retry">(Tap To Retry)</string>

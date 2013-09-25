@@ -273,6 +273,14 @@ public class BuildInfoActivity extends TravisJrActivity {
 		buildInfo.setStart_time(DateUtils.formatTimeForDisplay(startedAt));
 		buildInfo.setStart_date(DateUtils.formatDateForDisplay(startedAt));
 		
+		if(buildInfo.getDuration() != null) {
+		
+			int duration = buildInfo.getDuration().intValue();
+			
+			buildInfo.setMinutes(duration / 60);
+			buildInfo.setSeconds(duration % 60);
+		}
+		
 		bindManager.bind(content, buildInfo);
 
 		List<String> logIds = new ArrayList<String>(logs.keySet());

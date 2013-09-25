@@ -29,7 +29,7 @@
     <string name="license_cpl_v1">Common Public License, Version 1.0</string>
     <string name="author">github.com/sahan</string>
     <string name="author_url">https://github.com/sahan</string>
-    <string name="not_available">N.A.</string>
+    <string name="not_available">&#8230;</string>
     <string name="conf_clear_account">are you sure you want to purge your account?</string>
     <string name="sum_pref_sign_out">Clear all credentials, delete any saved data and sign out from your account.</string>
     <string name="sum_pref_oss_licenses">Licenses for all open source libraries used in development and testing.</string>

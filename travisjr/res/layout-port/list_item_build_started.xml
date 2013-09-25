@@ -116,21 +116,45 @@
             android:layout_marginTop="3dp" >
 
             <TextView
-                android:id="@id/duration"
+                android:id="@id/minutes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="bottom"
                 android:singleLine="true"
                 android:text="@string/not_available"
                 android:textColor="@color/txt_blue"
-                android:textSize="@dimen/txt_m" />
+                android:textSize="@dimen/txt_l" />
+
+            <TextView
+                android:id="@id/min"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/minutes"
+                android:layout_toRightOf="@id/minutes"
+                android:gravity="bottom"
+                android:singleLine="true"
+                android:text="@string/lbl_minutes"
+                android:textColor="@color/txt_dark"
+                android:textSize="@dimen/txt_s" />
+            
+            <TextView
+                android:id="@id/seconds"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/min"
+                android:layout_toRightOf="@id/min"
+                android:gravity="bottom"
+                android:singleLine="true"
+                android:text="@string/not_available"
+                android:textColor="@color/txt_blue"
+                android:textSize="@dimen/txt_l" />
 
             <TextView
                 android:id="@id/sec"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@id/duration"
-                android:layout_toRightOf="@id/duration"
+                android:layout_alignBaseline="@id/seconds"
+                android:layout_toRightOf="@id/seconds"
                 android:gravity="bottom"
                 android:singleLine="true"
                 android:text="@string/lbl_seconds"

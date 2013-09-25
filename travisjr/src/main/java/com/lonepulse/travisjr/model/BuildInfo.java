@@ -88,8 +88,19 @@ public class BuildInfo implements Serializable {
 	/**
 	 * <p>The total time taked by this build.
 	 */
-	@BindText(R.id.duration)
 	private Integer duration;
+	
+	/**
+	 * <p>The number of minutes taken by this build.
+	 */
+	@BindText(R.id.minutes)
+	private int minutes;
+	
+	/**
+	 * <p>The number of seconds taken by this build.
+	 */
+	@BindText(R.id.seconds)
+	private int seconds;
 	
 	/**
 	 * <p>The commit hash for the current build.
@@ -233,7 +244,24 @@ public class BuildInfo implements Serializable {
 	}
 
 	public void setDuration(Integer duration) {
+		
 		this.duration = duration;
+	}
+	
+	public int getMinutes() {
+		return minutes;
+	}
+
+	public void setMinutes(int minutes) {
+		this.minutes = minutes;
+	}
+
+	public int getSeconds() {
+		return seconds;
+	}
+
+	public void setSeconds(int seconds) {
+		this.seconds = seconds;
 	}
 
 	public String getCommit() {

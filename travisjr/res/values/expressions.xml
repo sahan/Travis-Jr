@@ -28,6 +28,8 @@
     <string name="xp_build_info_start_time">${start_time?:time n/a}</string>
     <string name="xp_build_info_start_date">${start_date?:date n/a}</string>
     <string name="xp_build_info_duration">${duration?:n/a}</string>
+    <string name="xp_build_info_minutes">${minutes?:n/a}</string>
+    <string name="xp_build_info_seconds">${seconds?:n/a}</string>
     <string name="xp_build_info_committer_name">${committer_name?:committer name unknown}</string>
     <string name="xp_build_info_committer_email">${committer_email?:committer email unknown}</string>
     <string name="xp_build_info_message">${message?:commit message unknown}</string>

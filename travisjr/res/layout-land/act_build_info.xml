@@ -134,26 +134,57 @@
 			            android:layout_alignParentRight="true"
 			            android:layout_alignParentTop="true">
 			
-			            <TextView
-			                android:id="@id/duration"
+			
+						<TextView
+			                android:id="@id/minutes"
 			                android:layout_width="wrap_content"
 			                android:layout_height="wrap_content"
 			                android:gravity="bottom"
 			                android:singleLine="true"
-			                android:text="@string/xp_build_info_duration"
-			                android:textColor="@color/txt_blue"
-			                android:textSize="@dimen/txt_l" />
+			                android:text="@string/xp_build_info_minutes"
+			                android:textColor="@color/txt_lightest"
+			                android:textSize="@dimen/txt_l"
+			                android:shadowColor="@color/bg_darkest"
+            				android:shadowRadius="1.5" />
+			
+			            <TextView
+			                android:id="@id/min"
+			                android:layout_width="wrap_content"
+			                android:layout_height="wrap_content"
+			                android:layout_alignBaseline="@id/minutes"
+			                android:layout_toRightOf="@id/minutes"
+			                android:gravity="bottom"
+			                android:singleLine="true"
+			                android:text="@string/lbl_minutes"
+			                android:textStyle="bold"
+			                android:textColor="@color/txt_darker"
+			                android:textSize="@dimen/txt_s" />
+			            
+			            <TextView
+			                android:id="@id/seconds"
+			                android:layout_width="wrap_content"
+			                android:layout_height="wrap_content"
+			                android:layout_alignBaseline="@id/min"
+			                android:layout_toRightOf="@id/min"
+			                android:gravity="bottom"
+			                android:singleLine="true"
+			                android:text="@string/xp_build_info_seconds"
+			                android:textColor="@color/txt_lightest"
+			                android:textSize="@dimen/txt_l"
+			                android:shadowColor="@color/bg_darkest"
+            				android:shadowRadius="1.5" />
 			
 			            <TextView
 			                android:id="@id/sec"
 			                android:layout_width="wrap_content"
 			                android:layout_height="wrap_content"
-			                android:layout_alignBaseline="@id/duration"
-			                android:layout_toRightOf="@id/duration"
+			                android:layout_alignBaseline="@id/seconds"
+			                android:layout_toRightOf="@id/seconds"
 			                android:gravity="bottom"
 			                android:singleLine="true"
 			                android:text="@string/lbl_seconds"
-			                android:textColor="@color/txt_dark"
+			                android:textStyle="bold"
+			                android:textColor="@color/txt_darker"
 			                android:textSize="@dimen/txt_s" />
 			        </RelativeLayout>
 			    </RelativeLayout>
