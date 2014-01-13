@@ -20,11 +20,9 @@ package com.lonepulse.travisjr.net;
  * #L%
  */
 
-
-import com.lonepulse.robozombie.core.annotation.Endpoint;
-import com.lonepulse.robozombie.core.annotation.Parser;
-import com.lonepulse.robozombie.rest.annotation.PathParam;
-import com.lonepulse.robozombie.rest.annotation.Rest;
+import com.lonepulse.robozombie.annotation.Endpoint;
+import com.lonepulse.robozombie.annotation.GET;
+import com.lonepulse.robozombie.annotation.PathParam;
 import com.lonepulse.travisjr.model.BuildJob;
 
 /**
@@ -35,7 +33,7 @@ import com.lonepulse.travisjr.model.BuildJob;
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
-@Endpoint("s3.amazonaws.com/archive.travis-ci.org")
+@Endpoint("http://s3.amazonaws.com/archive.travis-ci.org")
 public interface AmazonS3Endpoint {
 	
 	/**
@@ -48,7 +46,6 @@ public interface AmazonS3Endpoint {
 	 * 
 	 * @since 1.1.0
 	 */
-	@Rest(path = "/jobs/:job_id/log.txt")
-	@Parser(Parser.PARSER_TYPE.STRING)
+	@GET("/jobs/{job_id}/log.txt")
 	String getJobLog(@PathParam("job_id") String jobId);
 }

@@ -22,15 +22,14 @@ package com.lonepulse.travisjr.service;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
 import android.app.Activity;
 import android.util.Log;
 
-import com.lonepulse.robozombie.core.annotation.Bite;
-import com.lonepulse.robozombie.core.inject.Zombie;
+import com.lonepulse.robozombie.annotation.Bite;
+import com.lonepulse.robozombie.proxy.Zombie;
 import com.lonepulse.travisjr.model.Build;
 import com.lonepulse.travisjr.model.Repo;
 import com.lonepulse.travisjr.net.TravisCIEndpoint;
@@ -143,8 +142,8 @@ public class BasicRepoService implements RepoService {
 		
 		try {
 			
-			Repo[] repos = travisCIEndpoint.getReposByMember(username);
-			Build[] builds;
+			List<Repo> repos = travisCIEndpoint.getReposByMember(username);
+			List<Build> builds;
 			
 			for (Repo repo : repos) {
 				
@@ -152,12 +151,14 @@ public class BasicRepoService implements RepoService {
 					
 					builds = travisCIEndpoint.getRecentBuilds(String.valueOf(repo.getId()));
 					
-					if(builds != null && builds.length != 0)
-						repo.setBuilds(Arrays.asList(builds));
+					if(builds != null && builds.size() > 0) {
+						
+						repo.setBuilds(builds);
+					}
 				}
 			}
 			
-			return Arrays.asList(repos);
+			return repos;
 		} 
 		catch (Exception e) {
 			
@@ -173,8 +174,8 @@ public class BasicRepoService implements RepoService {
 		
 		try {
 			
-			Repo[] repos = travisCIEndpoint.getReposByOwner(username);
-			Build[] builds;
+			List<Repo> repos = travisCIEndpoint.getReposByOwner(username);
+			List<Build> builds;
 			
 			for (Repo repo : repos) {
 				
@@ -184,12 +185,14 @@ public class BasicRepoService implements RepoService {
 					
 					builds = travisCIEndpoint.getRecentBuilds(String.valueOf(repo.getId()));
 					
-					if(builds != null && builds.length != 0)
-						repo.setBuilds(Arrays.asList(builds));
+					if(builds != null && builds.size() > 0) {
+						
+						repo.setBuilds(builds);
+					}
 				}
 			}
 			
-			return Arrays.asList(repos);
+			return repos;
 		} 
 		catch (Exception e) {
 			

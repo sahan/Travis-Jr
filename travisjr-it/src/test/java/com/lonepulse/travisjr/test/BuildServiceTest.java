@@ -93,9 +93,9 @@ public class BuildServiceTest {
 	@Test
 	public final void testRecentBuilds() throws Exception {
 	
-		final long repoId = 435658;
-		
 		Robolectric.getFakeHttpLayer().interceptHttpRequests(false);
+		
+		final long repoId = 435658;
 		
 		Future<List<Build>> future = executorService.submit(new Callable<List<Build>>() {
 
@@ -122,12 +122,11 @@ public class BuildServiceTest {
 	@Test
 	public final void testBuildInfo() throws Exception {
 		
+		Robolectric.getFakeHttpLayer().interceptHttpRequests(false);
+		
 		final String owner = "sahan";
 		final String repo = "IckleBot";
 		final long buildId = 8432801;
-		
-		
-		Robolectric.getFakeHttpLayer().interceptHttpRequests(false);
 		
 		Future<BuildInfo> future = executorService.submit(new Callable<BuildInfo>() {
 			
@@ -153,11 +152,11 @@ public class BuildServiceTest {
 	@Test
 	public final void testJobLogs() throws Exception {
 		
+		Robolectric.getFakeHttpLayer().interceptHttpRequests(false);
+		
 		final String owner = "sahan";
 		final String repo = "IckleBot";
 		final long buildId = 8432801;
-		
-		Robolectric.getFakeHttpLayer().interceptHttpRequests(false);
 		
 		Future<Map<BuildJob, StringBuilder>> future = executorService.submit(
 		new Callable<Map<BuildJob, StringBuilder>>() {

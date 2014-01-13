@@ -150,7 +150,12 @@ public class BasicAccountService implements AccountService {
 			
 			GitHubUser user = getTransientUser(activity);
 			
-			if(user == null || user.getType() == null) {
+			if(user == null) {
+				
+				return getUserMode();
+			}
+			
+			if(user.getType() == null) {
 				
 				return UserMode.ORGANIZATION;
 			}

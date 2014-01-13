@@ -30,8 +30,8 @@ import java.util.concurrent.Future;
 import android.content.IntentFilter;
 import android.net.Uri;
 
-import com.lonepulse.robozombie.core.annotation.Bite;
-import com.lonepulse.robozombie.core.inject.Zombie;
+import com.lonepulse.robozombie.annotation.Bite;
+import com.lonepulse.robozombie.proxy.Zombie;
 import com.lonepulse.travisjr.R;
 import com.lonepulse.travisjr.model.GitHubRepository;
 import com.lonepulse.travisjr.model.GitHubUser;
@@ -87,7 +87,6 @@ public class BasicIntentFilterService implements IntentFilterService {
 			final List<String> pathSegments = uri.getPathSegments();
 			if(pathSegments == null || pathSegments.size() < 1) {
 			
-				
 				throw uafe;
 			}
 			

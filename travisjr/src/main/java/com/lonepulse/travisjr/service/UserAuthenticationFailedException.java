@@ -78,14 +78,14 @@ public class UserAuthenticationFailedException extends TravisJrRuntimeException 
 	/**
 	 * <p>Prints a detailed with the username which failed to be authenticated.
 	 * 
-	 * @param user
-	 * 			the username which failed to be authenticated
+	 * @param message
+	 * 			information on the authentication failure
 	 * 
 	 * @since 1.1.0
 	 */
-	public UserAuthenticationFailedException(String user) {
+	public UserAuthenticationFailedException(String message) {
 		
-		super("The user " + user + " failed to be authenticated. ");
+		super(message);
 	}
 
 	/**
@@ -101,16 +101,16 @@ public class UserAuthenticationFailedException extends TravisJrRuntimeException 
 	/**
 	 * <p>Prints a detailed with the username which failed to be authenticated.
 	 * 
-	 * @param user
-	 * 			the username which failed to be authenticated
+	 * @param message
+	 * 			information on the authentication failure
 	 * 
 	 * @param rootCause
 	 * 			the root cause which caused a failure in repository resolution
 	 * 
 	 * @since 1.1.0
 	 */
-	public UserAuthenticationFailedException(String user, Throwable rootCause) {
+	public UserAuthenticationFailedException(String message, Throwable rootCause) {
 		
-		super("The user " + user + " failed to be authenticated. ", rootCause);
+		super(message, rootCause);
 	}
 }

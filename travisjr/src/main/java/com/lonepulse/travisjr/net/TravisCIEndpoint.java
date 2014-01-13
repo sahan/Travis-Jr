@@ -20,13 +20,16 @@ package com.lonepulse.travisjr.net;
  * #L%
  */
 
+import static com.lonepulse.robozombie.annotation.Entity.ContentType.JSON;
 
-import com.lonepulse.robozombie.core.annotation.Endpoint;
-import com.lonepulse.robozombie.core.annotation.Param;
-import com.lonepulse.robozombie.core.annotation.Parser;
-import com.lonepulse.robozombie.core.annotation.Request;
-import com.lonepulse.robozombie.rest.annotation.PathParam;
-import com.lonepulse.robozombie.rest.annotation.Rest;
+import java.util.List;
+
+import com.lonepulse.robozombie.annotation.Config;
+import com.lonepulse.robozombie.annotation.Deserialize;
+import com.lonepulse.robozombie.annotation.Endpoint;
+import com.lonepulse.robozombie.annotation.GET;
+import com.lonepulse.robozombie.annotation.PathParam;
+import com.lonepulse.robozombie.annotation.QueryParam;
 import com.lonepulse.travisjr.model.Build;
 import com.lonepulse.travisjr.model.BuildInfo;
 import com.lonepulse.travisjr.model.Repo;
@@ -38,8 +41,10 @@ import com.lonepulse.travisjr.model.Repo;
  * <br><br>
  * @author <a href="mailto:lahiru@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
-@Endpoint(scheme = "https", value = "api.travis-ci.org")
-@Parser(Parser.PARSER_TYPE.JSON)
+
+@Deserialize(JSON)
+@Config(ZombieConfig.class)
+@Endpoint("https://api.travis-ci.org")
 public interface TravisCIEndpoint {
 	
 	/**
@@ -53,8 +58,8 @@ public interface TravisCIEndpoint {
 	 * 
 	 * @since 1.1.0
 	 */
-	@Request(path = "repos")
-	Repo[] getReposByMember(@Param("member") String member);
+	@GET("/repos")
+	List<Repo> getReposByMember(@QueryParam("member") String member);
 	
 	/**
 	 * <p>Takes a GitHub username and retrieves the repositories which 
@@ -67,8 +72,8 @@ public interface TravisCIEndpoint {
 	 * 
 	 * @since 1.1.2
 	 */
-	@Request(path = "repos")
-	Repo[] getReposByOwner(@Param("owner_name") String ownerName);
+	@GET("/repos")
+	List<Repo> getReposByOwner(@QueryParam("owner_name") String ownerName);
 	
 	/**
 	 * <p>Takes a repository ID and retrieves its recent set of builds.
@@ -80,8 +85,8 @@ public interface TravisCIEndpoint {
 	 * 
 	 * @since 1.1.1
 	 */
-	@Request(path = "builds")
-	Build[] getRecentBuilds(@Param("id") String repositoryId);
+	@GET("/builds")
+	List<Build> getRecentBuilds(@QueryParam("id") String repositoryId);
 	
 	/**
 	 * <p>Takes the repository name and owner name together with the id 
@@ -101,8 +106,8 @@ public interface TravisCIEndpoint {
 	 * 
 	 * @since 1.1.3
 	 */
-	@Rest(path = "repositories/:owner/:repo/builds/:build_id")
-	BuildInfo getBuildInfo(@PathParam("owner") String owner, 
+	@GET("/repositories/{owner}/{repo}/builds/{build_id}")
+	BuildInfo getBuildInfo(@PathParam("owner") String owner,
 						   @PathParam("repo") String repo,
 						   @PathParam("build_id") String buildId);
 }

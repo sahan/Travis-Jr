@@ -20,16 +20,14 @@ package com.lonepulse.travisjr.service;
  * #L%
  */
 
-
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import android.util.Log;
 
-import com.lonepulse.robozombie.core.annotation.Bite;
-import com.lonepulse.robozombie.core.inject.Zombie;
+import com.lonepulse.robozombie.annotation.Bite;
+import com.lonepulse.robozombie.proxy.Zombie;
 import com.lonepulse.travisjr.model.Build;
 import com.lonepulse.travisjr.model.BuildInfo;
 import com.lonepulse.travisjr.model.BuildJob;
@@ -65,7 +63,7 @@ public class BasicBuildService implements BuildService {
 	
 		try {
 		
-			return Arrays.asList(travisCIEndpoint.getRecentBuilds(String.valueOf(repoId)));
+			return travisCIEndpoint.getRecentBuilds(String.valueOf(repoId));
 		}
 		catch(Exception e) {
 			

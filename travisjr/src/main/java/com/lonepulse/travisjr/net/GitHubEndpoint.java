@@ -20,17 +20,24 @@ package com.lonepulse.travisjr.net;
  * #L%
  */
 
+import static com.lonepulse.robozombie.annotation.Entity.ContentType.JSON;
 
-import com.lonepulse.robozombie.core.annotation.Endpoint;
-import com.lonepulse.robozombie.core.annotation.Parser;
-import com.lonepulse.robozombie.rest.annotation.PathParam;
-import com.lonepulse.robozombie.rest.annotation.Rest;
+import org.apache.http.client.methods.HttpRequestBase;
+
+import com.lonepulse.robozombie.annotation.Config;
+import com.lonepulse.robozombie.annotation.Deserialize;
+import com.lonepulse.robozombie.annotation.Endpoint;
+import com.lonepulse.robozombie.annotation.GET;
+import com.lonepulse.robozombie.annotation.Intercept;
+import com.lonepulse.robozombie.annotation.PathParam;
+import com.lonepulse.robozombie.proxy.InvocationContext;
+import com.lonepulse.robozombie.request.Interceptor;
 import com.lonepulse.travisjr.model.GitHubRepository;
 import com.lonepulse.travisjr.model.GitHubUser;
+import com.lonepulse.travisjr.net.GitHubEndpoint.CommonInterceptor;
 
 /**
-/**
- * <p>This endpoint contract defines the subset of GitHub API services which are used. 
+ * <p>This endpoint contract defines the subset of GitHub API services which are used.</p> 
  * 
  * @since 1.1.0
  * <br><br>
@@ -38,9 +45,21 @@ import com.lonepulse.travisjr.model.GitHubUser;
  * <br><br>
  * @author <a href="mailto:sahan@lonepulse.com">Lahiru Sahan Jayasinghe</a>
  */
-@Parser(Parser.PARSER_TYPE.JSON)
-@Endpoint(scheme = "https", value = "api.github.com")
+@Deserialize(JSON)
+@Config(ZombieConfig.class)
+@Intercept(CommonInterceptor.class)
+@Endpoint("https://api.github.com")
 public interface GitHubEndpoint {
+	
+	class CommonInterceptor implements Interceptor {
+
+		@Override
+		public void intercept(InvocationContext context, HttpRequestBase request) {
+
+			request.addHeader("User-Agent", "Travis-Jr");
+			request.addHeader("Accept", "application/vnd.github.v3+json");
+		}
+	}
 	
 	/**
 	 * <p>A simple call to the <i>/users</i> service at <b>api.github.com</b> 
@@ -53,7 +72,7 @@ public interface GitHubEndpoint {
 	 * 
 	 * @since 1.1.0
 	 */
-	@Rest(path = "/users/:user")
+	@GET("/users/{user}")
 	GitHubUser getUser(@PathParam("user") String user);
 	
 	/**
@@ -70,6 +89,6 @@ public interface GitHubEndpoint {
 	 * 
 	 * @since 1.1.0
 	 */
-	@Rest(path = "/repos/:user/:repo")
+	@GET("/repos/{user}/{repo}")
 	GitHubRepository getRepository(@PathParam("user") String user, @PathParam("repo") String repo);
 }
