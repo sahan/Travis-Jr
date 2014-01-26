@@ -42,6 +42,13 @@ For more information on building Android projects using Maven here's [Chapter 14
 <br/>
 ##Changelog
 
+* Release 0.2.0 (beta)
+
+	1. View detailed build information, including logs and commit information.
+	2. Support for viewing logs in fullscreen with panning and zooming.
+	3. Open travis-ci.org links to view repositories.
+	4. Actions to share the build status or view the commit diff.   
+
 * Release 0.1.1 (beta)
 
 	1. Authenticate (member/organization) via GitHub.
