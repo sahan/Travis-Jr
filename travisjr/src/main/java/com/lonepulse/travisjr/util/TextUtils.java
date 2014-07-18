@@ -92,4 +92,16 @@ public final class TextUtils {
 		
 		
 	}
+
+	/**
+	 * <p>Escape HTML
+	 *
+	 * @param s
+	 * 			string potentially containing HTML
+	 * @return escaped string
+	 */
+	public static String escapeHtml(String s) {
+
+		return s.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+	}
 }

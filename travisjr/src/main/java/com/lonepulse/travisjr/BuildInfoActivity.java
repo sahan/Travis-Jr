@@ -72,6 +72,7 @@ import com.lonepulse.travisjr.util.BuildState;
 import com.lonepulse.travisjr.util.BuildUtils;
 import com.lonepulse.travisjr.util.DateUtils;
 import com.lonepulse.travisjr.util.IntentUtils;
+import com.lonepulse.travisjr.util.TextUtils;
 import com.lonepulse.travisjr.util.Res;
 
 /**
@@ -109,7 +110,7 @@ public class BuildInfoActivity extends TravisJrActivity {
 			
 			while(scanner.hasNextLine()) {
 				
-				ASCII_ART.append(scanner.nextLine()).append("<br>");
+				ASCII_ART.append(scanner.nextLine()+"\n");
 			}
 			
 			ASCII_ART.append("</code></p>");
@@ -323,12 +324,12 @@ public class BuildInfoActivity extends TravisJrActivity {
 		final StringBuilder html = new StringBuilder()
 		.append("<html><body style=\"background-color:black; color:white;") 
 		.append(" white-space:nowrap;\"><code>")
-		.append(logData.replaceAll("(\r\n|\n)", "<br/>"))
+		.append(TextUtils.escapeHtml(logData).replaceAll("(\r\n|\n)", "<br/>"))
 		.append("</code></body></html>");
 		
 		log.loadData(html.toString(), "text/html", "utf-8");
 	}
-	
+
 	@UI(UI_SYNC)
 	private void uiSync() {
 	
