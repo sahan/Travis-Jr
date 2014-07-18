@@ -106,7 +106,7 @@ public class BuildInfoActivity extends TravisJrActivity {
 		try {
 			
 			scanner = new Scanner(TravisJr.Application.getContext().getAssets().open("ascii_art"));
-			ASCII_ART.append("<p style='text-align:center; font-size:1.2em'><code>");
+			ASCII_ART.append("<p style='text-align:center; font-size:1.2em; white-space: pre'><code>");
 			
 			while(scanner.hasNextLine()) {
 				
@@ -220,7 +220,7 @@ public class BuildInfoActivity extends TravisJrActivity {
 		settings.setRenderPriority(RenderPriority.HIGH);
 		settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
 		
-		loadLogData(ASCII_ART.toString());
+		loadLogData(ASCII_ART.toString(), false);
 	}
 	
 	@Override
@@ -305,13 +305,13 @@ public class BuildInfoActivity extends TravisJrActivity {
 				@Override
 				public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 					
-					loadLogData(logs.get(logIds.get(position)).toString());
+					loadLogData(logs.get(logIds.get(position)).toString(), true);
 				}
 
 				@Override
 				public void onNothingSelected(AdapterView<?> parent) {
 					
-					loadLogData(logs.get(logs.firstKey()).toString());
+					loadLogData(logs.get(logs.firstKey()).toString(), true);
 				}
 			});
 			
@@ -319,12 +319,13 @@ public class BuildInfoActivity extends TravisJrActivity {
 		}
 	}
 	
-	private void loadLogData(String logData) {
-		
+	private void loadLogData(String logData, Boolean escape) {
+
+		if (escape) logData = TextUtils.ansi2html(logData);
 		final StringBuilder html = new StringBuilder()
 		.append("<html><body style=\"background-color:black; color:white;") 
 		.append(" white-space:nowrap;\"><code>")
-		.append(TextUtils.ansi2html(logData).replaceAll("(\r\n|\n)", "<br/>"))
+		.append(logData.replaceAll("(\r\n|\n)", "<br/>"))
 		.append("</code></body></html>");
 		
 		log.loadData(html.toString(), "text/html", "utf-8");
