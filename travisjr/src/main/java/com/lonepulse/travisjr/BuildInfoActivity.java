@@ -72,6 +72,7 @@ import com.lonepulse.travisjr.util.BuildState;
 import com.lonepulse.travisjr.util.BuildUtils;
 import com.lonepulse.travisjr.util.DateUtils;
 import com.lonepulse.travisjr.util.IntentUtils;
+import com.lonepulse.travisjr.util.TextUtils;
 import com.lonepulse.travisjr.util.Res;
 
 /**
@@ -105,11 +106,11 @@ public class BuildInfoActivity extends TravisJrActivity {
 		try {
 			
 			scanner = new Scanner(TravisJr.Application.getContext().getAssets().open("ascii_art"));
-			ASCII_ART.append("<p style='text-align:center; font-size:1.2em'><code>");
+			ASCII_ART.append("<p style='text-align:center; font-size:1.2em; white-space: pre'><code>");
 			
 			while(scanner.hasNextLine()) {
 				
-				ASCII_ART.append(scanner.nextLine()).append("<br>");
+				ASCII_ART.append(scanner.nextLine()+"\n");
 			}
 			
 			ASCII_ART.append("</code></p>");
@@ -219,7 +220,7 @@ public class BuildInfoActivity extends TravisJrActivity {
 		settings.setRenderPriority(RenderPriority.HIGH);
 		settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
 		
-		loadLogData(ASCII_ART.toString());
+		loadLogData(ASCII_ART.toString(), false);
 	}
 	
 	@Override
@@ -304,13 +305,13 @@ public class BuildInfoActivity extends TravisJrActivity {
 				@Override
 				public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 					
-					loadLogData(logs.get(logIds.get(position)).toString());
+					loadLogData(logs.get(logIds.get(position)).toString(), true);
 				}
 
 				@Override
 				public void onNothingSelected(AdapterView<?> parent) {
 					
-					loadLogData(logs.get(logs.firstKey()).toString());
+					loadLogData(logs.get(logs.firstKey()).toString(), true);
 				}
 			});
 			
@@ -318,8 +319,9 @@ public class BuildInfoActivity extends TravisJrActivity {
 		}
 	}
 	
-	private void loadLogData(String logData) {
-		
+	private void loadLogData(String logData, Boolean escape) {
+
+		if (escape) logData = TextUtils.ansi2html(logData);
 		final StringBuilder html = new StringBuilder()
 		.append("<html><body style=\"background-color:black; color:white;") 
 		.append(" white-space:nowrap;\"><code>")
@@ -328,7 +330,7 @@ public class BuildInfoActivity extends TravisJrActivity {
 		
 		log.loadData(html.toString(), "text/html", "utf-8");
 	}
-	
+
 	@UI(UI_SYNC)
 	private void uiSync() {
 	
