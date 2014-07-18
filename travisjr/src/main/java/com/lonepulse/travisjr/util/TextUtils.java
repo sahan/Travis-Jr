@@ -20,6 +20,10 @@ package com.lonepulse.travisjr.util;
  * #L%
  */
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
+import org.fusesource.jansi.HtmlAnsiOutputStream;
 
 import com.lonepulse.travisjr.R;
 import com.lonepulse.travisjr.app.TravisJr;
@@ -94,14 +98,25 @@ public final class TextUtils {
 	}
 
 	/**
-	 * <p>Escape HTML
+	 * <p>Convert text to HTML, including ANSI escape sequences.
 	 *
 	 * @param s
-	 * 			string potentially containing HTML
-	 * @return escaped string
+	 * 			text to convert to HTML
+	 * @return HTML
 	 */
-	public static String escapeHtml(String s) {
+	public static String ansi2html(String s) {
 
-		return s.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+		try {
+			ByteArrayOutputStream os = new ByteArrayOutputStream();
+			HtmlAnsiOutputStream hos = new HtmlAnsiOutputStream(os);
+
+			hos.write(s.getBytes("UTF-8"));
+			hos.close();
+			return new String(os.toByteArray(), "UTF-8");
+		}
+		catch(IOException e) {
+
+			return s;
+		}
 	}
 }

@@ -324,7 +324,7 @@ public class BuildInfoActivity extends TravisJrActivity {
 		final StringBuilder html = new StringBuilder()
 		.append("<html><body style=\"background-color:black; color:white;") 
 		.append(" white-space:nowrap;\"><code>")
-		.append(TextUtils.escapeHtml(logData).replaceAll("(\r\n|\n)", "<br/>"))
+		.append(TextUtils.ansi2html(logData).replaceAll("(\r\n|\n)", "<br/>"))
 		.append("</code></body></html>");
 		
 		log.loadData(html.toString(), "text/html", "utf-8");
